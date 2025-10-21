@@ -8,6 +8,51 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* THEME: variables and overrides for the orange palette */
+        :root {
+            --accent-50: #fff7ed;
+            --accent-100: #ffedd5;
+            --accent-200: #fed7aa;
+            --accent-300: #fdba74;
+            --accent-400: #fb923c;
+            --accent-500: #f97316;
+            --accent-600: #ea580c;
+            --accent-700: #c2410c;
+            --accent-800: #9a3412;
+            --accent-900: #7c2d12;
+            --accent-950: #431407;
+        }
+        /* Map Tailwind's orange utility classes to variables to enable runtime theming */
+        .bg-orange-50{background-color:var(--accent-50)!important}
+        .bg-orange-100{background-color:var(--accent-100)!important}
+        .bg-orange-200{background-color:var(--accent-200)!important}
+        .bg-orange-300{background-color:var(--accent-300)!important}
+        .bg-orange-400{background-color:var(--accent-400)!important}
+        .bg-orange-500{background-color:var(--accent-500)!important}
+        .bg-orange-600{background-color:var(--accent-600)!important}
+        .bg-orange-700{background-color:var(--accent-700)!important}
+        .bg-orange-800{background-color:var(--accent-800)!important}
+        .bg-orange-900{background-color:var(--accent-900)!important}
+        .text-orange-50{color:var(--accent-50)!important}
+        .text-orange-100{color:var(--accent-100)!important}
+        .text-orange-200{color:var(--accent-200)!important}
+        .text-orange-300{color:var(--accent-300)!important}
+        .text-orange-400{color:var(--accent-400)!important}
+        .text-orange-500{color:var(--accent-500)!important}
+        .text-orange-600{color:var(--accent-600)!important}
+        .text-orange-700{color:var(--accent-700)!important}
+        .text-orange-800{color:var(--accent-800)!important}
+        .text-orange-900{color:var(--accent-900)!important}
+        .border-orange-50{border-color:var(--accent-50)!important}
+        .border-orange-100{border-color:var(--accent-100)!important}
+        .border-orange-200{border-color:var(--accent-200)!important}
+        .border-orange-300{border-color:var(--accent-300)!important}
+        .border-orange-400{border-color:var(--accent-400)!important}
+        .border-orange-500{border-color:var(--accent-500)!important}
+        .border-orange-600{border-color:var(--accent-600)!important}
+        .border-orange-700{border-color:var(--accent-700)!important}
+        .border-orange-800{border-color:var(--accent-800)!important}
+        .border-orange-900{border-color:var(--accent-900)!important}
         .chart-container {
             position: relative;
             height: 200px;
@@ -170,7 +215,7 @@
                     <button class="text-gray-600 hover:text-gray-800">
                         <i class="fas fa-bell text-lg"></i>
                     </button>
-                    <button class="text-gray-600 hover:text-gray-800">
+                    <button class="text-gray-600 hover:text-gray-800" id="open-settings">
                         <i class="fas fa-cog text-lg"></i>
                     </button>
                     <button class="text-gray-600 hover:text-gray-800">
@@ -877,6 +922,61 @@
                 }
             }
         });
+    </script>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Theme Settings</h3>
+                <button id="close-settings" class="text-gray-500 hover:text-gray-700"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Accent Color</label>
+                    <input id="accent-picker" type="color" value="#f97316" class="w-16 h-10 p-0 border rounded cursor-pointer">
+                    <p class="text-xs text-gray-500 mt-2">Changes all orange accents (buttons, pills, borders).</p>
+                </div>
+                <div class="flex items-center justify-end space-x-2">
+                    <button id="reset-theme" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">Reset</button>
+                    <button id="save-theme" class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme engine
+        function setAccentFromHex(hex){
+            const root = document.documentElement;
+            root.style.setProperty('--accent-500', hex);
+            const h = hex.replace('#','');
+            const r = parseInt(h.substring(0,2),16), g=parseInt(h.substring(2,4),16), b=parseInt(h.substring(4,6),16);
+            function shadeTowardsWhite(f){ return `rgb(${Math.round(r+(255-r)*f)}, ${Math.round(g+(255-g)*f)}, ${Math.round(b+(255-b)*f)})`; }
+            function darken(f){ return `rgb(${Math.round(r*(1-f))}, ${Math.round(g*(1-f))}, ${Math.round(b*(1-f))})`; }
+            root.style.setProperty('--accent-600', darken(0.12));
+            root.style.setProperty('--accent-700', darken(0.25));
+            root.style.setProperty('--accent-400', shadeTowardsWhite(0.15));
+            root.style.setProperty('--accent-300', shadeTowardsWhite(0.30));
+            root.style.setProperty('--accent-200', shadeTowardsWhite(0.50));
+            root.style.setProperty('--accent-100', shadeTowardsWhite(0.70));
+            root.style.setProperty('--accent-50', shadeTowardsWhite(0.85));
+        }
+        function loadTheme(){ const saved = localStorage.getItem('hm_accent_hex'); if(saved){ setAccentFromHex(saved); const p=document.getElementById('accent-picker'); if(p) p.value=saved; }}
+        function saveTheme(hex){ localStorage.setItem('hm_accent_hex', hex); }
+        // Modal wiring
+        const settingsModal = document.getElementById('settings-modal');
+        const openBtn = document.getElementById('open-settings');
+        const closeBtn = document.getElementById('close-settings');
+        const saveBtn = document.getElementById('save-theme');
+        const resetBtn = document.getElementById('reset-theme');
+        const picker = document.getElementById('accent-picker');
+        if(openBtn){ openBtn.addEventListener('click', ()=>{ settingsModal.classList.remove('hidden'); settingsModal.classList.add('flex'); loadTheme(); }); }
+        if(closeBtn){ closeBtn.addEventListener('click', ()=>{ settingsModal.classList.add('hidden'); settingsModal.classList.remove('flex'); }); }
+        if(saveBtn){ saveBtn.addEventListener('click', ()=>{ const hex = picker.value; setAccentFromHex(hex); saveTheme(hex); settingsModal.classList.add('hidden'); settingsModal.classList.remove('flex'); }); }
+        if(resetBtn){ resetBtn.addEventListener('click', ()=>{ localStorage.removeItem('hm_accent_hex'); location.reload(); }); }
+        // apply on load
+        loadTheme();
     </script>
 </body>
 </html>

@@ -6,6 +6,7 @@
     <title>Patient Detail</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-50">
     <div class="flex min-h-screen">
@@ -40,17 +41,17 @@
 
                 <!-- Tabs -->
                 <div class="mt-4 flex flex-wrap gap-2 text-sm">
-                    <button data-tab="health" class="tab-btn px-4 py-2 rounded-full bg-orange-500 text-white">Health Record</button>
-                    <button data-tab="case" class="tab-btn px-4 py-2 rounded-full bg-white border">Case Sheet</button>
+                    <button data-tab="health" class="tab-btn px-4 py-2 rounded-full bg-white border">Health Record</button>
+                    <button data-tab="case" class="tab-btn px-4 py-2 rounded-full bg-orange-500 text-white">Case Sheet</button>
                     <button data-tab="attachments" class="tab-btn px-4 py-2 rounded-full bg-white border">Attachments</button>
                     <button data-tab="bills" class="tab-btn px-4 py-2 rounded-full bg-white border">Bills</button>
                     <button data-tab="insights" class="tab-btn px-4 py-2 rounded-full bg-white border">Clinical Insights</button>
                     <div class="flex-1"></div>
-                    <button class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg"><i class="fas fa-plus mr-2"></i>Add Record</button>
+                    <button id="open-settings-pd" class="w-9 h-9 rounded-lg bg-white shadow-sm text-gray-500 hover:text-gray-700 flex items-center justify-center"><i class="fas fa-cog"></i></button>
                 </div>
 
                 <!-- Panels -->
-                <section id="panel-health" class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <section id="panel-health" class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4 hidden">
                     <div class="bg-white rounded-lg shadow-sm p-4">
                         <div class="flex items-center justify-between mb-3"><h3 class="font-semibold text-gray-800">Vitals</h3></div>
                         <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
@@ -63,7 +64,10 @@
                     </div>
 
                     <div class="bg-white rounded-lg shadow-sm p-4">
-                        <div class="flex items-center justify-between mb-3"><h3 class="font-semibold text-gray-800">Visit</h3></div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-800">Visit</h3>
+                            <button id="open-add-record" class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm"><i class="fas fa-plus mr-2"></i>Add Record</button>
+                        </div>
                         <div class="space-y-3 text-sm">
                             <div class="border rounded-lg p-3 flex items-start justify-between">
                                 <div>
@@ -119,17 +123,1432 @@
                     </div>
                 </section>
 
-                <section id="panel-case" class="mt-6 hidden">
-                    <div class="bg-white p-6 rounded-lg shadow-sm text-gray-600">Case Sheet content</div>
+<!-- Add Health Record Modal -->
+<div id="add-record-modal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-5xl p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">Add Health Record</h3>
+            <button data-close="add-record-modal" class="text-gray-500 hover:text-gray-700"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="space-y-6 max-h-[75vh] overflow-y-auto">
+            <!-- Vitals -->
+            <div class="bg-white border rounded-lg p-4">
+                <h4 class="font-semibold text-gray-800 mb-3">Vitals</h4>
+                <div class="grid grid-cols-2 md:grid-cols-6 gap-3 text-sm">
+                    <div><label class="text-gray-500 block mb-1">Blood Pressure</label><input class="w-full border rounded px-3 py-2" placeholder="120/80"></div>
+                    <div><label class="text-gray-500 block mb-1">Pulse</label><input class="w-full border rounded px-3 py-2" placeholder="98"></div>
+                    <div><label class="text-gray-500 block mb-1">Temperature</label><input class="w-full border rounded px-3 py-2" placeholder="98.6"></div>
+                    <div><label class="text-gray-500 block mb-1">Resp. Rate</label><input class="w-full border rounded px-3 py-2" placeholder="18"></div>
+                    <div><label class="text-gray-500 block mb-1">Blood Sugar</label><input class="w-full border rounded px-3 py-2" placeholder="112"></div>
+                    <div><label class="text-gray-500 block mb-1">Date & Time</label><input class="w-full border rounded px-3 py-2" placeholder="MM/DD/YYYY, 11:00 PM"></div>
+                </div>
+            </div>
+            <!-- Medication -->
+            <div class="bg-white border rounded-lg p-4">
+                <h4 class="font-semibold text-gray-800 mb-3">Medication</h4>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-3 text-sm items-end">
+                    <div class="md:col-span-2"><label class="text-gray-500 block mb-1">Medicine Name</label><input class="w-full border rounded px-3 py-2" placeholder="e.g., TAB GELUSIL MPS"></div>
+                    <div><label class="text-gray-500 block mb-1">Food Timing</label><select class="w-full border rounded px-3 py-2"><option>Select</option><option>After Food</option><option>Before Food</option></select></div>
+                    <div class="flex space-x-1"><div><label class="text-gray-500 block mb-1">Dosage</label><div class="flex"> <input class="w-12 border rounded-l px-2 py-2" placeholder="1"><input class="w-12 border-t border-b px-2 py-2" placeholder="0"><input class="w-12 border rounded-r px-2 py-2" placeholder="1"> </div></div></div>
+                    <div><label class="text-gray-500 block mb-1">Duration</label><input class="w-full border rounded px-3 py-2" placeholder="5 Days"></div>
+                </div>
+            </div>
+            <!-- Additional sections simplified -->
+            <div class="bg-white border rounded-lg p-4">
+                <h4 class="font-semibold text-gray-800 mb-3">Visit Information</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                    <div><label class="text-gray-500 block mb-1">Doctor Name</label><input class="w-full border rounded px-3 py-2" placeholder="Select Doctor"></div>
+                    <div><label class="text-gray-500 block mb-1">Department</label><input class="w-full border rounded px-3 py-2" placeholder="Select Department"></div>
+                    <div><label class="text-gray-500 block mb-1">Visit Date & Time</label><input class="w-full border rounded px-3 py-2" placeholder="MM/DD/YYYY, 1:00 PM"></div>
+                </div>
+            </div>
+            <div class="bg-white border rounded-lg p-4">
+                <h4 class="font-semibold text-gray-800 mb-3">Clinical Notes</h4>
+                <textarea class="w-full border rounded px-3 py-2" rows="3" placeholder="Enter clinical notes, observations, treatment plans, and follow-up instructions..."></textarea>
+            </div>
+            <div class="bg-white border rounded-lg p-4">
+                <h4 class="font-semibold text-gray-800 mb-3">Diagnosis</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                    <div><label class="text-gray-500 block mb-1">Primary Diagnosis</label><input class="w-full border rounded px-3 py-2" placeholder="e.g., Fever"></div>
+                    <div><label class="text-gray-500 block mb-1">Diagnosis Date</label><input class="w-full border rounded px-3 py-2" placeholder="MM/DD/YYYY"></div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-6 flex items-center justify-end space-x-2">
+            <button data-close="add-record-modal" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">Cancel</button>
+            <button class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">Save Health Record</button>
+        </div>
+    </div>
+</div>
+
+<!-- Set Patient Target Value Modal -->
+<div id="target-modal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-3xl p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">Services and Vital Target Setting</h3>
+            <button data-close="target-modal" class="text-gray-500 hover:text-gray-700"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="space-y-4">
+            <div class="relative">
+                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                <input type="text" placeholder="by Service" class="w-full pl-10 pr-3 py-2 border rounded">
+            </div>
+            <div>
+                <div class="flex space-x-4 text-sm mb-2">
+                    <button class="px-3 py-1 bg-orange-500 text-white rounded">Services</button>
+                    <button class="px-3 py-1 border rounded">Vitals</button>
+                </div>
+                <div class="max-h-72 overflow-y-auto border rounded">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50">
+                            <tr class="text-left">
+                                <th class="p-3">Services</th><th class="p-3">Target Range</th><th class="p-3">Current Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t"><td class="p-3">Blood Test</td><td class="p-3">100</td><td class="p-3">-</td></tr>
+                            <tr class="border-t"><td class="p-3">Testries</td><td class="p-3">45</td><td class="p-3">-</td></tr>
+                            <tr class="border-t"><td class="p-3">BLOOD UREA NITROGEN BUN</td><td class="p-3">2</td><td class="p-3">-</td></tr>
+                            <tr class="border-t"><td class="p-3">CALCIUM</td><td class="p-3">50</td><td class="p-3">-</td></tr>
+                            <tr class="border-t"><td class="p-3">URIC ACID</td><td class="p-3">12</td><td class="p-3">-</td></tr>
+                            <tr class="border-t"><td class="p-3">THYROID STIMULATING HORMONE</td><td class="p-3">45</td><td class="p-3">-</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <label class="text-sm text-gray-700">Target Stop Date</label>
+                    <input type="text" value="11/27/2025" class="px-3 py-2 border rounded text-sm">
+                </div>
+                <div class="space-x-2">
+                    <button class="px-4 py-2 bg-purple-600 text-white rounded">Update</button>
+                    <button class="px-4 py-2 border rounded">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View All History (Graph) Modal -->
+<div id="history-modal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-5xl p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">Patient Result History Graph View</h3>
+            <button data-close="history-modal" class="text-gray-500 hover:text-gray-700"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="h-80">
+            <canvas id="historyChart"></canvas>
+        </div>
+    </div>
+</div>
+                <section id="panel-case" class="mt-6">
+                    <!-- Case Sheet Sub-tabs -->
+                    <div class="flex flex-wrap gap-2 text-sm mb-4">
+                        <button data-subtab="overview" class="subtab-btn px-4 py-2 rounded-full bg-orange-500 text-white">Case Sheet</button>
+                        <button data-subtab="treatment" class="subtab-btn px-4 py-2 rounded-full bg-white border">Treatment Plan</button>
+                        <button data-subtab="prescription" class="subtab-btn px-4 py-2 rounded-full bg-white border">Prescription</button>
+                        <button data-subtab="radiology" class="subtab-btn px-4 py-2 rounded-full bg-white border">Radiology</button>
+                        <button data-subtab="lab" class="subtab-btn px-4 py-2 rounded-full bg-white border">Lab Reports</button>
+                        <button data-subtab="visit" class="subtab-btn px-4 py-2 rounded-full bg-white border">Visit Summary</button>
+                    </div>
+
+                    <!-- Case Sheet Overview Content (Default) -->
+                    <div id="subpanel-overview">
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-semibold text-gray-800">Gola Swain (General Medicine)</h3>
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-gray-500 hover:text-gray-700"><i class="fas fa-print"></i></button>
+                                    <button class="text-gray-500 hover:text-gray-700"><i class="fas fa-download"></i></button>
+                                    <button class="text-gray-500 hover:text-gray-700"><i class="fas fa-edit"></i></button>
+                                    <button class="text-gray-500 hover:text-gray-700"><i class="fas fa-cog"></i></button>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4 text-sm text-gray-600">
+                                <p><strong>Allergies:</strong> Cold stimuli</p>
+                                <p><strong>Social Habits:</strong> Drinking, Tobacco chewing</p>
+                                <p class="text-right text-gray-500">Oct 07, 2025</p>
+                            </div>
+
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                                    <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">Chief Complaints: Abdominal pain - 5 days</span>
+                                    <i class="fas fa-info-circle text-gray-400"></i>
+                                </div>
+                                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                                    <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">Examination: Abdominal pain - 5 days</span>
+                                    <i class="fas fa-info-circle text-gray-400"></i>
+                                </div>
+                                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                                    <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">Investigation: Abdominal pain - 5 days</span>
+                                    <i class="fas fa-info-circle text-gray-400"></i>
+                                </div>
+                                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                                    <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">Diagnostic: Abdominal pain - 5 days</span>
+                                    <i class="fas fa-info-circle text-gray-400"></i>
+                                </div>
+                                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                                    <div class="flex space-x-2">
+                                        <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">Prescription: Tab Gelusi MPS</span>
+                                        <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">Peracetamol</span>
+                                    </div>
+                                    <i class="fas fa-info-circle text-gray-400"></i>
+                                </div>
+                                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                                    <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">Instructions: Abdominal pain - 5 days</span>
+                                    <i class="fas fa-info-circle text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Treatment Plan Content -->
+                    <div id="subpanel-treatment" class="hidden">
+                        <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Add Patient Treatment Plan</h3>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                                <div>
+                                    <label for="treatment-plan" class="block text-sm font-medium text-gray-700 mb-1">Treatment Plan *</label>
+                                    <select id="treatment-plan" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                        <option>Select TreatmentPlan</option>
+                                        <option>Angio</option>
+                                        <option>Occupational Therapy</option>
+                                        <option>Radiation Treatment</option>
+                                        <option>Panchakarma Massage</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="actual-start-date" class="block text-sm font-medium text-gray-700 mb-1">Actual Start Date</label>
+                                    <input type="text" id="actual-start-date" placeholder="DD/MM/YYYY" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                </div>
+                                <div>
+                                    <label for="actual-end-date-1" class="block text-sm font-medium text-gray-700 mb-1">Actual End Date</label>
+                                    <input type="text" id="actual-end-date-1" placeholder="DD/MM/YYYY" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                </div>
+                                <div>
+                                    <label for="physician" class="block text-sm font-medium text-gray-700 mb-1">Physician *</label>
+                                    <select id="physician" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                        <option>Select</option>
+                                        <option>Dr. Jaseela T</option>
+                                        <option>Dr. Akila Raja</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="treatment-status" class="block text-sm font-medium text-gray-700 mb-1">Treatment Status</label>
+                                    <select id="treatment-status" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                        <option>Select</option>
+                                        <option>In-Progress</option>
+                                        <option>Treatment going</option>
+                                        <option>Started treatment</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="actual-end-date-2" class="block text-sm font-medium text-gray-700 mb-1">Actual End Date</label>
+                                    <input type="text" id="actual-end-date-2" placeholder="DD/MM/YYYY" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                </div>
+                                <div>
+                                    <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                    <input type="text" id="status" placeholder="To diagnose" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                                <textarea id="notes" rows="3" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"></textarea>
+                            </div>
+                            <div class="flex space-x-3">
+                                <button class="bg-orange-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">Add Treatment Plan</button>
+                                <button class="text-gray-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2">Reset</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Added Patient Treatment Plan</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-orange-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Treatment Plan</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Planned Start Date</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Physician</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actual Start Date</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actual End Date</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notes</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">1</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Angio</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Aug 5, 2023</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dr. Jaseela T</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Aug 4, 2023</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Aug 4, 2023</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">In-Progress</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"></td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <a href="#" class="text-orange-600 hover:text-orange-900"><i class="fas fa-pencil-alt"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Occupational Therapy</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Aug 26, 2023</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dr. Akila Raja</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Aug 31, 2023</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">—</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Treatment going</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"></td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <a href="#" class="text-orange-600 hover:text-orange-900"><i class="fas fa-pencil-alt"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">3</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Radiation Treatment</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Jan 6, 2024</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dr. Jaseela T</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Jan 5, 2024</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Jan 12, 2024</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Started treatment</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"></td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <a href="#" class="text-orange-600 hover:text-orange-900"><i class="fas fa-pencil-alt"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">4</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Panchakarma Massage</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Mar 8, 2024</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dr. Jaseela T</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Mar 7, 2024</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Mar 26, 2024</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Treatment started</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"></td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <a href="#" class="text-orange-600 hover:text-orange-900"><i class="fas fa-pencil-alt"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Prescription Content -->
+                    <div id="subpanel-prescription" class="hidden">
+                        <div class="bg-white rounded-lg shadow-sm">
+                            <!-- Prescription Management Header -->
+                            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                                <h3 class="text-lg font-semibold text-gray-800">Prescription Management</h3>
+                                <button class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">
+                                    <i class="fas fa-plus mr-2"></i>Add Previous Medication
+                                </button>
+                            </div>
+
+                            <!-- Prescription Entries -->
+                            <div class="p-6 space-y-4">
+                                <!-- Prescription 1 - Highlighted -->
+                                <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-800">Prescription on Apr 30, 2024, 9:25:14 PM</p>
+                                            <p class="text-sm text-gray-600">Doctor: Dr. GOLA SINGH General Medicine</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full text-sm">
+                                            <thead class="text-gray-500 border-b">
+                                                <tr>
+                                                    <th class="text-left py-2"><input type="checkbox" class="rounded"></th>
+                                                    <th class="text-left py-2">Type</th>
+                                                    <th class="text-left py-2">Medicine</th>
+                                                    <th class="text-left py-2">M.A.B.A.B</th>
+                                                    <th class="text-left py-2">Duration</th>
+                                                    <th class="text-left py-2">Taken</th>
+                                                    <th class="text-left py-2">Qty</th>
+                                                    <th class="text-left py-2">Rate</th>
+                                                    <th class="text-left py-2">Bill Amount</th>
+                                                    <th class="text-left py-2">Net Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-gray-100">
+                                                <tr>
+                                                    <td class="py-2"><input type="checkbox" class="rounded"></td>
+                                                    <td class="py-2 text-gray-700">Tablet</td>
+                                                    <td class="py-2 text-gray-700">Medicina</td>
+                                                    <td class="py-2 text-gray-700">N.A.B.A.B</td>
+                                                    <td class="py-2 text-gray-700">8 Days</td>
+                                                    <td class="py-2 text-gray-700">After F</td>
+                                                    <td class="py-2 text-gray-700">1</td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="py-2"><input type="checkbox" class="rounded"></td>
+                                                    <td class="py-2 text-gray-700">Tablet</td>
+                                                    <td class="py-2 text-gray-700">Ibuprofen PM</td>
+                                                    <td class="py-2 text-gray-700">N.A.B.A.B</td>
+                                                    <td class="py-2 text-gray-700">2 Days</td>
+                                                    <td class="py-2 text-gray-700">After C</td>
+                                                    <td class="py-2 text-gray-700">2</td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="py-2"><input type="checkbox" class="rounded"></td>
+                                                    <td class="py-2 text-gray-700">Tablet</td>
+                                                    <td class="py-2 text-gray-700">Amoxicillin</td>
+                                                    <td class="py-2 text-gray-700">N.A.B.A.B</td>
+                                                    <td class="py-2 text-gray-700">1 Days</td>
+                                                    <td class="py-2 text-gray-700">After F</td>
+                                                    <td class="py-2 text-gray-700">1</td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="py-2"><input type="checkbox" class="rounded"></td>
+                                                    <td class="py-2 text-gray-700">Tablet</td>
+                                                    <td class="py-2 text-gray-700">Augmentin</td>
+                                                    <td class="py-2 text-gray-700">N.A.B.A.B</td>
+                                                    <td class="py-2 text-gray-700">1 Days</td>
+                                                    <td class="py-2 text-gray-700">After F</td>
+                                                    <td class="py-2 text-gray-700">1</td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Prescription 2 -->
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-800">Prescription on May 2, 2024, 10:15:30 AM</p>
+                                            <p class="text-sm text-gray-600">Doctor: Dr. DEEPAK KU MAR General Medicine</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full text-sm">
+                                            <thead class="text-gray-500 border-b">
+                                                <tr>
+                                                    <th class="text-left py-2"><input type="checkbox" class="rounded"></th>
+                                                    <th class="text-left py-2">Type</th>
+                                                    <th class="text-left py-2">Medicine</th>
+                                                    <th class="text-left py-2">M.A.B.A.B</th>
+                                                    <th class="text-left py-2">Duration</th>
+                                                    <th class="text-left py-2">Taken</th>
+                                                    <th class="text-left py-2">Qty</th>
+                                                    <th class="text-left py-2">Rate</th>
+                                                    <th class="text-left py-2">Bill Amount</th>
+                                                    <th class="text-left py-2">Net Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-gray-100">
+                                                <tr>
+                                                    <td class="py-2"><input type="checkbox" class="rounded"></td>
+                                                    <td class="py-2 text-gray-700">Tablet</td>
+                                                    <td class="py-2 text-gray-700">Paracetamol</td>
+                                                    <td class="py-2 text-gray-700">N.A.B.A.B</td>
+                                                    <td class="py-2 text-gray-700">3 Days</td>
+                                                    <td class="py-2 text-gray-700">After F</td>
+                                                    <td class="py-2 text-gray-700">1</td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="py-2"><input type="checkbox" class="rounded"></td>
+                                                    <td class="py-2 text-gray-700">Tablet</td>
+                                                    <td class="py-2 text-gray-700">Tof 600 MG</td>
+                                                    <td class="py-2 text-gray-700">N.A.B.A.B</td>
+                                                    <td class="py-2 text-gray-700">5 Days</td>
+                                                    <td class="py-2 text-gray-700">After C</td>
+                                                    <td class="py-2 text-gray-700">1</td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Prescription 3 -->
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-800">Prescription on May 2, 2024, 2:30:45 PM</p>
+                                            <p class="text-sm text-gray-600">Doctor: Dr. Akshay NIKHIL Dental</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full text-sm">
+                                            <thead class="text-gray-500 border-b">
+                                                <tr>
+                                                    <th class="text-left py-2"><input type="checkbox" class="rounded"></th>
+                                                    <th class="text-left py-2">Type</th>
+                                                    <th class="text-left py-2">Medicine</th>
+                                                    <th class="text-left py-2">M.A.B.A.B</th>
+                                                    <th class="text-left py-2">Duration</th>
+                                                    <th class="text-left py-2">Taken</th>
+                                                    <th class="text-left py-2">Qty</th>
+                                                    <th class="text-left py-2">Rate</th>
+                                                    <th class="text-left py-2">Bill Amount</th>
+                                                    <th class="text-left py-2">Net Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-gray-100">
+                                                <tr>
+                                                    <td class="py-2"><input type="checkbox" class="rounded"></td>
+                                                    <td class="py-2 text-gray-700">Tablet</td>
+                                                    <td class="py-2 text-gray-700">Aspirin</td>
+                                                    <td class="py-2 text-gray-700">N.A.B.A.B</td>
+                                                    <td class="py-2 text-gray-700">7 Days</td>
+                                                    <td class="py-2 text-gray-700">After F</td>
+                                                    <td class="py-2 text-gray-700">1</td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 text-gray-700"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Radiology Content -->
+                    <div id="subpanel-radiology" class="hidden">
+                        <div class="bg-white rounded-lg shadow-sm">
+                            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                                <h3 class="text-lg font-semibold text-gray-800">Radiology</h3>
+                                <div class="flex space-x-2">
+                                    <button class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">Save</button>
+                                    <button class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-medium">Reset All</button>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                                    <!-- MRI Image -->
+                                    <div class="lg:col-span-3">
+                                        <div class="bg-gray-100 rounded-lg p-8 text-center">
+                                            <div class="w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
+                                              <img src="assets/mri-image.webp" alt="MRI Scan Image" class="w-full h-full object-cover rounded-lg">
+                                            </div>
+                                            <div class="mt-4 grid grid-cols-3 gap-4 text-sm">
+                                              <div>
+                                                <label class="block text-gray-500">Report Date</label>
+                                                <span class="font-medium">Apr 25, 2024</span>
+                                              </div>
+                                              <div>
+                                                <label class="block text-gray-500">Treatment</label>
+                                                <span class="font-medium">-</span>
+                                              </div>
+                                              <div>
+                                                <label class="block text-gray-500">Radiologist</label>
+                                                <span class="font-medium">-</span>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          
+                                    </div>
+                                    
+                                    <!-- Tools Sidebar -->
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h4 class="text-sm font-medium text-gray-700 mb-2">Tools</h4>
+                                            <div class="space-y-2">
+                                                <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">Zoom</button>
+                                                <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">Win.Level</button>
+                                                <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">
+                                                    <div class="text-xs">win</div>
+                                                    <div class="text-xs">Level</div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <h4 class="text-sm font-medium text-gray-700 mb-2">Filter Tools</h4>
+                                            <div class="space-y-2">
+                                                <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">Threshold</button>
+                                                <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">Sharpen</button>
+                                                <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">Ellipse</button>
+                                                <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">FreeHand</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lab Reports Content -->
+                    <div id="subpanel-lab" class="hidden">
+                        <div class="bg-white rounded-lg shadow-sm">
+                            <!-- Lab Reports Sub-tabs -->
+                            <div class="flex flex-wrap gap-2 text-sm mb-4">
+                                <button data-lab-subtab="lab-order" class="lab-subtab-btn px-4 py-2 rounded-full bg-orange-500 text-white">Lab Order Wise</button>
+                                <button data-lab-subtab="test-wise" class="lab-subtab-btn px-4 py-2 rounded-full bg-white border">Test Wise</button>
+                            </div>
+
+                            <!-- Lab Order Wise Content (Default) -->
+                            <div id="lab-subpanel-order" class="lab-subtab-panel">
+                                <div class="bg-white rounded-lg shadow-sm">
+                                    <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                                <h3 class="text-lg font-semibold text-gray-800">Lab Reports</h3>
+                                <div class="flex space-x-2">
+                                    <button id="open-target" class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">Set Patient Target Value</button>
+                                    <button id="open-history" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-medium">View All History</button>
+                                </div>
+                                    </div>
+                                    
+                                    <!-- Search and Filter Section -->
+                                    <div class="p-6 border-b border-gray-200">
+                                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                                                <input type="text" placeholder="Eg: Lab Reports" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">From Date</label>
+                                                <input type="text" placeholder="MM/DD/YYYY" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">To Date</label>
+                                                <input type="text" placeholder="MM/DD/YYYY" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                            </div>
+                                            <div class="flex items-end space-x-2">
+                                                <button class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">Search</button>
+                                                <button class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-medium">Reset</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Lab Results Table -->
+                                    <div class="p-6">
+                                        <div class="overflow-x-auto">
+                                            <table class="min-w-full divide-y divide-gray-200">
+                                                <thead class="bg-orange-50">
+                                                    <tr>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lab Result No.</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sample Date</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Physician</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Technician</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">1</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RH2200000001</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">OP</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dec 12, 2022</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Ashwin Rammohan</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <span class="px-2 py-1 bg-orange-500 text-white rounded-full text-xs">Completed</span>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                            <div class="flex space-x-2">
+                                                                <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-eye"></i></button>
+                                                                <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-share"></i></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RH2200000002</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">OP</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dec 15, 2022</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Jaseela T Bukhari</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <span class="px-2 py-1 bg-orange-500 text-white rounded-full text-xs">Completed</span>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                            <div class="flex space-x-2">
+                                                                <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-eye"></i></button>
+                                                                <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-share"></i></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">3</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RH2200000003</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">OP</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Jan 5, 2023</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Ashwin Rammohan</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <span class="px-2 py-1 bg-orange-500 text-white rounded-full text-xs">Completed</span>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                            <div class="flex space-x-2">
+                                                                <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-eye"></i></button>
+                                                                <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-share"></i></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">4</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RH2200000004</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">OP</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Feb 10, 2023</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Jaseela T Bukhari</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <span class="px-2 py-1 bg-orange-500 text-white rounded-full text-xs">Completed</span>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                            <div class="flex space-x-2">
+                                                                <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-eye"></i></button>
+                                                                <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-share"></i></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">5</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RH2200000005</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">OP</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Mar 15, 2023</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Ashwin Rammohan</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <span class="px-2 py-1 bg-orange-500 text-white rounded-full text-xs">Completed</span>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                            <div class="flex space-x-2">
+                                                                <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-eye"></i></button>
+                                                                <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-share"></i></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">6</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RH2200000006</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">OP</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Apr 20, 2023</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Jaseela T Bukhari</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <span class="px-2 py-1 bg-orange-500 text-white rounded-full text-xs">Completed</span>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                            <div class="flex space-x-2">
+                                                                <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-eye"></i></button>
+                                                                <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-share"></i></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">7</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RH2200000007</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">OP</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">May 25, 2023</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Ashwin Rammohan</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <span class="px-2 py-1 bg-orange-500 text-white rounded-full text-xs">Completed</span>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                            <div class="flex space-x-2">
+                                                                <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-eye"></i></button>
+                                                                <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-share"></i></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">8</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RH2200000008</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">OP</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Sep 4, 2023</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Jaseela T Bukhari</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <span class="px-2 py-1 bg-orange-500 text-white rounded-full text-xs">Completed</span>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                            <div class="flex space-x-2">
+                                                                <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-eye"></i></button>
+                                                                <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-share"></i></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
+                                        <!-- Pagination -->
+                                        <div class="flex items-center justify-between mt-6">
+                                            <div class="text-sm text-gray-700">
+                                                Showing <span class="font-medium">1</span> to <span class="font-medium">8</span> of <span class="font-medium">8</span> results
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                <button class="px-3 py-1 bg-gray-200 text-gray-600 rounded hover:bg-gray-300"><i class="fas fa-chevron-left"></i></button>
+                                                <button class="px-3 py-1 bg-orange-500 text-white rounded">1</button>
+                                                <button class="px-3 py-1 bg-gray-200 text-gray-600 rounded hover:bg-gray-300">2</button>
+                                                <button class="px-3 py-1 bg-gray-200 text-gray-600 rounded hover:bg-gray-300"><i class="fas fa-chevron-right"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Test Wise Content -->
+                            <div id="lab-subpanel-test" class="lab-subtab-panel hidden">
+                                <div class="bg-white rounded-lg shadow-sm">
+                                    <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                                <h3 class="text-lg font-semibold text-gray-800">Lab Reports</h3>
+                                <div class="flex space-x-2">
+                                    <button id="open-target-2" class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">Set Patient Target Value</button>
+                                    <button id="open-history-2" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-medium">View All History</button>
+                                </div>
+                                    </div>
+                                    
+                                    <!-- Test Results Table -->
+                                    <div class="p-6">
+                                        <div class="overflow-x-auto">
+                                            <table class="min-w-full divide-y divide-gray-200">
+                                                <thead class="bg-orange-50">
+                                                    <tr>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">View Graph</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Name</th>
+                                                        <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Target Value</th>
+                                                        <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">02 May 24<br>1:12 PM</th>
+                                                        <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">21 Dec 23<br>11:11 AM</th>
+                                                        <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">06 Nov 23<br>7:16 PM</th>
+                                                        <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">04 Sep 23<br>8:29 PM</th>
+                                                        <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">05 Jul 23<br>1:17 PM</th>
+                                                        <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">12 Dec 22<br>5:35 PM</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                                                            <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-chart-bar"></i></button>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Triglycerides</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">44</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">22</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">32</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">55</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                                                            <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-chart-bar"></i></button>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Appearance Bile Pigments</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">44</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                                                            <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-chart-bar"></i></button>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Bile Salts</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">42</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                                                            <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-chart-bar"></i></button>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Bilirubin Blood Casts</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">42</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                                                            <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-chart-bar"></i></button>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Colour Crystals</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">33</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                                                            <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-chart-bar"></i></button>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Epithelial Cells</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">32</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">-</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visit Summary Content -->
+                    <div id="subpanel-visit" class="hidden">
+                        <div class="bg-white rounded-lg shadow-sm">
+                            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                                <h3 class="text-lg font-semibold text-gray-800">Visit Summary</h3>
+                                <div class="relative">
+                                    <input type="text" placeholder="Search visits..." class="w-64 px-4 py-2 pl-10 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6 space-y-6 max-h-96 overflow-y-auto">
+                                <!-- Visit 1 -->
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <div class="flex items-start space-x-4">
+                                        <div class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                                        <div class="flex-1">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-semibold text-gray-800">Appointment with Dr. GOLA SINGH on May 2, 2034</h4>
+                                            </div>
+                                            <p class="text-sm text-gray-600 mb-3"><strong>Reason:</strong> Abdominal pain</p>
+                                            
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                                                <div>
+                                                    <h5 class="text-sm font-medium text-gray-700 mb-1">Vitals</h5>
+                                                    <div class="text-sm text-gray-600 space-y-1">
+                                                        <p>P - 45 kg</p>
+                                                        <p>H - 175 cm</p>
+                                                        <p>BMI - 21.2</p>
+                                                        <p class="text-green-600">Healthy weight range for young and middle-aged adults</p>
+                                                        <p>BP: 120/100</p>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h5 class="text-sm font-medium text-gray-700 mb-1">More Vitals</h5>
+                                                    <div class="text-sm text-gray-600 space-y-1">
+                                                        <p>Temp: 98.6</p>
+                                                        <p>SpO2 - 98</p>
+                                                        <p>Pulse: 96</p>
+                                                        <p>RR: 18</p>
+                                                        <p>BS: 88</p>
+                                                        <p>Sugar Level: F-152, PP-100, PL-100</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="space-y-2 text-sm">
+                                                <p><strong>Examination:</strong> Abdominal inspection</p>
+                                                <p><strong>Investigation:</strong> USG R/L - CUS - Complete BNH Examination</p>
+                                                <p><strong>Prescription:</strong> Tab. GELUSIL, MPL, Paracetamol</p>
+                                                <p><strong>Instructions:</strong> Review after 3-5 Days</p>
+                                                <p><strong>Vaccines:</strong> -</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Visit 2 -->
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <div class="flex items-start space-x-4">
+                                        <div class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                                        <div class="flex-1">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-semibold text-gray-800">Appointment with Dr. DEEPAK KU MAR on May 2, 2034</h4>
+                                            </div>
+                                            <p class="text-sm text-gray-600 mb-3"><strong>Reason:</strong> Follow-up consultation</p>
+                                            
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                                                <div>
+                                                    <h5 class="text-sm font-medium text-gray-700 mb-1">Vitals</h5>
+                                                    <div class="text-sm text-gray-600 space-y-1">
+                                                        <p>P - 45 kg</p>
+                                                        <p>H - 175 cm</p>
+                                                        <p>BMI - 21.2</p>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h5 class="text-sm font-medium text-gray-700 mb-1">More Vitals</h5>
+                                                    <div class="text-sm text-gray-600 space-y-1">
+                                                        <p>BP: 120/90</p>
+                                                        <p>Pulse: 96</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="space-y-2 text-sm">
+                                                <p><strong>Examination:</strong> General physical examination</p>
+                                                <p><strong>Investigation:</strong> Blood test recommended</p>
+                                                <p><strong>Prescription:</strong> No new medications</p>
+                                                <p><strong>Instructions:</strong> Continue current treatment</p>
+                                                <p><strong>Vaccines:</strong> none</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
                 <section id="panel-attachments" class="mt-6 hidden">
-                    <div class="bg-white p-6 rounded-lg shadow-sm text-gray-600">Attachments content</div>
+                    <div class="bg-white rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800">Attachments</h3>
+                        </div>
+                        
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                                <!-- Left Navigation -->
+                                <div class="lg:col-span-1">
+                                    <div class="space-y-4">
+                                        <button class="w-full text-left px-4 py-2 text-orange-600 hover:bg-orange-50 rounded-lg font-medium">Add Attachments</button>
+                                        <button class="w-full text-left px-4 py-2 text-orange-600 hover:bg-orange-50 rounded-lg font-medium">View Attachments</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Main Content -->
+                                <div class="lg:col-span-3">
+                                    <!-- Date Filters -->
+                                    <div class="mb-6">
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">From Date</label>
+                                                <div class="relative">
+                                                    <input type="text" value="5/1/2024" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                                    <i class="fas fa-calendar absolute right-3 top-3 text-gray-400"></i>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">To Date</label>
+                                                <div class="relative">
+                                                    <input type="text" value="5/7/2024" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                                    <i class="fas fa-calendar absolute right-3 top-3 text-gray-400"></i>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-end space-x-2">
+                                                <button class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">Search</button>
+                                                <button class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-medium">Reset</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Attachment Cards -->
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <!-- General Attachment Card -->
+                                        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                                            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                                                <span class="text-orange-600 font-medium">General</span>
+                                                <button class="text-gray-500 hover:text-gray-700"><i class="fas fa-share"></i></button>
+                                            </div>
+                                            <div class="p-4">
+                                                <h4 class="font-medium text-gray-800 mb-2">Case Sheet Summary.pdf</h4>
+                                                <p class="text-sm text-gray-600">May 2, 2024</p>
+                                            </div>
+                                            <div class="bg-orange-500 text-white px-4 py-2 flex items-center justify-between">
+                                                <span class="text-sm">Admin</span>
+                                                <button class="text-white hover:text-gray-200"><i class="fas fa-trash"></i></button>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Lab Attachment Card -->
+                                        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                                            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                                                <span class="text-orange-600 font-medium">Lab</span>
+                                                <button class="text-gray-500 hover:text-gray-700"><i class="fas fa-share"></i></button>
+                                            </div>
+                                            <div class="p-4">
+                                                <h4 class="font-medium text-gray-800 mb-2">Lab Result Entry.pdf</h4>
+                                                <p class="text-sm text-gray-600">May 2, 2024</p>
+                                            </div>
+                                            <div class="bg-orange-500 text-white px-4 py-2 flex items-center justify-between">
+                                                <span class="text-sm">Labtech</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
                 <section id="panel-bills" class="mt-6 hidden">
-                    <div class="bg-white p-6 rounded-lg shadow-sm text-gray-600">Bills content</div>
+                    <div class="bg-white rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800">Bills</h3>
+                        </div>
+                        
+                        <!-- Search and Filter Section -->
+                        <div class="p-6 border-b border-gray-200">
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Bill Status</label>
+                                    <div class="relative">
+                                        <select class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                            <option>Select</option>
+                                            <option>Paid</option>
+                                            <option>Pending</option>
+                                            <option>Overdue</option>
+                                        </select>
+                                        <i class="fas fa-chevron-down absolute right-3 top-3 text-gray-400"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">From Date</label>
+                                    <div class="relative">
+                                        <input type="text" value="5/4/2022" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                        <i class="fas fa-calendar absolute right-3 top-3 text-gray-400"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">To Date</label>
+                                    <div class="relative">
+                                        <input type="text" value="5/7/2024" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                        <i class="fas fa-calendar absolute right-3 top-3 text-gray-400"></i>
+                                    </div>
+                                </div>
+                                <div class="flex items-end space-x-2">
+                                    <button class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">Search</button>
+                                    <button class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-medium">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bills Table -->
+                        <div class="p-6">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-orange-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bill #</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mobile #</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Paid</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">1</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Thilagan</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RH24000279</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">8754458333</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">300.00</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                <span class="text-green-600 font-medium">PAID</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <div class="flex space-x-2">
+                                                    <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-file-invoice"></i></button>
+                                                    <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-share"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Thilagan</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RH24000278</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">8754458333</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">1,500.00</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                <span class="text-green-600 font-medium">PAID</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <div class="flex space-x-2">
+                                                    <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-file-invoice"></i></button>
+                                                    <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-share"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">3</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Thilagan</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RH24000248</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">8754458333</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">7,000.00</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                <span class="text-green-600 font-medium">PAID</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <div class="flex space-x-2">
+                                                    <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-file-invoice"></i></button>
+                                                    <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-share"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">4</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Thilagan</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RH24000197</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">8754458333</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">599.00</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                <span class="text-green-600 font-medium">PAID</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <div class="flex space-x-2">
+                                                    <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-file-invoice"></i></button>
+                                                    <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-share"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </section>
                 <section id="panel-insights" class="mt-6 hidden">
-                    <div class="bg-white p-6 rounded-lg shadow-sm text-gray-600">Clinical Insights content</div>
+                    <div class="bg-white rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800">Clinical Insights</h3>
+                        </div>
+                        
+                        <div class="p-6">
+                            <!-- Patient Summary -->
+                            <div class="mb-6 p-4 bg-orange-50 rounded-lg">
+                                <p class="text-gray-800 mb-2"><strong>Mr.Thilagan has visited our hospital 53 times.</strong></p>
+                                <p class="text-gray-700 mb-1">The health condition most significantly affecting is: <span class="text-orange-600 font-semibold">Fever (Occurred 5 times)</span></p>
+                                <p class="text-gray-700">Most frequently prescribed medication: <span class="text-orange-600 font-semibold">TAB ACLOC 150MG</span></p>
+                            </div>
+
+                            <!-- Sub-tabs -->
+                            <div class="flex flex-wrap gap-2 text-sm mb-6">
+                                <button data-insight-subtab="lists" class="insight-subtab-btn px-4 py-2 rounded-full bg-orange-500 text-white">Lists</button>
+                                <button data-insight-subtab="charts" class="insight-subtab-btn px-4 py-2 rounded-full bg-white border">Charts</button>
+                            </div>
+
+                            <!-- Lists Content (Default) -->
+                            <div id="insight-subpanel-lists" class="insight-subtab-panel">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <!-- Prescribed Medications -->
+                                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-4">
+                                        <h4 class="text-lg font-semibold text-gray-800 mb-4">Prescribed Medications</h4>
+                                        <ul class="space-y-2 text-sm text-gray-700">
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                TAB ACLOC 150MG
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                TAB GELUSIL MPS
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Paracetamol
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                TAB ZONTAL 400 MG
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Dolo tablets 650
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                CAP ANTACID
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Aspirin
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                SYP DOLO 250
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Diagnosis -->
+                                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-4">
+                                        <h4 class="text-lg font-semibold text-gray-800 mb-4">Diagnosis</h4>
+                                        <ul class="space-y-2 text-sm text-gray-700">
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Severe Cholera
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Bradilice purpuric fever
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Viral Fever
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Gastric Problem
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Temporal mandibular Joint Disorder
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Visit Breakdown -->
+                                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-4">
+                                        <h4 class="text-lg font-semibold text-gray-800 mb-4">Visit Breakdown</h4>
+                                        <div class="space-y-3">
+                                            <div class="flex justify-between items-center">
+                                                <span class="text-sm text-gray-700">2022</span>
+                                                <span class="text-sm font-medium text-gray-900">4</span>
+                                            </div>
+                                            <div class="flex justify-between items-center">
+                                                <span class="text-sm text-gray-700">2023</span>
+                                                <span class="text-sm font-medium text-gray-900">37</span>
+                                            </div>
+                                            <div class="flex justify-between items-center">
+                                                <span class="text-sm text-gray-700">2024</span>
+                                                <span class="text-sm font-medium text-gray-900">12</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Investigation -->
+                                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-4">
+                                        <h4 class="text-lg font-semibold text-gray-800 mb-4">Investigation</h4>
+                                        <ul class="space-y-2 text-sm text-gray-700">
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                URINE R/E - CUE - Complete Urine Examination
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Absolute Basophil Count-ABC
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                ABSOLUTE LEUCOCYTE COUNT
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Absolute Lymphocyte Count-ALC
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                LIPID PROFILE
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                X-RAY HIP AP Charges
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                FBS (Fasting Blood Sugar)
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Instructions -->
+                                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-4">
+                                        <h4 class="text-lg font-semibold text-gray-800 mb-4">Instructions</h4>
+                                        <ul class="space-y-2 text-sm text-gray-700">
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Review after 2-3 Days
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Avoid Salt
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Avoid Sweets
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Complaints -->
+                                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-4">
+                                        <h4 class="text-lg font-semibold text-gray-800 mb-4">Complaints</h4>
+                                        <ul class="space-y-2 text-sm text-gray-700">
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Abdominal pain (Occurred 2 times)
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Fever (Occurred 5 times)
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Abdominal Aortic Aneurysm
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Acute bronchitis
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Head Ache (Occurred 2 times)
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                High Fever
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Acute gastritis (Occurred 2 times)
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                                Increased Urination
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Charts Content -->
+                            <div id="insight-subpanel-charts" class="insight-subtab-panel hidden">
+                                <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6 text-center">
+                                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Charts & Analytics</h4>
+                                    <p class="text-gray-600">Chart visualizations will be displayed here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </div>
         </main>
@@ -140,7 +1559,7 @@
         const params = new URLSearchParams(location.search);
         const id = params.get('id');
         if (id) {
-            document.getElementById('pd-name').textContent = `Patient #${id}`;
+            document.getElementById('pd-name').textContent = `Patient #${id} Jhon Doe `;
         }
 
         // Tabs
@@ -161,6 +1580,181 @@
             Object.values(panels).forEach(p => p.classList.add('hidden'));
             panels[btn.dataset.tab].classList.remove('hidden');
         }));
+
+        // Sub-tabs functionality for Case Sheet
+        const subtabs = document.querySelectorAll('.subtab-btn');
+        const subpanels = {
+            overview: document.getElementById('subpanel-overview'),
+            treatment: document.getElementById('subpanel-treatment'),
+            prescription: document.getElementById('subpanel-prescription'),
+            radiology: document.getElementById('subpanel-radiology'),
+            lab: document.getElementById('subpanel-lab'),
+            visit: document.getElementById('subpanel-visit')
+        };
+
+        subtabs.forEach(btn => btn.addEventListener('click', () => {
+            subtabs.forEach(b => b.classList.remove('bg-orange-500','text-white'));
+            subtabs.forEach(b => b.classList.add('bg-white','border'));
+            btn.classList.add('bg-orange-500','text-white');
+            btn.classList.remove('bg-white','border');
+            Object.values(subpanels).forEach(p => p.classList.add('hidden'));
+            subpanels[btn.dataset.subtab].classList.remove('hidden');
+        }));
+
+        // Lab Reports Sub-tabs functionality
+        const labSubtabs = document.querySelectorAll('.lab-subtab-btn');
+        const labSubpanels = {
+            'lab-order': document.getElementById('lab-subpanel-order'),
+            'test-wise': document.getElementById('lab-subpanel-test')
+        };
+
+        labSubtabs.forEach(btn => btn.addEventListener('click', () => {
+            labSubtabs.forEach(b => b.classList.remove('bg-orange-500','text-white'));
+            labSubtabs.forEach(b => b.classList.add('bg-white','border'));
+            btn.classList.add('bg-orange-500','text-white');
+            btn.classList.remove('bg-white','border');
+            Object.values(labSubpanels).forEach(p => p.classList.add('hidden'));
+            labSubpanels[btn.dataset.labSubtab].classList.remove('hidden');
+        }));
+
+        // Clinical Insights Sub-tabs functionality
+        const insightSubtabs = document.querySelectorAll('.insight-subtab-btn');
+        const insightSubpanels = {
+            'lists': document.getElementById('insight-subpanel-lists'),
+            'charts': document.getElementById('insight-subpanel-charts')
+        };
+
+        insightSubtabs.forEach(btn => btn.addEventListener('click', () => {
+            insightSubtabs.forEach(b => b.classList.remove('bg-orange-500','text-white'));
+            insightSubtabs.forEach(b => b.classList.add('bg-white','border'));
+            btn.classList.add('bg-orange-500','text-white');
+            btn.classList.remove('bg-white','border');
+            Object.values(insightSubpanels).forEach(p => p.classList.add('hidden'));
+            insightSubpanels[btn.dataset.insightSubtab].classList.remove('hidden');
+        }));
+
+        // Generic modal helpers
+        function openModal(id){ const m=document.getElementById(id); if(m){ m.classList.remove('hidden'); m.classList.add('flex'); }}
+        function closeModal(id){ const m=document.getElementById(id); if(m){ m.classList.add('hidden'); m.classList.remove('flex'); }}
+        document.querySelectorAll('[data-close]')?.forEach(btn=>{
+            btn.addEventListener('click', ()=> closeModal(btn.getAttribute('data-close')));
+        });
+        const addRecordBtn = document.getElementById('open-add-record');
+        if(addRecordBtn){ addRecordBtn.addEventListener('click', ()=> openModal('add-record-modal')); }
+        const openTarget = document.getElementById('open-target');
+        const openTarget2 = document.getElementById('open-target-2');
+        if(openTarget){ openTarget.addEventListener('click', ()=> openModal('target-modal')); }
+        if(openTarget2){ openTarget2.addEventListener('click', ()=> openModal('target-modal')); }
+        const openHistory = document.getElementById('open-history');
+        const openHistory2 = document.getElementById('open-history-2');
+        if(openHistory){ openHistory.addEventListener('click', ()=> { openModal('history-modal'); drawHistoryChart(); }); }
+        if(openHistory2){ openHistory2.addEventListener('click', ()=> { openModal('history-modal'); drawHistoryChart(); }); }
+
+        // History chart
+        function drawHistoryChart(){
+            const ctx = document.getElementById('historyChart');
+            if(!ctx) return;
+            // Destroy existing chart if re-opened
+            if(window._historyChart){ window._historyChart.destroy(); }
+            window._historyChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon Sep 4 2023','Mon Dec 4 2023','Tue Feb 6 2024','Tue Mar 6 2024','Thu Jul 4 2024'],
+                    datasets: [{
+                        label: 'Value',
+                        data: [50, 38, 9, 20, 45],
+                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-500') || '#f97316',
+                        backgroundColor: 'transparent',
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-500') || '#f97316',
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { position: 'right' } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+
+        // Set default active tab and sub-tab
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set Case Sheet as active by default
+            const caseTab = document.querySelector('.tab-btn[data-tab="case"]');
+            if (caseTab) {
+                tabs.forEach(b => b.classList.remove('bg-orange-500','text-white'));
+                tabs.forEach(b => b.classList.add('bg-white','border'));
+                caseTab.classList.add('bg-orange-500','text-white');
+                caseTab.classList.remove('bg-white','border');
+                Object.values(panels).forEach(p => p.classList.add('hidden'));
+                panels['case'].classList.remove('hidden');
+                
+                // Set Case Sheet overview as active sub-tab
+                const overviewSubTab = document.querySelector('.subtab-btn[data-subtab="overview"]');
+                if (overviewSubTab) {
+                    subtabs.forEach(b => b.classList.remove('bg-orange-500','text-white'));
+                    subtabs.forEach(b => b.classList.add('bg-white','border'));
+                    overviewSubTab.classList.add('bg-orange-500','text-white');
+                    overviewSubTab.classList.remove('bg-white','border');
+                    Object.values(subpanels).forEach(p => p.classList.add('hidden'));
+                    subpanels['overview'].classList.remove('hidden');
+                }
+            }
+        });
+    </script>
+
+    <!-- Settings Modal shared -->
+    <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Theme Settings</h3>
+                <button id="close-settings" class="text-gray-500 hover:text-gray-700"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Accent Color</label>
+                    <input id="accent-picker" type="color" value="#f97316" class="w-16 h-10 p-0 border rounded cursor-pointer">
+                    <p class="text-xs text-gray-500 mt-2">Changes all orange accents (buttons, pills, borders).</p>
+                </div>
+                <div class="flex items-center justify-end space-x-2">
+                    <button id="reset-theme" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">Reset</button>
+                    <button id="save-theme" class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // THEME ENGINE (same as index)
+        function setAccentFromHex(hex){
+            const root = document.documentElement;
+            root.style.setProperty('--accent-500', hex);
+            const h = hex.replace('#','');
+            const r = parseInt(h.substring(0,2),16), g=parseInt(h.substring(2,4),16), b=parseInt(h.substring(4,6),16);
+            function shadeTowardsWhite(f){ return `rgb(${Math.round(r+(255-r)*f)}, ${Math.round(g+(255-g)*f)}, ${Math.round(b+(255-b)*f)})`; }
+            function darken(f){ return `rgb(${Math.round(r*(1-f))}, ${Math.round(g*(1-f))}, ${Math.round(b*(1-f))})`; }
+            root.style.setProperty('--accent-600', darken(0.12));
+            root.style.setProperty('--accent-700', darken(0.25));
+            root.style.setProperty('--accent-400', shadeTowardsWhite(0.15));
+            root.style.setProperty('--accent-300', shadeTowardsWhite(0.30));
+            root.style.setProperty('--accent-200', shadeTowardsWhite(0.50));
+            root.style.setProperty('--accent-100', shadeTowardsWhite(0.70));
+            root.style.setProperty('--accent-50', shadeTowardsWhite(0.85));
+        }
+        function loadTheme(){ const saved = localStorage.getItem('hm_accent_hex'); if(saved){ setAccentFromHex(saved); const p=document.getElementById('accent-picker'); if(p) p.value=saved; }}
+        function saveTheme(hex){ localStorage.setItem('hm_accent_hex', hex); }
+        const settingsModal = document.getElementById('settings-modal');
+        const openBtn = document.getElementById('open-settings-pd');
+        const closeBtn = document.getElementById('close-settings');
+        const saveBtn = document.getElementById('save-theme');
+        const resetBtn = document.getElementById('reset-theme');
+        const picker = document.getElementById('accent-picker');
+        if(openBtn){ openBtn.addEventListener('click', ()=>{ settingsModal.classList.remove('hidden'); settingsModal.classList.add('flex'); loadTheme(); }); }
+        if(closeBtn){ closeBtn.addEventListener('click', ()=>{ settingsModal.classList.add('hidden'); settingsModal.classList.remove('flex'); }); }
+        if(saveBtn){ saveBtn.addEventListener('click', ()=>{ const hex = picker.value; setAccentFromHex(hex); saveTheme(hex); settingsModal.classList.add('hidden'); settingsModal.classList.remove('flex'); }); }
+        if(resetBtn){ resetBtn.addEventListener('click', ()=>{ localStorage.removeItem('hm_accent_hex'); location.reload(); }); }
+        loadTheme();
     </script>
 </body>
 </html>
