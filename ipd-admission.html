@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPD Admission - Hospital Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* THEME: variables and overrides for the orange palette */
+        :root {
+            --accent-50: #fff7ed;
+            --accent-100: #ffedd5;
+            --accent-200: #fed7aa;
+            --accent-300: #fdba74;
+            --accent-400: #fb923c;
+            --accent-500: #f97316;
+            --accent-600: #ea580c;
+            --accent-700: #c2410c;
+            --accent-800: #9a3412;
+            --accent-900: #7c2d12;
+            --accent-950: #431407;
+        }
+        /* Map Tailwind's orange utility classes to variables to enable runtime theming */
+        .bg-orange-50{background-color:var(--accent-50)!important}
+        .bg-orange-100{background-color:var(--accent-100)!important}
+        .bg-orange-200{background-color:var(--accent-200)!important}
+        .bg-orange-300{background-color:var(--accent-300)!important}
+        .bg-orange-400{background-color:var(--accent-400)!important}
+        .bg-orange-500{background-color:var(--accent-500)!important}
+        .bg-orange-600{background-color:var(--accent-600)!important}
+        .bg-orange-700{background-color:var(--accent-700)!important}
+        .bg-orange-800{background-color:var(--accent-800)!important}
+        .bg-orange-900{background-color:var(--accent-900)!important}
+        .text-orange-50{color:var(--accent-50)!important}
+        .text-orange-100{color:var(--accent-100)!important}
+        .text-orange-200{color:var(--accent-200)!important}
+        .text-orange-300{color:var(--accent-300)!important}
+        .text-orange-400{color:var(--accent-400)!important}
+        .text-orange-500{color:var(--accent-500)!important}
+        .text-orange-600{color:var(--accent-600)!important}
+        .text-orange-700{color:var(--accent-700)!important}
+        .text-orange-800{color:var(--accent-800)!important}
+        .text-orange-900{color:var(--accent-900)!important}
+        .border-orange-50{border-color:var(--accent-50)!important}
+        .border-orange-100{border-color:var(--accent-100)!important}
+        .border-orange-200{border-color:var(--accent-200)!important}
+        .border-orange-300{border-color:var(--accent-300)!important}
+        .border-orange-400{border-color:var(--accent-400)!important}
+        .border-orange-500{border-color:var(--accent-500)!important}
+        .border-orange-600{border-color:var(--accent-600)!important}
+        .border-orange-700{border-color:var(--accent-700)!important}
+        .border-orange-800{border-color:var(--accent-800)!important}
+        .border-orange-900{border-color:var(--accent-900)!important}
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Main Container -->
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-blue-50 shadow-lg flex flex-col h-full">
+            <!-- Logo -->
+            <div class="p-4 border-b border-gray-200 flex-shrink-0">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-plus text-white text-sm"></i>
+                    </div>
+                    <span class="text-lg font-bold text-gray-800">HOSPITAL</span>
+                </div>
+            </div>
+            
+            <!-- Navigation Menu -->
+            <nav class="flex-1 overflow-y-auto py-2">
+                <div id="nav-dashboard" class="sidebar-link px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-tachometer-alt w-4"></i>
+                        <span class="text-sm">Dashboard</span>
+                    </div>
+                </div>
+                
+                <div id="nav-bedboard" class="sidebar-link px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-bed w-4"></i>
+                        <span class="text-sm">Bed Board</span>
+                    </div>
+                </div>
+                
+                <div id="nav-admission" class="sidebar-link px-4 py-2 bg-orange-100 text-orange-600 border-r-4 border-orange-500 mx-2 rounded-l">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-user-plus w-4"></i>
+                        <span class="font-medium text-sm">Admission</span>
+                    </div>
+                </div>
+                
+                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-calendar-alt w-4"></i>
+                        <span class="text-sm">Appointments</span>
+                    </div>
+                </div>
+                
+                <div id="nav-patients" class="sidebar-link px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-users w-4"></i>
+                        <span class="text-sm">Patients</span>
+                    </div>
+                </div>
+                
+                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-user-md w-4"></i>
+                        <span class="text-sm">Doctors</span>
+                    </div>
+                </div>
+                
+                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-clock w-4"></i>
+                        <span class="text-sm">Doctor Schedule</span>
+                    </div>
+                </div>
+                
+                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-credit-card w-4"></i>
+                        <span class="text-sm">Payments</span>
+                    </div>
+                </div>
+                
+                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-sign-out-alt w-4"></i>
+                        <span class="text-sm">Patient Discharge</span>
+                    </div>
+                </div>
+                
+                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-chart-line w-4"></i>
+                        <span class="text-sm">Clinical Chart</span>
+                    </div>
+                </div>
+                
+                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-exchange-alt w-4"></i>
+                        <span class="text-sm">Patient Transfer</span>
+                    </div>
+                </div>
+                
+                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-boxes w-4"></i>
+                        <span class="text-sm">Inventory</span>
+                    </div>
+                </div>
+                
+                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-building w-4"></i>
+                        <span class="text-sm">Departments</span>
+                    </div>
+                </div>
+                
+                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-shopping-cart w-4"></i>
+                        <span class="text-sm">Orders</span>
+                    </div>
+                </div>
+                
+                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-gavel w-4"></i>
+                        <span class="text-sm">Roaster Console</span>
+                    </div>
+                </div>
+                
+                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-comments w-4"></i>
+                        <span class="text-sm">Forum Messages</span>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <header class="bg-gray-100 px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Search patients, beds, wards..." 
+                               class="w-80 px-4 py-2 pl-10 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-6">
+                        <span class="text-red-500 font-medium">42 Occupied</span>
+                        <span class="text-green-500 font-medium">18 Available</span>
+                        <span class="text-orange-500 font-medium">3 Pending</span>
+                    </div>
+                    
+                    <button class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-cog text-lg"></i>
+                    </button>
+                    
+                    <div class="relative">
+                        <i class="fas fa-bell text-lg text-gray-600"></i>
+                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg">
+                        <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-medium">M</span>
+                        </div>
+                        <div>
+                            <div class="text-sm font-medium text-gray-800">M.Usman</div>
+                            <div class="text-xs text-gray-500">Admin</div>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- IPD Admission Content -->
+            <main class="flex-1 p-6 overflow-y-auto">
+                <!-- Page Header -->
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">IPD Admission Form</h1>
+                        <p class="text-gray-600">Admit a new patient to in-patient department</p>
+                    </div>
+                    <a href="bed-board.html" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg font-medium">
+                        Back to Bed Board
+                    </a>
+                </div>
+
+                <!-- Search Patient Section -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-search text-orange-500 mr-2"></i>
+                        Search Patient
+                    </h2>
+                    <div class="flex items-center space-x-4">
+                        <input type="text" placeholder="Enter Patient Id or MRN or Mobile No." 
+                               class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        <button class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium">
+                            Search
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Patient & Admission Details Section -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-user text-orange-500 mr-2"></i>
+                        Patient & Admission Details
+                    </h2>
+                    
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Patient Information -->
+                            <div class="space-y-4">
+                                <h3 class="text-md font-medium text-gray-700 border-b pb-2">Patient Information</h3>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Patient Name</label>
+                                    <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter patient name">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Patient Id</label>
+                                    <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter patient ID">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                        <option>Select Gender</option>
+                                        <option>Male</option>
+                                        <option>Female</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Admission Details -->
+                            <div class="space-y-4">
+                                <h3 class="text-md font-medium text-gray-700 border-b pb-2">Admission Details</h3>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Source</label>
+                                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                        <option>Emergency</option>
+                                        <option>OPD</option>
+                                        <option>Direct</option>
+                                        <option>Transfer</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+                                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                        <option>Emergency</option>
+                                        <option>High</option>
+                                        <option>Medium</option>
+                                        <option>Low</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                        <option>ICU</option>
+                                        <option>General Medicine</option>
+                                        <option>Cardiology</option>
+                                        <option>Neurology</option>
+                                        <option>Orthopedics</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Ward</label>
+                                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                        <option>ICU Ward 1</option>
+                                        <option>General Ward 2</option>
+                                        <option>Emergency Ward</option>
+                                        <option>Cardiology Ward</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Additional Fields -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Reason for Admission</label>
+                                <textarea rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter reason for admission">Emergency</textarea>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Bed</label>
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                    <option>W2-802-(Available)</option>
+                                    <option>W2-801-(Available)</option>
+                                    <option>W2-803-(Available)</option>
+                                    <option>W2-804-(Available)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Mobile No</label>
+                                <input type="tel" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter mobile number">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Reason for Admission</label>
+                                <textarea rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter detailed reason for admission">Emergency</textarea>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex items-center justify-end space-x-4 pt-6 border-t">
+                            <button type="button" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium flex items-center space-x-2">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Admit Patient</span>
+                            </button>
+                            
+                            <button type="button" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-6 py-2 rounded-lg font-medium flex items-center space-x-2">
+                                <i class="fas fa-print"></i>
+                                <span>Print AdmissionSlip</span>
+                            </button>
+                            
+                            <button type="button" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-6 py-2 rounded-lg font-medium">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Navigation handling
+        const navDashboard = document.getElementById('nav-dashboard');
+        const navBedBoard = document.getElementById('nav-bedboard');
+        const navPatients = document.getElementById('nav-patients');
+
+        navDashboard.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+
+        navBedBoard.addEventListener('click', () => {
+            window.location.href = 'bed-board.html';
+        });
+
+        navPatients.addEventListener('click', () => {
+            window.location.href = 'index.html#view-patients';
+        });
+    </script>
+</body>
+</html>

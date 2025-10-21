@@ -89,7 +89,7 @@
                     </div>
                 </div>
                 
-                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
+                <div id="nav-bedboard" class="sidebar-link px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
                     <div class="flex items-center space-x-3">
                         <i class="fas fa-bed w-4"></i>
                         <span class="text-sm">Bed Board</span>
@@ -698,6 +698,7 @@
         const patientsView = document.getElementById('view-patients');
         const navDashboard = document.getElementById('nav-dashboard');
         const navPatients = document.getElementById('nav-patients');
+        const navBedBoard = document.getElementById('nav-bedboard');
 
         function setActive(linkEl) {
             document.querySelectorAll('.sidebar-link').forEach(el => {
@@ -722,6 +723,9 @@
 
         navDashboard.addEventListener('click', () => showView('dashboard'));
         navPatients.addEventListener('click', () => showView('patients'));
+        navBedBoard.addEventListener('click', () => {
+            window.location.href = 'bed-board.html';
+        });
 
         // Patients data (frontend-only mock)
         const patientsData = [
