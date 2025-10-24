@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointments - Hospital Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="shared-sidebar.js"></script>
+    <style>
+        :root {
+            --accent-50: #fff7ed;
+            --accent-100: #ffedd5;
+            --accent-200: #fed7aa;
+            --accent-300: #fdba74;
+            --accent-400: #fb923c;
+            --accent-500: #f97316;
+            --accent-600: #ea580c;
+            --accent-700: #c2410c;
+            --accent-800: #9a3412;
+            --accent-900: #7c2d12;
+            --accent-950: #431407;
+        }
+        .bg-orange-50{background-color:var(--accent-50)!important}
+        .bg-orange-100{background-color:var(--accent-100)!important}
+        .bg-orange-200{background-color:var(--accent-200)!important}
+        .bg-orange-300{background-color:var(--accent-300)!important}
+        .bg-orange-400{background-color:var(--accent-400)!important}
+        .bg-orange-500{background-color:var(--accent-500)!important}
+        .bg-orange-600{background-color:var(--accent-600)!important}
+        .text-orange-600{color:var(--accent-600)!important}
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Main Container -->
+    <div class="flex h-screen">
+        <!-- Shared Sidebar -->
+        <div id="shared-sidebar"></div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <header class="bg-gray-100 px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-arrow-left text-lg"></i>
+                    </button>
+                    <div class="relative">
+                        <input type="text" placeholder="Search anything..." 
+                               class="w-80 px-4 py-2 pl-10 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-bell text-lg"></i>
+                    </button>
+                    <button class="text-gray-600 hover:text-gray-800" id="open-settings">
+                        <i class="fas fa-cog text-lg"></i>
+                    </button>
+                    <button class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-question-circle text-lg"></i>
+                    </button>
+                    
+                    <div class="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg">
+                        <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-medium">M</span>
+                        </div>
+                        <div>
+                            <div class="text-sm font-medium text-gray-800">M. Usman</div>
+                            <div class="text-xs text-gray-500">Admin</div>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Appointments Content -->
+            <main class="flex-1 p-6 overflow-y-auto">
+                <!-- Header Section -->
+                <div class="flex items-center justify-between mb-6">
+                    <h1 class="text-2xl font-semibold text-gray-900">Book Appointment</h1>
+                    <button id="view-appointments" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium">
+                        <i class="fas fa-list mr-2"></i>View Appointments
+                    </button>
+                </div>
+
+                <!-- Appointment Form -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <form id="appointment-form" class="space-y-6">
+                        <!-- Personal Information -->
+                        <div class="border-b border-gray-200 pb-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Patient Information</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                                    <input required type="text" name="fullName" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Enter patient's full name" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Mobile No *</label>
+                                    <input required type="tel" name="mobileNo" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" placeholder="+1 234 567 8900" />
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                    <input type="email" name="email" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" placeholder="patient@email.com" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Appointment Details -->
+                        <div class="border-b border-gray-200 pb-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Appointment Details</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Date of Visit *</label>
+                                    <input required type="date" name="visitDate" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Visit Type *</label>
+                                    <select required name="visitType" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm">
+                                        <option value="">Select Visit Type</option>
+                                        <option value="Emergency">Emergency</option>
+                                        <option value="OPD">OPD (Outpatient Department)</option>
+                                        <option value="IPD">IPD (Inpatient Department)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Doctor *</label>
+                                    <select required name="doctor" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm">
+                                        <option value="">Select Doctor</option>
+                                        <option value="Dr. Emily Smith">Dr. Emily Smith - Cardiology</option>
+                                        <option value="Dr. John Wilson">Dr. John Wilson - Neurology</option>
+                                        <option value="Dr. Sarah Johnson">Dr. Sarah Johnson - General Medicine</option>
+                                        <option value="Dr. Michael Brown">Dr. Michael Brown - Emergency Medicine</option>
+                                        <option value="Dr. Lisa Davis">Dr. Lisa Davis - Pediatrics</option>
+                                        <option value="Dr. Robert Taylor">Dr. Robert Taylor - Surgery</option>
+                                        <option value="Dr. Jennifer White">Dr. Jennifer White - Orthopedics</option>
+                                        <option value="Dr. David Miller">Dr. David Miller - Dermatology</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Time Slot *</label>
+                                    <select required name="timeSlot" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm">
+                                        <option value="">Select Time Slot</option>
+                                        <!-- Time slots will be populated by JavaScript -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Additional Information -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Additional Information</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Reason for Visit</label>
+                                    <textarea name="reason" rows="3" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Brief description of symptoms or reason for appointment"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Previous Medical History</label>
+                                    <textarea name="medicalHistory" rows="2" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Any relevant medical history or ongoing treatments"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200">
+                            <button type="button" id="clear-form" class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
+                                Clear Form
+                            </button>
+                            <button type="submit" class="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
+                                <i class="fas fa-calendar-plus mr-2"></i>Book Appointment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Appointments List (Hidden by default) -->
+                <div id="appointments-list" class="hidden mt-6">
+                    <div class="bg-white rounded-lg shadow-sm">
+                        <div class="p-6 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800">Scheduled Appointments</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full text-sm">
+                                <thead class="border-b border-gray-200 text-gray-600">
+                                    <tr>
+                                        <th class="text-left px-5 py-3">Patient Name</th>
+                                        <th class="text-left px-5 py-3">Mobile</th>
+                                        <th class="text-left px-5 py-3">Date</th>
+                                        <th class="text-left px-5 py-3">Time</th>
+                                        <th class="text-left px-5 py-3">Doctor</th>
+                                        <th class="text-left px-5 py-3">Type</th>
+                                        <th class="text-left px-5 py-3">Status</th>
+                                        <th class="text-left px-5 py-3">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="appointments-tbody" class="divide-y divide-gray-100">
+                                    <!-- Appointments will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Theme loader
+        function loadTheme(){ const saved = localStorage.getItem('hm_accent_hex'); if(saved){ const root=document.documentElement; root.style.setProperty('--accent-500', saved);} }
+        loadTheme();
+
+        // Initialize shared sidebar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load shared sidebar
+            document.getElementById('shared-sidebar').innerHTML = createSharedSidebar('appointments');
+            initSharedSidebar('appointments');
+            
+            // Generate time slots
+            generateTimeSlots();
+            
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.querySelector('input[name="visitDate"]').setAttribute('min', today);
+        });
+
+        // Generate time slots (20-minute intervals from 8:00 AM to 6:00 PM)
+        function generateTimeSlots() {
+            const timeSlotSelect = document.querySelector('select[name="timeSlot"]');
+            const slots = [];
+            
+            // Generate slots from 8:00 AM to 6:00 PM
+            for (let hour = 8; hour < 18; hour++) {
+                for (let minute = 0; minute < 60; minute += 20) {
+                    const startHour = hour;
+                    const startMinute = minute;
+                    const endMinute = minute + 20;
+                    const endHour = endMinute >= 60 ? hour + 1 : hour;
+                    const finalEndMinute = endMinute >= 60 ? endMinute - 60 : endMinute;
+                    
+                    if (endHour >= 18) break; // Stop at 6:00 PM
+                    
+                    const startTime = formatTime(startHour, startMinute);
+                    const endTime = formatTime(endHour, finalEndMinute);
+                    const timeSlot = `${startTime} - ${endTime}`;
+                    
+                    slots.push(`<option value="${timeSlot}">${timeSlot}</option>`);
+                }
+            }
+            
+            timeSlotSelect.innerHTML = '<option value="">Select Time Slot</option>' + slots.join('');
+        }
+
+        function formatTime(hour, minute) {
+            const period = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour > 12 ? hour - 12 : (hour === 0 ? 12 : hour);
+            const displayMinute = minute.toString().padStart(2, '0');
+            return `${displayHour}:${displayMinute} ${period}`;
+        }
+
+        // Appointments data (stored in localStorage)
+        let appointmentsData = JSON.parse(localStorage.getItem('hm_appointments_data') || '[]');
+
+        function saveAppointments() {
+            localStorage.setItem('hm_appointments_data', JSON.stringify(appointmentsData));
+        }
+
+        function loadAppointments() {
+            appointmentsData = JSON.parse(localStorage.getItem('hm_appointments_data') || '[]');
+        }
+
+        // Form submission
+        document.getElementById('appointment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            
+            const appointment = {
+                id: Date.now(),
+                fullName: formData.get('fullName'),
+                mobileNo: formData.get('mobileNo'),
+                email: formData.get('email'),
+                visitDate: formData.get('visitDate'),
+                visitType: formData.get('visitType'),
+                doctor: formData.get('doctor'),
+                timeSlot: formData.get('timeSlot'),
+                reason: formData.get('reason'),
+                medicalHistory: formData.get('medicalHistory'),
+                status: 'Scheduled',
+                createdAt: new Date().toISOString()
+            };
+            
+            appointmentsData.push(appointment);
+            saveAppointments();
+            
+            // Show success message
+            alert('Appointment booked successfully!');
+            
+            // Clear form
+            this.reset();
+            
+            // Refresh appointments list if visible
+            if (!document.getElementById('appointments-list').classList.contains('hidden')) {
+                renderAppointmentsList();
+            }
+        });
+
+        // Clear form
+        document.getElementById('clear-form').addEventListener('click', function() {
+            document.getElementById('appointment-form').reset();
+        });
+
+        // Toggle appointments list
+        document.getElementById('view-appointments').addEventListener('click', function() {
+            const appointmentsList = document.getElementById('appointments-list');
+            const form = document.querySelector('.bg-white.rounded-lg.shadow-sm.p-6');
+            
+            if (appointmentsList.classList.contains('hidden')) {
+                appointmentsList.classList.remove('hidden');
+                form.classList.add('hidden');
+                this.innerHTML = '<i class="fas fa-plus mr-2"></i>Book New Appointment';
+                renderAppointmentsList();
+            } else {
+                appointmentsList.classList.add('hidden');
+                form.classList.remove('hidden');
+                this.innerHTML = '<i class="fas fa-list mr-2"></i>View Appointments';
+            }
+        });
+
+        // Render appointments list
+        function renderAppointmentsList() {
+            const tbody = document.getElementById('appointments-tbody');
+            
+            if (appointmentsData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="px-5 py-8 text-center text-gray-500">No appointments found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = appointmentsData.map(appointment => {
+                const statusClass = appointment.status === 'Scheduled' ? 'bg-blue-100 text-blue-600' :
+                                  appointment.status === 'Completed' ? 'bg-green-100 text-green-600' :
+                                  appointment.status === 'Cancelled' ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-600';
+                
+                return `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-3 text-gray-800">${appointment.fullName}</td>
+                        <td class="px-5 py-3 text-gray-700">${appointment.mobileNo}</td>
+                        <td class="px-5 py-3 text-gray-700">${appointment.visitDate}</td>
+                        <td class="px-5 py-3 text-gray-700">${appointment.timeSlot}</td>
+                        <td class="px-5 py-3 text-gray-700">${appointment.doctor}</td>
+                        <td class="px-5 py-3 text-gray-700">${appointment.visitType}</td>
+                        <td class="px-5 py-3">
+                            <span class="px-2 py-1 rounded-full text-xs ${statusClass}">${appointment.status}</span>
+                        </td>
+                        <td class="px-5 py-3">
+                            <div class="flex items-center space-x-2">
+                                <button onclick="editAppointment(${appointment.id})" class="text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteAppointment(${appointment.id})" class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Edit appointment
+        function editAppointment(id) {
+            const appointment = appointmentsData.find(a => a.id === id);
+            if (appointment) {
+                // Fill form with appointment data
+                document.querySelector('input[name="fullName"]').value = appointment.fullName;
+                document.querySelector('input[name="mobileNo"]').value = appointment.mobileNo;
+                document.querySelector('input[name="email"]').value = appointment.email;
+                document.querySelector('input[name="visitDate"]').value = appointment.visitDate;
+                document.querySelector('select[name="visitType"]').value = appointment.visitType;
+                document.querySelector('select[name="doctor"]').value = appointment.doctor;
+                document.querySelector('select[name="timeSlot"]').value = appointment.timeSlot;
+                document.querySelector('textarea[name="reason"]').value = appointment.reason;
+                document.querySelector('textarea[name="medicalHistory"]').value = appointment.medicalHistory;
+                
+                // Switch to form view
+                document.getElementById('appointments-list').classList.add('hidden');
+                document.querySelector('.bg-white.rounded-lg.shadow-sm.p-6').classList.remove('hidden');
+                document.getElementById('view-appointments').innerHTML = '<i class="fas fa-list mr-2"></i>View Appointments';
+                
+                // Remove the appointment from data (will be re-added on submit)
+                appointmentsData = appointmentsData.filter(a => a.id !== id);
+                saveAppointments();
+            }
+        }
+
+        // Delete appointment
+        function deleteAppointment(id) {
+            if (confirm('Are you sure you want to delete this appointment?')) {
+                appointmentsData = appointmentsData.filter(a => a.id !== id);
+                saveAppointments();
+                renderAppointmentsList();
+            }
+        }
+
+        // Initialize
+        loadAppointments();
+    </script>
+</body>
+</html>
