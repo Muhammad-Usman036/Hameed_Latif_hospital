@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Hospital Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Custom color variables for the hospital theme */
+        :root {
+            --hos-orange: #E89D4C;
+            --hos-orange-hover: #D17A3A;
+            --hos-bg: #F9FAFB;
+        }
+        
+        .bg-hos-orange { background-color: var(--hos-orange); }
+        .bg-hos-orange:hover { background-color: var(--hos-orange-hover); }
+        .text-hos-orange { color: var(--hos-orange); }
+        .border-hos-orange { border-color: var(--hos-orange); }
+        .bg-hos-bg { background-color: var(--hos-bg); }
+        
+        /* Custom focus styles */
+        .focus-hos-orange:focus {
+            outline: none;
+            border-color: var(--hos-orange);
+            box-shadow: 0 0 0 3px rgba(232, 157, 76, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-hos-bg min-h-screen">
+    <!-- Main Container -->
+    <div class="min-h-screen flex">
+        <!-- Left Side - Form Card -->
+        <div class="flex-1 flex items-center justify-center p-8">
+            <div class="w-full max-w-md">
+                <!-- Header with Book Appointment Link -->
+                <div class="text-center mb-8">
+                    <a href="appointments.html" class="inline-flex items-center px-4 py-2 border border-hos-orange text-hos-orange rounded-lg hover:bg-hos-orange hover:text-white transition-colors duration-200 text-sm font-medium">
+                        <i class="fas fa-calendar-plus mr-2"></i>
+                        Book an Appointment
+                    </a>
+                </div>
+
+                <!-- Logo -->
+                <div class="flex items-center justify-center mb-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-hos-orange rounded-lg flex items-center justify-center">
+                            <i class="fas fa-hospital text-white text-xl"></i>
+                        </div>
+                        <span class="text-2xl font-bold text-gray-800">HOSPITAL</span>
+                    </div>
+                </div>
+
+                <!-- Welcome Title -->
+                <h1 class="text-3xl font-bold text-gray-800 text-center mb-8">Welcome!</h1>
+
+                <!-- Sign Up Form -->
+                <form class="space-y-6">
+                    <!-- Full Name -->
+                    <div>
+                        <label for="fullName" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus-hos-orange transition-colors duration-200"
+                               placeholder="Enter your full name">
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input type="email" id="email" name="email" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus-hos-orange transition-colors duration-200"
+                               placeholder="Enter your email">
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input type="password" id="password" name="password" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus-hos-orange transition-colors duration-200"
+                               placeholder="Create a password">
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div>
+                        <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus-hos-orange transition-colors duration-200"
+                               placeholder="Confirm your password">
+                    </div>
+
+                    <!-- Sign Up Button -->
+                    <button type="submit" 
+                            class="w-full bg-hos-orange hover:bg-hos-orange-hover text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-hos-orange focus:ring-offset-2">
+                        Sign up
+                    </button>
+
+                    <!-- Divider -->
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">or</span>
+                        </div>
+                    </div>
+
+                    <!-- Google Sign Up Button -->
+                    <button type="button" 
+                            class="w-full bg-white border border-gray-300 text-gray-700 font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 flex items-center justify-center">
+                        <i class="fab fa-google text-red-500 mr-2"></i>
+                        Continue with Google
+                    </button>
+
+                    <!-- Login Link -->
+                    <div class="text-center">
+                        <p class="text-sm text-gray-600">
+                            Already have an account? 
+                            <a href="login.html" class="text-hos-orange hover:text-hos-orange-hover font-medium">Login</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Side - Branding Panel -->
+        <div class="hidden lg:flex lg:flex-1 bg-hos-orange items-center justify-center p-12">
+            <div class="text-center text-white">
+                <div class="mb-8">
+                    <i class="fas fa-heartbeat text-6xl mb-6 opacity-80"></i>
+                </div>
+                <h2 class="text-4xl font-bold mb-6 leading-tight">
+                    Smart Healthcare,<br>
+                    Seamless Management!
+                </h2>
+                <p class="text-xl opacity-90 leading-relaxed">
+                    Experience the future of healthcare with our comprehensive management system designed to streamline operations and enhance patient care.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Branding Panel (shown only on mobile) -->
+    <div class="lg:hidden bg-hos-orange text-white py-8 px-6">
+        <div class="text-center">
+            <i class="fas fa-heartbeat text-4xl mb-4 opacity-80"></i>
+            <h2 class="text-2xl font-bold mb-4">Smart Healthcare, Seamless Management!</h2>
+            <p class="text-sm opacity-90">
+                Experience the future of healthcare with our comprehensive management system.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Form validation and submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Here you would typically send the data to your backend
+            alert('Account created successfully! Please check your email for verification.');
+        });
+
+        // Password confirmation validation
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                this.setCustomValidity('Passwords do not match');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    </script>
+</body>
+</html>

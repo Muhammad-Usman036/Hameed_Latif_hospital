@@ -137,7 +137,7 @@ function createSharedSidebar(currentPage = 'dashboard') {
 const navigationMap = {
     'dashboard': 'index.html',
     'bedboard': 'bed-board.html',
-    'admission': 'admission.html',
+    'admission': 'ipd-admission.html',
     'appointments': 'appointments.html',
     'patients': 'index.html#patients',
     'doctors': 'doctors.html',
