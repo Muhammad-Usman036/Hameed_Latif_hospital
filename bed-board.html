@@ -6,6 +6,7 @@
     <title>Bed Board - Hospital Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="shared-sidebar.js"></script>
     <style>
         /* THEME: variables and overrides for the orange palette */
         :root {
@@ -57,133 +58,8 @@
 <body class="bg-gray-50">
     <!-- Main Container -->
     <div class="flex h-screen">
-        <!-- Sidebar -->
-        <div class="w-64 bg-white shadow-lg flex flex-col h-full">
-            <!-- Logo -->
-            <div class="p-4 border-b border-gray-200 flex-shrink-0">
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-plus text-white text-sm"></i>
-                    </div>
-                    <span class="text-lg font-bold text-gray-800">HOSPITAL</span>
-                </div>
-            </div>
-            
-            <!-- Navigation Menu -->
-            <nav class="flex-1 overflow-y-auto py-2">
-                <div id="nav-dashboard" class="sidebar-link px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-tachometer-alt w-4"></i>
-                        <span class="text-sm">Dashboard</span>
-                    </div>
-                </div>
-                
-                <div id="nav-bedboard" class="sidebar-link px-4 py-2 bg-orange-100 text-orange-600 border-r-4 border-orange-500 mx-2 rounded-l">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-bed w-4"></i>
-                        <span class="font-medium text-sm">Bed Board</span>
-                    </div>
-                </div>
-                
-                <div id="nav-admission" class="sidebar-link px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-user-plus w-4"></i>
-                        <span class="text-sm">Admission</span>
-                    </div>
-                </div>
-                
-                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-calendar-alt w-4"></i>
-                        <span class="text-sm">Appointments</span>
-                    </div>
-                </div>
-                
-                <div id="nav-patients" class="sidebar-link px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-users w-4"></i>
-                        <span class="text-sm">Patients</span>
-                    </div>
-                </div>
-                
-                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-user-md w-4"></i>
-                        <span class="text-sm">Doctors</span>
-                    </div>
-                </div>
-                
-                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-clock w-4"></i>
-                        <span class="text-sm">Doctor Schedule</span>
-                    </div>
-                </div>
-                
-                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-credit-card w-4"></i>
-                        <span class="text-sm">Payments</span>
-                    </div>
-                </div>
-                
-                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-sign-out-alt w-4"></i>
-                        <span class="text-sm">Patient Discharge</span>
-                    </div>
-                </div>
-                
-                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-chart-line w-4"></i>
-                        <span class="text-sm">Clinical Chart</span>
-                    </div>
-                </div>
-                
-                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-exchange-alt w-4"></i>
-                        <span class="text-sm">Patient Transfer</span>
-                    </div>
-                </div>
-                
-                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-boxes w-4"></i>
-                        <span class="text-sm">Inventory</span>
-                    </div>
-                </div>
-                
-                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-building w-4"></i>
-                        <span class="text-sm">Departments</span>
-                    </div>
-                </div>
-                
-                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-shopping-cart w-4"></i>
-                        <span class="text-sm">Orders</span>
-                    </div>
-                </div>
-                
-                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-gavel w-4"></i>
-                        <span class="text-sm">Roaster Console</span>
-                    </div>
-                </div>
-                
-                <div class="px-4 py-2 text-gray-600 hover:bg-gray-50 cursor-pointer mx-2 rounded">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-comments w-4"></i>
-                        <span class="text-sm">Forum Messages</span>
-                    </div>
-                </div>
-            </nav>
-        </div>
+        <!-- Shared Sidebar -->
+        <div id="shared-sidebar"></div>
         
         <!-- Main Content -->
         <div class="flex-1 flex flex-col">
@@ -236,9 +112,14 @@
                         <h1 class="text-2xl font-bold text-gray-800">Bed Board</h1>
                         <p class="text-gray-600">Real-time bed availability and patient assignments</p>
                     </div>
-                    <a href="ipd-admission.html" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium">
-                        New Admission
-                    </a>
+                    <div class="flex items-center space-x-3">
+                        <a href="bed-table-view.html" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium">
+                            View All Beds (Table View)
+                        </a>
+                        <a href="ipd-admission.html" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium">
+                            New Admission
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Filters and Legend -->
@@ -277,14 +158,19 @@
                     </div>
                 </div>
 
-                <!-- Bed Cards Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <!-- Ward Sections -->
+                <!-- General Medicine Ward -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">General Medicine (Ward: GM-01 | Nursing Station: NS-01)</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     <!-- Occupied Bed Cards -->
                     <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 relative">
                         <div class="absolute top-2 right-2">
                             <span class="bg-orange-500 text-white text-xs px-2 py-1 rounded">Occupied</span>
                         </div>
-                        <h3 class="font-semibold text-gray-800 mb-3">W2-B01</h3>
+                        <h3 class="font-semibold text-gray-800 mb-3">
+                            <a href="patient-detail.html?id=W2-B01" class="font-bold text-blue-600 hover:underline">W2-B01</a>
+                        </h3>
                         <div class="space-y-2">
                             <div class="flex items-center space-x-2">
                                 <i class="fas fa-user text-gray-500"></i>
@@ -292,10 +178,14 @@
                             </div>
                             <div class="text-sm text-gray-600">MRN-12345</div>
                             <div class="flex items-center space-x-2">
-                                <i class="fas fa-clock text-gray-500"></i>
-                                <span class="text-sm text-gray-600">Admitted 2 days ago</span>
+                                <i class="fas fa-user-md text-gray-500"></i>
+                                <span class="text-sm text-gray-600">Dr. Ali Aslam</span>
                             </div>
-                            <div class="text-sm text-gray-600">Nurse: N. Williams</div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-calendar text-gray-500"></i>
+                                <span class="text-sm text-gray-600">Admitted: 20-Oct-2025</span>
+                            </div>
+                            <div class="text-sm text-gray-600">Treatment: Skin Allergy</div>
                         </div>
                     </div>
 
@@ -304,7 +194,9 @@
                         <div class="absolute top-2 right-2">
                             <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">Available</span>
                         </div>
-                        <h3 class="font-semibold text-gray-800 mb-3">W2-B02</h3>
+                        <h3 class="font-semibold text-gray-800 mb-3">
+                            <a href="patient-detail.html?id=W2-B02" class="font-bold text-blue-600 hover:underline">W2-B02</a>
+                        </h3>
                         <div class="text-center text-gray-600">
                             <p class="text-sm">Ready for admission</p>
                         </div>
@@ -315,7 +207,9 @@
                         <div class="absolute top-2 right-2">
                             <span class="bg-orange-500 text-white text-xs px-2 py-1 rounded">Occupied</span>
                         </div>
-                        <h3 class="font-semibold text-gray-800 mb-3">W2-B03</h3>
+                        <h3 class="font-semibold text-gray-800 mb-3">
+                            <a href="patient-detail.html?id=W2-B03" class="font-bold text-blue-600 hover:underline">W2-B03</a>
+                        </h3>
                         <div class="space-y-2">
                             <div class="flex items-center space-x-2">
                                 <i class="fas fa-user text-gray-500"></i>
@@ -323,10 +217,14 @@
                             </div>
                             <div class="text-sm text-gray-600">MRN-12346</div>
                             <div class="flex items-center space-x-2">
-                                <i class="fas fa-clock text-gray-500"></i>
-                                <span class="text-sm text-gray-600">Admitted 1 day ago</span>
+                                <i class="fas fa-user-md text-gray-500"></i>
+                                <span class="text-sm text-gray-600">Dr. Emily Smith</span>
                             </div>
-                            <div class="text-sm text-gray-600">Nurse: M. Davis</div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-calendar text-gray-500"></i>
+                                <span class="text-sm text-gray-600">Admitted: 21-Oct-2025</span>
+                            </div>
+                            <div class="text-sm text-gray-600">Treatment: Routine Check-up</div>
                         </div>
                     </div>
 
@@ -335,7 +233,9 @@
                         <div class="absolute top-2 right-2">
                             <span class="bg-yellow-500 text-white text-xs px-2 py-1 rounded">Cleaning</span>
                         </div>
-                        <h3 class="font-semibold text-gray-800 mb-3">W2-B04</h3>
+                        <h3 class="font-semibold text-gray-800 mb-3">
+                            <a href="patient-detail.html?id=W2-B04" class="font-bold text-blue-600 hover:underline">W2-B04</a>
+                        </h3>
                         <div class="flex items-center space-x-2 text-gray-600">
                             <i class="fas fa-clock text-gray-500"></i>
                             <span class="text-sm">Cleaning in progress</span>
@@ -347,7 +247,9 @@
                         <div class="absolute top-2 right-2">
                             <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">Available</span>
                         </div>
-                        <h3 class="font-semibold text-gray-800 mb-3">W2-B05</h3>
+                        <h3 class="font-semibold text-gray-800 mb-3">
+                            <a href="patient-detail.html?id=W2-B05" class="font-bold text-blue-600 hover:underline">W2-B05</a>
+                        </h3>
                         <div class="text-center text-gray-600">
                             <p class="text-sm">Ready for admission</p>
                         </div>
@@ -358,7 +260,9 @@
                         <div class="absolute top-2 right-2">
                             <span class="bg-orange-500 text-white text-xs px-2 py-1 rounded">Occupied</span>
                         </div>
-                        <h3 class="font-semibold text-gray-800 mb-3">W2-B06</h3>
+                        <h3 class="font-semibold text-gray-800 mb-3">
+                            <a href="patient-detail.html?id=W2-B06" class="font-bold text-blue-600 hover:underline">W2-B06</a>
+                        </h3>
                         <div class="space-y-2">
                             <div class="flex items-center space-x-2">
                                 <i class="fas fa-user text-gray-500"></i>
@@ -378,7 +282,9 @@
                         <div class="absolute top-2 right-2">
                             <span class="bg-purple-500 text-white text-xs px-2 py-1 rounded">Reserved</span>
                         </div>
-                        <h3 class="font-semibold text-gray-800 mb-3">W2-B07</h3>
+                        <h3 class="font-semibold text-gray-800 mb-3">
+                            <a href="patient-detail.html?id=W2-B07" class="font-bold text-blue-600 hover:underline">W2-B07</a>
+                        </h3>
                         <div class="text-center text-gray-600">
                             <p class="text-sm">Reserved for admission</p>
                         </div>
@@ -389,7 +295,9 @@
                         <div class="absolute top-2 right-2">
                             <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">Available</span>
                         </div>
-                        <h3 class="font-semibold text-gray-800 mb-3">W2-B08</h3>
+                        <h3 class="font-semibold text-gray-800 mb-3">
+                            <a href="patient-detail.html?id=W2-B08" class="font-bold text-blue-600 hover:underline">W2-B08</a>
+                        </h3>
                         <div class="text-center text-gray-600">
                             <p class="text-sm">Ready for admission</p>
                         </div>
@@ -400,7 +308,9 @@
                         <div class="absolute top-2 right-2">
                             <span class="bg-blue-800 text-white text-xs px-2 py-1 rounded">Blocked</span>
                         </div>
-                        <h3 class="font-semibold text-gray-800 mb-3">W2-B09</h3>
+                        <h3 class="font-semibold text-gray-800 mb-3">
+                            <a href="patient-detail.html?id=W2-B09" class="font-bold text-blue-600 hover:underline">W2-B09</a>
+                        </h3>
                         <div class="flex items-center space-x-2 text-gray-600">
                             <i class="fas fa-clock text-gray-500"></i>
                             <span class="text-sm">Maintenance required</span>
@@ -412,7 +322,9 @@
                         <div class="absolute top-2 right-2">
                             <span class="bg-orange-500 text-white text-xs px-2 py-1 rounded">Occupied</span>
                         </div>
-                        <h3 class="font-semibold text-gray-800 mb-3">W2-B10</h3>
+                        <h3 class="font-semibold text-gray-800 mb-3">
+                            <a href="patient-detail.html?id=W2-B10" class="font-bold text-blue-600 hover:underline">W2-B10</a>
+                        </h3>
                         <div class="space-y-2">
                             <div class="flex items-center space-x-2">
                                 <i class="fas fa-user text-gray-500"></i>
@@ -432,7 +344,9 @@
                         <div class="absolute top-2 right-2">
                             <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">Available</span>
                         </div>
-                        <h3 class="font-semibold text-gray-800 mb-3">W2-B11</h3>
+                        <h3 class="font-semibold text-gray-800 mb-3">
+                            <a href="patient-detail.html?id=W2-B11" class="font-bold text-blue-600 hover:underline">W2-B11</a>
+                        </h3>
                         <div class="text-center text-gray-600">
                             <p class="text-sm">Ready for admission</p>
                         </div>
@@ -443,7 +357,9 @@
                         <div class="absolute top-2 right-2">
                             <span class="bg-orange-500 text-white text-xs px-2 py-1 rounded">Occupied</span>
                         </div>
-                        <h3 class="font-semibold text-gray-800 mb-3">W2-B12</h3>
+                        <h3 class="font-semibold text-gray-800 mb-3">
+                            <a href="patient-detail.html?id=W2-B12" class="font-bold text-blue-600 hover:underline">W2-B12</a>
+                        </h3>
                         <div class="space-y-2">
                             <div class="flex items-center space-x-2">
                                 <i class="fas fa-user text-gray-500"></i>
@@ -457,27 +373,66 @@
                             <div class="text-sm text-gray-600">Nurse: L. Taylor</div>
                         </div>
                     </div>
+                    </div>
+                </div>
+
+                <!-- ICU Ward -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">ICU Ward (Ward: ICU-01 | Nursing Station: NS-02)</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        <!-- ICU Bed Cards -->
+                        <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 relative">
+                            <div class="absolute top-2 right-2">
+                                <span class="bg-orange-500 text-white text-xs px-2 py-1 rounded">Occupied</span>
+                            </div>
+                            <h3 class="font-semibold text-gray-800 mb-3">
+                                <a href="patient-detail.html?id=ICU-101" class="font-bold text-blue-600 hover:underline">ICU-101</a>
+                            </h3>
+                            <div class="space-y-2">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-user text-gray-500"></i>
+                                    <span class="text-sm text-gray-700">Michael Brown</span>
+                                </div>
+                                <div class="text-sm text-gray-600">MRN-12350</div>
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-user-md text-gray-500"></i>
+                                    <span class="text-sm text-gray-600">Dr. John Wilson</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-calendar text-gray-500"></i>
+                                    <span class="text-sm text-gray-600">Admitted: 19-Oct-2025</span>
+                                </div>
+                                <div class="text-sm text-gray-600">Treatment: Critical Care</div>
+                            </div>
+                        </div>
+
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4 relative">
+                            <div class="absolute top-2 right-2">
+                                <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">Available</span>
+                            </div>
+                            <h3 class="font-semibold text-gray-800 mb-3">
+                                <a href="patient-detail.html?id=ICU-102" class="font-bold text-blue-600 hover:underline">ICU-102</a>
+                            </h3>
+                            <div class="text-center text-gray-600">
+                                <p class="text-sm">Ready for admission</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
     </div>
 
     <script>
-        // Navigation handling
-        const navDashboard = document.getElementById('nav-dashboard');
-        const navAdmission = document.getElementById('nav-admission');
-        const navPatients = document.getElementById('nav-patients');
+        // Theme loader
+        function loadTheme(){ const saved = localStorage.getItem('hm_accent_hex'); if(saved){ const root=document.documentElement; root.style.setProperty('--accent-500', saved);} }
+        loadTheme();
 
-        navDashboard.addEventListener('click', () => {
-            window.location.href = 'index.html';
-        });
-
-        navAdmission.addEventListener('click', () => {
-            window.location.href = 'ipd-admission.html';
-        });
-
-        navPatients.addEventListener('click', () => {
-            window.location.href = 'index.html#view-patients';
+        // Initialize shared sidebar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load shared sidebar
+            document.getElementById('shared-sidebar').innerHTML = createSharedSidebar('bedboard');
+            initSharedSidebar('bedboard');
         });
     </script>
 </body>

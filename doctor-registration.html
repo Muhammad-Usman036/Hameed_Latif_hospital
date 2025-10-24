@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Registration - Hospital Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="shared-sidebar.js"></script>
+    <style>
+        :root {
+            --accent-50: #fff7ed;
+            --accent-100: #ffedd5;
+            --accent-200: #fed7aa;
+            --accent-300: #fdba74;
+            --accent-400: #fb923c;
+            --accent-500: #f97316;
+            --accent-600: #ea580c;
+            --accent-700: #c2410c;
+            --accent-800: #9a3412;
+            --accent-900: #7c2d12;
+            --accent-950: #431407;
+        }
+        .bg-orange-50{background-color:var(--accent-50)!important}
+        .bg-orange-100{background-color:var(--accent-100)!important}
+        .bg-orange-200{background-color:var(--accent-200)!important}
+        .bg-orange-300{background-color:var(--accent-300)!important}
+        .bg-orange-400{background-color:var(--accent-400)!important}
+        .bg-orange-500{background-color:var(--accent-500)!important}
+        .bg-orange-600{background-color:var(--accent-600)!important}
+        .text-orange-600{color:var(--accent-600)!important}
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Main Container -->
+    <div class="flex h-screen">
+        <!-- Shared Sidebar -->
+        <div id="shared-sidebar"></div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <header class="bg-gray-100 px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button onclick="window.location.href='doctors.html'" class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-arrow-left text-lg"></i>
+                    </button>
+                    <div class="relative">
+                        <input type="text" placeholder="Search anything..." 
+                               class="w-80 px-4 py-2 pl-10 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-bell text-lg"></i>
+                    </button>
+                    <button class="text-gray-600 hover:text-gray-800" id="open-settings">
+                        <i class="fas fa-cog text-lg"></i>
+                    </button>
+                    <button class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-question-circle text-lg"></i>
+                    </button>
+                    
+                    <div class="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg">
+                        <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-medium">M</span>
+                        </div>
+                        <div>
+                            <div class="text-sm font-medium text-gray-800">M. Usman</div>
+                            <div class="text-xs text-gray-500">Admin</div>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Doctor Registration Content -->
+            <main class="flex-1 p-6 overflow-y-auto">
+                <!-- Header Section -->
+                <div class="flex items-center justify-between mb-6">
+                    <h1 class="text-2xl font-semibold text-gray-900">Doctor Registration</h1>
+                    <button onclick="window.location.href='doctors.html'" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium">
+                        <i class="fas fa-list mr-2"></i>View All Doctors
+                    </button>
+                </div>
+
+                <!-- Registration Form -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <form id="doctor-registration-form" class="space-y-6">
+                        <!-- Personal Information Section -->
+                        <div class="border-b border-gray-200 pb-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-user text-orange-500 mr-2"></i>
+                                Personal Information
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                                    <input required type="text" name="fullName" 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                           placeholder="Dr. John Smith">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                                    <input required type="email" name="email" 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                           placeholder="doctor@hospital.com">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                                    <input required type="tel" name="phoneNumber" 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                           placeholder="+1 234 567 8900">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Department *</label>
+                                    <select required name="department" 
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                        <option value="">Select Department</option>
+                                        <option value="Medicine">Medicine</option>
+                                        <option value="Cardiology">Cardiology</option>
+                                        <option value="Neurology">Neurology</option>
+                                        <option value="General Medicine">General Medicine</option>
+                                        <option value="Emergency Medicine">Emergency Medicine</option>
+                                        <option value="Internal Medicine">Internal Medicine</option>
+                                        <option value="Pediatrics">Pediatrics</option>
+                                        <option value="Surgery">Surgery</option>
+                                        <option value="Orthopedics">Orthopedics</option>
+                                        <option value="Dermatology">Dermatology</option>
+                                        <option value="Oncology">Oncology</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Professional Information Section -->
+                        <div class="border-b border-gray-200 pb-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-stethoscope text-orange-500 mr-2"></i>
+                                Professional Information
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Specialist *</label>
+                                    <input required type="text" name="specialist" 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                           placeholder="Heart Specialist">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Consultation Fee *</label>
+                                    <input required type="number" name="consultationFee" 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                           placeholder="e.g., 2000">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Account Information Section -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-lock text-orange-500 mr-2"></i>
+                                Account Information
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Create Password *</label>
+                                    <input required type="password" name="password" 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                           placeholder="Enter secure password">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password *</label>
+                                    <input required type="password" name="confirmPassword" 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                           placeholder="Confirm password">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+                            <button type="button" onclick="window.location.href='doctors.html'" 
+                                    class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium">
+                                Cancel
+                            </button>
+                            <button type="submit" 
+                                    class="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium flex items-center space-x-2">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Register Doctor</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Theme loader
+        function loadTheme(){ const saved = localStorage.getItem('hm_accent_hex'); if(saved){ const root=document.documentElement; root.style.setProperty('--accent-500', saved);} }
+        loadTheme();
+
+        // Initialize shared sidebar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load shared sidebar
+            document.getElementById('shared-sidebar').innerHTML = createSharedSidebar('doctors');
+            initSharedSidebar('doctors');
+        });
+
+        // Form validation and submission
+        document.getElementById('doctor-registration-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const password = formData.get('password');
+            const confirmPassword = formData.get('confirmPassword');
+            
+            // Password validation
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Generate doctor ID
+            const department = formData.get('department');
+            const departmentCode = department.substring(0, 2).toUpperCase();
+            const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+            const doctorId = `WNH-${departmentCode}-${randomNum}`;
+            
+            // Create doctor object
+            const newDoctor = {
+                id: Date.now(),
+                name: formData.get('fullName'),
+                doctorId: doctorId,
+                department: formData.get('department'),
+                specialist: formData.get('specialist'),
+                totalPatients: 0,
+                status: 'Available',
+                email: formData.get('email'),
+                phone: formData.get('phoneNumber'),
+                consultationFee: parseInt(formData.get('consultationFee')),
+                password: password
+            };
+            
+            // Save to localStorage (in a real app, this would be sent to a server)
+            let doctorsData = JSON.parse(localStorage.getItem('hm_doctors_data') || '[]');
+            doctorsData.push(newDoctor);
+            localStorage.setItem('hm_doctors_data', JSON.stringify(doctorsData));
+            
+            // Show success message
+            alert(`Doctor registered successfully!\nDoctor ID: ${doctorId}`);
+            
+            // Redirect to doctors page
+            window.location.href = 'doctors.html';
+        });
+
+        // Password confirmation validation
+        document.querySelector('input[name="confirmPassword"]').addEventListener('input', function() {
+            const password = document.querySelector('input[name="password"]').value;
+            const confirmPassword = this.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                this.setCustomValidity('Passwords do not match');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -81,7 +81,7 @@
                 <!-- Header Section -->
                 <div class="flex items-center justify-between mb-6">
                     <h1 class="text-2xl font-semibold text-gray-900">Doctors</h1>
-                    <button id="open-add-doctor" class="px-6 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-full text-sm font-medium">
+                    <button onclick="window.location.href='doctor-registration.html'" class="px-6 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-full text-sm font-medium">
                         Add Doctor
                     </button>
                 </div>
@@ -179,80 +179,6 @@
         </div>
     </div>
 
-    <!-- Add Doctor Modal -->
-    <div id="add-doctor-modal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg p-6">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold text-gray-800">Add Doctor</h3>
-                <button id="close-add-doctor" class="text-gray-500 hover:text-gray-700"><i class="fas fa-times"></i></button>
-            </div>
-            <form id="doctor-form" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                        <input required type="text" name="name" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Dr. John Smith" />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Doctor ID</label>
-                        <input required type="text" name="id" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" placeholder="WNH-GM-01" />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
-                        <select name="department" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm">
-                            <option value="">Select Department</option>
-                            <option value="Medicine">Medicine</option>
-                            <option value="Cardiology">Cardiology</option>
-                            <option value="Neurology">Neurology</option>
-                            <option value="General Medicine">General Medicine</option>
-                            <option value="Emergency Medicine">Emergency Medicine</option>
-                            <option value="Internal Medicine">Internal Medicine</option>
-                            <option value="Pediatrics">Pediatrics</option>
-                            <option value="Surgery">Surgery</option>
-                            <option value="Orthopedics">Orthopedics</option>
-                            <option value="Dermatology">Dermatology</option>
-                            <option value="Oncology">Oncology</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Specialist</label>
-                        <select name="specialist" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm">
-                            <option value="">Select Specialist</option>
-                            <option value="Heart Speclist">Heart Speclist</option>
-                            <option value="Brain Speclist">Brain Speclist</option>
-                            <option value="General Speclist">General Speclist</option>
-                            <option value="Cardiologist">Cardiologist</option>
-                            <option value="Neurologist">Neurologist</option>
-                            <option value="Pediatrician">Pediatrician</option>
-                            <option value="Surgeon">Surgeon</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Total Patients</label>
-                        <input type="number" name="totalPatients" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" placeholder="100" />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                        <select name="status" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm">
-                            <option value="Available">Available</option>
-                            <option value="Unavailable">Unavailable</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input type="email" name="email" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" placeholder="doctor@hospital.com" />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                    <input type="tel" name="phone" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" placeholder="+1 234 567 8900" />
-                </div>
-                <div class="flex items-center justify-end space-x-2">
-                    <button type="button" id="cancel-add-doctor" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">Cancel</button>
-                    <button type="submit" class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">Add Doctor</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- Edit Doctor Modal -->
     <div id="edit-doctor-modal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
@@ -372,7 +298,9 @@
                         <td class="px-5 py-3">
                             <input type="checkbox" class="rounded border-gray-300">
                         </td>
-                        <td class="px-5 py-3 text-gray-800">${doctor.name}</td>
+                        <td class="px-5 py-3">
+                            <a href="doctor-detail.html?id=${doctor.doctorId}" class="text-blue-600 hover:text-blue-800 font-medium">${doctor.name}</a>
+                        </td>
                         <td class="px-5 py-3 text-gray-700">${doctor.doctorId}</td>
                         <td class="px-5 py-3 text-gray-700">${doctor.department}</td>
                         <td class="px-5 py-3 text-gray-700">${doctor.specialist}</td>
@@ -397,17 +325,6 @@
             countEl.textContent = `Showing ${doctorsData.length} Out of ${doctorsData.length}`;
         }
 
-        // Modal functions
-        function openAddModal() {
-            document.getElementById('add-doctor-modal').classList.remove('hidden');
-            document.getElementById('add-doctor-modal').classList.add('flex');
-        }
-
-        function closeAddModal() {
-            document.getElementById('add-doctor-modal').classList.add('hidden');
-            document.getElementById('add-doctor-modal').classList.remove('flex');
-            document.getElementById('doctor-form').reset();
-        }
 
         function openEditModal() {
             document.getElementById('edit-doctor-modal').classList.remove('hidden');
@@ -446,32 +363,10 @@
         }
 
         // Event listeners
-        document.getElementById('open-add-doctor').addEventListener('click', openAddModal);
-        document.getElementById('close-add-doctor').addEventListener('click', closeAddModal);
-        document.getElementById('cancel-add-doctor').addEventListener('click', closeAddModal);
         document.getElementById('close-edit-doctor').addEventListener('click', closeEditModal);
         document.getElementById('cancel-edit-doctor').addEventListener('click', closeEditModal);
 
         // Form submissions
-        document.getElementById('doctor-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            const newDoctor = {
-                id: doctorsData.length + 1,
-                name: formData.get('name'),
-                doctorId: formData.get('id'),
-                department: formData.get('department'),
-                specialist: formData.get('specialist'),
-                totalPatients: parseInt(formData.get('totalPatients')) || 0,
-                status: formData.get('status'),
-                email: formData.get('email'),
-                phone: formData.get('phone')
-            };
-            doctorsData.push(newDoctor);
-            saveDoctors();
-            renderTable();
-            closeAddModal();
-        });
 
         document.getElementById('edit-doctor-form').addEventListener('submit', function(e) {
             e.preventDefault();

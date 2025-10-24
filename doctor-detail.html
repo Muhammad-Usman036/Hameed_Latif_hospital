@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Detail - Hospital Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="shared-sidebar.js"></script>
+    <style>
+        :root {
+            --accent-50: #fff7ed;
+            --accent-100: #ffedd5;
+            --accent-200: #fed7aa;
+            --accent-300: #fdba74;
+            --accent-400: #fb923c;
+            --accent-500: #f97316;
+            --accent-600: #ea580c;
+            --accent-700: #c2410c;
+            --accent-800: #9a3412;
+            --accent-900: #7c2d12;
+            --accent-950: #431407;
+        }
+        .bg-orange-50{background-color:var(--accent-50)!important}
+        .bg-orange-100{background-color:var(--accent-100)!important}
+        .bg-orange-200{background-color:var(--accent-200)!important}
+        .bg-orange-300{background-color:var(--accent-300)!important}
+        .bg-orange-400{background-color:var(--accent-400)!important}
+        .bg-orange-500{background-color:var(--accent-500)!important}
+        .bg-orange-600{background-color:var(--accent-600)!important}
+        .text-orange-600{color:var(--accent-600)!important}
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Main Container -->
+    <div class="flex h-screen">
+        <!-- Shared Sidebar -->
+        <div id="shared-sidebar"></div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <header class="bg-gray-100 px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button onclick="window.location.href='doctors.html'" class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-arrow-left text-lg"></i>
+                    </button>
+                    <div class="relative">
+                        <input type="text" placeholder="Search anything..." 
+                               class="w-80 px-4 py-2 pl-10 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-bell text-lg"></i>
+                    </button>
+                    <button class="text-gray-600 hover:text-gray-800" id="open-settings">
+                        <i class="fas fa-cog text-lg"></i>
+                    </button>
+                    <button class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-question-circle text-lg"></i>
+                    </button>
+                    
+                    <div class="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg">
+                        <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-medium">M</span>
+                        </div>
+                        <div>
+                            <div class="text-sm font-medium text-gray-800">M. Usman</div>
+                            <div class="text-xs text-gray-500">Admin</div>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Doctor Detail Content -->
+            <main class="flex-1 p-6 overflow-y-auto">
+                <!-- Header Section -->
+                <div class="flex items-center justify-between mb-6">
+                    <h1 class="text-2xl font-semibold text-gray-900">Doctor Profile</h1>
+                    <button onclick="window.location.href='doctors.html'" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium">
+                        <i class="fas fa-list mr-2"></i>Back to Doctors
+                    </button>
+                </div>
+
+                <!-- Doctor Profile Section -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <div class="flex items-start space-x-6">
+                        <!-- Doctor Avatar -->
+                        <div class="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user-md text-orange-500 text-3xl"></i>
+                        </div>
+                        
+                        <!-- Doctor Information -->
+                        <div class="flex-1">
+                            <h2 id="doctor-name" class="text-2xl font-bold text-gray-800 mb-2">Dr. Omar Ali</h2>
+                            <p id="doctor-specialist" class="text-orange-600 font-medium mb-1">Heart Specialist</p>
+                            <p id="doctor-department" class="text-gray-600 mb-2">Cardiology Department</p>
+                            <p id="doctor-id" class="text-sm text-gray-500 mb-4">ID: WNH-GM-01</p>
+                            
+                            <!-- Contact Information -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-envelope text-gray-400"></i>
+                                    <span id="doctor-email" class="text-gray-600">omar@hospital.com</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-phone text-gray-400"></i>
+                                    <span id="doctor-phone" class="text-gray-600">+1 234 567 8900</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Status Badge -->
+                        <div class="text-right">
+                            <span id="doctor-status" class="px-3 py-1 bg-orange-500 text-white rounded-full text-sm font-medium">Available</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <!-- Consultation Fee Card -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Consultation Fee</p>
+                                <p id="consultation-fee" class="text-2xl font-bold text-gray-800">PKR 2000</p>
+                            </div>
+                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-dollar-sign text-orange-500 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Total Patients Card -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Total Patients</p>
+                                <p id="total-patients" class="text-2xl font-bold text-gray-800">100</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-users text-blue-500 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doctor's Rate Card Section -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                            <i class="fas fa-list-alt text-orange-500 mr-2"></i>
+                            Doctor's Rate Card
+                        </h3>
+                        <button id="add-service-btn" class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium flex items-center space-x-2">
+                            <i class="fas fa-plus"></i>
+                            <span>Add New Service</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Rate Card Table -->
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-sm">
+                            <thead class="border-b border-gray-200 text-gray-600">
+                                <tr>
+                                    <th class="text-left px-5 py-3">Service</th>
+                                    <th class="text-left px-5 py-3">Charge</th>
+                                    <th class="text-left px-5 py-3">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rate-card-tbody" class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-5 py-3 text-gray-800">Routine Check-up</td>
+                                    <td class="px-5 py-3 text-gray-700">PKR 2000</td>
+                                    <td class="px-5 py-3">
+                                        <div class="flex items-center space-x-2">
+                                            <button class="text-blue-600 hover:text-blue-800">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-800">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-5 py-3 text-gray-800">ECG Report</td>
+                                    <td class="px-5 py-3 text-gray-700">PKR 1500</td>
+                                    <td class="px-5 py-3">
+                                        <div class="flex items-center space-x-2">
+                                            <button class="text-blue-600 hover:text-blue-800">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-800">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-5 py-3 text-gray-800">Blood Test Consultation</td>
+                                    <td class="px-5 py-3 text-gray-700">PKR 1200</td>
+                                    <td class="px-5 py-3">
+                                        <div class="flex items-center space-x-2">
+                                            <button class="text-blue-600 hover:text-blue-800">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-800">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-5 py-3 text-gray-800">Follow-up Visit</td>
+                                    <td class="px-5 py-3 text-gray-700">PKR 1000</td>
+                                    <td class="px-5 py-3">
+                                        <div class="flex items-center space-x-2">
+                                            <button class="text-blue-600 hover:text-blue-800">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-800">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Add Service Modal -->
+    <div id="add-service-modal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Add New Service</h3>
+                <button id="close-add-service" class="text-gray-500 hover:text-gray-700"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="add-service-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Service Name</label>
+                    <input required type="text" name="serviceName" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Enter service name" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Charge (PKR)</label>
+                    <input required type="number" name="serviceCharge" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Enter charge amount" />
+                </div>
+                <div class="flex items-center justify-end space-x-2">
+                    <button type="button" id="cancel-add-service" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">Add Service</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Theme loader
+        function loadTheme(){ const saved = localStorage.getItem('hm_accent_hex'); if(saved){ const root=document.documentElement; root.style.setProperty('--accent-500', saved);} }
+        loadTheme();
+
+        // Initialize shared sidebar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load shared sidebar
+            document.getElementById('shared-sidebar').innerHTML = createSharedSidebar('doctors');
+            initSharedSidebar('doctors');
+            
+            // Load doctor data
+            loadDoctorData();
+        });
+
+        // Load doctor data from URL parameter
+        function loadDoctorData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const doctorId = urlParams.get('id');
+            
+            if (doctorId) {
+                // Load doctors data from localStorage
+                const doctorsData = JSON.parse(localStorage.getItem('hm_doctors_data') || '[]');
+                const doctor = doctorsData.find(d => d.doctorId === doctorId);
+                
+                if (doctor) {
+                    // Update doctor information
+                    document.getElementById('doctor-name').textContent = doctor.name;
+                    document.getElementById('doctor-specialist').textContent = doctor.specialist;
+                    document.getElementById('doctor-department').textContent = doctor.department + ' Department';
+                    document.getElementById('doctor-id').textContent = 'ID: ' + doctor.doctorId;
+                    document.getElementById('doctor-email').textContent = doctor.email;
+                    document.getElementById('doctor-phone').textContent = doctor.phone;
+                    document.getElementById('doctor-status').textContent = doctor.status;
+                    document.getElementById('consultation-fee').textContent = 'PKR ' + (doctor.consultationFee || 2000);
+                    document.getElementById('total-patients').textContent = doctor.totalPatients || 100;
+                    
+                    // Update status badge color
+                    const statusBadge = document.getElementById('doctor-status');
+                    if (doctor.status === 'Available') {
+                        statusBadge.className = 'px-3 py-1 bg-orange-500 text-white rounded-full text-sm font-medium';
+                    } else {
+                        statusBadge.className = 'px-3 py-1 bg-red-500 text-white rounded-full text-sm font-medium';
+                    }
+                } else {
+                    // Doctor not found, redirect to doctors page
+                    alert('Doctor not found!');
+                    window.location.href = 'doctors.html';
+                }
+            } else {
+                // No ID provided, redirect to doctors page
+                alert('No doctor ID provided!');
+                window.location.href = 'doctors.html';
+            }
+        }
+
+        // Modal functions
+        function openAddServiceModal() {
+            document.getElementById('add-service-modal').classList.remove('hidden');
+            document.getElementById('add-service-modal').classList.add('flex');
+        }
+
+        function closeAddServiceModal() {
+            document.getElementById('add-service-modal').classList.add('hidden');
+            document.getElementById('add-service-modal').classList.remove('flex');
+            document.getElementById('add-service-form').reset();
+        }
+
+        // Event listeners
+        document.getElementById('add-service-btn').addEventListener('click', openAddServiceModal);
+        document.getElementById('close-add-service').addEventListener('click', closeAddServiceModal);
+        document.getElementById('cancel-add-service').addEventListener('click', closeAddServiceModal);
+
+        // Add service form submission
+        document.getElementById('add-service-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const serviceName = formData.get('serviceName');
+            const serviceCharge = formData.get('serviceCharge');
+            
+            // Add new row to the table
+            const tbody = document.getElementById('rate-card-tbody');
+            const newRow = document.createElement('tr');
+            newRow.className = 'hover:bg-gray-50';
+            newRow.innerHTML = `
+                <td class="px-5 py-3 text-gray-800">${serviceName}</td>
+                <td class="px-5 py-3 text-gray-700">PKR ${serviceCharge}</td>
+                <td class="px-5 py-3">
+                    <div class="flex items-center space-x-2">
+                        <button class="text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="text-red-600 hover:text-red-800">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(newRow);
+            
+            closeAddServiceModal();
+        });
+    </script>
+</body>
+</html>
