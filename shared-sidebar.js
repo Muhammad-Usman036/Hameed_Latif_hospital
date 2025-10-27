@@ -45,6 +45,13 @@ function createSharedSidebar(currentPage = 'dashboard') {
                     </div>
                 </div>
                 
+                <div class="sidebar-nav-item ${currentPage === 'nurse' ? 'active' : ''}" data-page="nurse">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-user-nurse w-4"></i>
+                        <span class="text-sm">Nurse</span>
+                    </div>
+                </div>
+                
                 <div class="sidebar-nav-item ${currentPage === 'patients' ? 'active' : ''}" data-page="patients">
                     <div class="flex items-center space-x-3">
                         <i class="fas fa-users w-4"></i>
@@ -139,6 +146,7 @@ const navigationMap = {
     'bedboard': 'bed-board.html',
     'admission': 'ipd-admission.html',
     'appointments': 'appointments.html',
+    'nurse': 'nurse.html',
     'patients': 'index.html#patients',
     'doctors': 'doctors.html',
     'doctor-schedule': 'doctor-schedule.html',

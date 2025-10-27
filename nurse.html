@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nurse Dashboard - Hospital Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="shared-sidebar.js"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Main Container -->
+    <div class="flex h-screen">
+        <!-- Shared Sidebar -->
+        <div id="shared-sidebar"></div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <div class="p-6 overflow-y-auto">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800">Nurse Dashboard</h1>
+                    <p class="text-gray-600">Add patient vitals and monitor health status</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-right">
+                        <p class="text-sm text-gray-600">Nurse</p>
+                        <p class="font-semibold text-gray-800">Sarah Johnson</p>
+                    </div>
+                    <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user-nurse text-white"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patient Selection -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Select Patient</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Patient ID / Name</label>
+                    <input type="text" id="patient-search" placeholder="Search by ID or name..." 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Room Number</label>
+                    <input type="text" id="room-number" placeholder="Room number..." 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                </div>
+            </div>
+        </div>
+
+        <!-- Vitals Form -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-lg font-semibold text-gray-800">Patient Vitals</h2>
+                
+            </div>
+
+            <form id="vitals-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Blood Pressure -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Blood Pressure (mmHg)</label>
+                    <div class="flex space-x-2">
+                        <input type="number" id="bp-systolic" placeholder="120" min="60" max="250" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                        <span class="text-gray-500 self-center">/</span>
+                        <input type="number" id="bp-diastolic" placeholder="80" min="40" max="150" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                    </div>
+                </div>
+
+                <!-- Heart Rate -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Heart Rate (bpm)</label>
+                    <input type="number" id="heart-rate" placeholder="72" min="30" max="200" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                </div>
+
+                <!-- Temperature -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Temperature (°F)</label>
+                    <input type="number" id="temperature" placeholder="98.6" min="90" max="110" step="0.1" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                </div>
+
+                <!-- Respiratory Rate -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Respiratory Rate (per min)</label>
+                    <input type="number" id="respiratory-rate" placeholder="16" min="8" max="40" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                </div>
+
+                <!-- SpO2 -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">SpO2 (%)</label>
+                    <input type="number" id="spo2" placeholder="98" min="70" max="100" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                </div>
+
+                <!-- Weight -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Weight (kg)</label>
+                    <input type="number" id="weight" placeholder="70" min="20" max="300" step="0.1" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                </div>
+
+                <!-- Glucose -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Glucose (mg/dL)</label>
+                    <input type="number" id="glucose" placeholder="95" min="50" max="500" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                </div>
+
+                <!-- Additional Notes -->
+                <div class="space-y-2 md:col-span-2 lg:col-span-3">
+                    <label class="block text-sm font-medium text-gray-700">Additional Notes</label>
+                    <textarea id="notes" placeholder="Any additional observations or notes..." rows="3" 
+                              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500"></textarea>
+                </div>
+                <div class="flex items-end justify-end col-span-3">
+                    <button id="save-vitals-btn" class="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                    <i class="fas fa-save mr-2"></i>Save Vitals
+                </button>
+                </div>
+                
+            </form>
+        </div>
+
+        <!-- Recent Vitals History -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mt-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Recent Vitals History</h2>
+            <div id="vitals-history" class="space-y-3">
+                <!-- Dynamic content will be added here -->
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        // Initialize shared sidebar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Populate sidebar HTML
+            const sidebarDiv = document.getElementById('shared-sidebar');
+            if (sidebarDiv) {
+                sidebarDiv.innerHTML = createSharedSidebar('nurse');
+            }
+            
+            // Initialize sidebar functionality
+            initSharedSidebar('nurse');
+            loadVitalsHistory();
+        });
+
+        // Save vitals function
+        function saveVitals() {
+            const vitalsData = {
+                patientId: document.getElementById('patient-search').value,
+                roomNumber: document.getElementById('room-number').value,
+                bpSystolic: document.getElementById('bp-systolic').value,
+                bpDiastolic: document.getElementById('bp-diastolic').value,
+                heartRate: document.getElementById('heart-rate').value,
+                temperature: document.getElementById('temperature').value,
+                respiratoryRate: document.getElementById('respiratory-rate').value,
+                spo2: document.getElementById('spo2').value,
+                weight: document.getElementById('weight').value,
+                glucose: document.getElementById('glucose').value,
+                notes: document.getElementById('notes').value,
+                timestamp: new Date().toISOString(),
+                nurseName: 'Sarah Johnson'
+            };
+
+            // Validate required fields
+            if (!vitalsData.patientId) {
+                alert('Please enter Patient ID or Name');
+                return;
+            }
+
+            // Save to localStorage
+            let vitalsHistory = JSON.parse(localStorage.getItem('vitalsHistory') || '[]');
+            vitalsHistory.unshift(vitalsData); // Add to beginning
+            localStorage.setItem('vitalsHistory', JSON.stringify(vitalsHistory));
+
+            // Clear form
+            document.getElementById('vitals-form').reset();
+
+            // Reload history
+            loadVitalsHistory();
+
+            // Show success message
+            alert('Vitals saved successfully!');
+        }
+
+        // Load vitals history
+        function loadVitalsHistory() {
+            const vitalsHistory = JSON.parse(localStorage.getItem('vitalsHistory') || '[]');
+            const historyContainer = document.getElementById('vitals-history');
+
+            if (vitalsHistory.length === 0) {
+                historyContainer.innerHTML = '<p class="text-gray-500 text-center py-4">No vitals recorded yet</p>';
+                return;
+            }
+
+            historyContainer.innerHTML = vitalsHistory.map(vitals => `
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-gray-800">${vitals.patientId}</h3>
+                        <span class="text-sm text-gray-500">${new Date(vitals.timestamp).toLocaleString()}</span>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div><span class="text-gray-600">BP:</span> ${vitals.bpSystolic}/${vitals.bpDiastolic}</div>
+                        <div><span class="text-gray-600">HR:</span> ${vitals.heartRate} bpm</div>
+                        <div><span class="text-gray-600">Temp:</span> ${vitals.temperature}°F</div>
+                        <div><span class="text-gray-600">RR:</span> ${vitals.respiratoryRate}/min</div>
+                        <div><span class="text-gray-600">SpO2:</span> ${vitals.spo2}%</div>
+                        <div><span class="text-gray-600">Weight:</span> ${vitals.weight} kg</div>
+                        <div><span class="text-gray-600">Glucose:</span> ${vitals.glucose} mg/dL</div>
+                        <div><span class="text-gray-600">Nurse:</span> ${vitals.nurseName}</div>
+                    </div>
+                    ${vitals.notes ? `<p class="text-sm text-gray-600 mt-2"><strong>Notes:</strong> ${vitals.notes}</p>` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Add event listener for save button
+        document.getElementById('save-vitals-btn').addEventListener('click', saveVitals);
+
+        // Add Enter key support for form submission
+        document.getElementById('vitals-form').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                saveVitals();
+            }
+        });
+    </script>
+</body>
+</html>
