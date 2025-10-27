@@ -163,7 +163,7 @@
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Visit Date & Time</label>
                                 <input type="datetime-local" name="visitDateTime" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" required />
                             </div>
-
+                    
                             <!-- Doctor Selection -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Doctor</label>
@@ -193,19 +193,29 @@
                                     </select>
                                 </div>
                             </div>
-
+                    
                             <!-- Diagnosis -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Diagnosis</label>
-                                <input type="text" name="diagnosis" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Enter diagnosis" required />
+                                <div class="flex items-center space-x-2">
+                                    <input type="text" name="diagnosis" class="flex-1 border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Enter diagnosis" required />
+                                    <button type="button" class="text-orange-500 hover:text-orange-600" title="Voice input">
+                                        <i class="fas fa-microphone"></i>
+                                    </button>
+                                </div>
                             </div>
-
+                    
                             <!-- Symptoms -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Symptoms</label>
-                                <textarea name="symptoms" rows="3" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Describe symptoms"></textarea>
+                                <div class="flex items-start space-x-2">
+                                    <textarea name="symptoms" rows="3" class="flex-1 border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Describe symptoms"></textarea>
+                                    <button type="button" class="text-orange-500 hover:text-orange-600 mt-1" title="Voice input">
+                                        <i class="fas fa-microphone"></i>
+                                    </button>
+                                </div>
                             </div>
-
+                    
                             <!-- Medication Section -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Medication</label>
@@ -228,13 +238,18 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Notes -->
+                    
+                            <!-- Clinical Notes -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Clinical Notes</label>
-                                <textarea name="notes" rows="3" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Additional notes"></textarea>
+                                <div class="flex items-start space-x-2">
+                                    <textarea name="notes" rows="3" class="flex-1 border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Additional notes"></textarea>
+                                    <button type="button" class="text-orange-500 hover:text-orange-600 mt-1" title="Voice input">
+                                        <i class="fas fa-microphone"></i>
+                                    </button>
+                                </div>
                             </div>
-
+                    
                             <!-- Form Actions -->
                             <div class="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200">
                                 <button type="button" onclick="clearForm()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
@@ -246,7 +261,6 @@
                             </div>
                         </form>
                     </div>
-
                     <div class="bg-white rounded-lg shadow-sm p-4">
                         <h3 class="font-semibold text-gray-800 mb-3">Additional Information</h3>
                         <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
@@ -395,7 +409,7 @@
                                 <div class="flex items-center space-x-2">
                                     <button class="text-gray-500 hover:text-gray-700"><i class="fas fa-print"></i></button>
                                     <button class="text-gray-500 hover:text-gray-700"><i class="fas fa-download"></i></button>
-                                    <button class="text-gray-500 hover:text-gray-700"><i class="fas fa-edit"></i></button>
+                                    <button class="text-gray-500 hover:text-gray-700" onclick="openConfigureCaseSheet()"><i class="fas fa-edit"></i></button>
                                     <button class="text-gray-500 hover:text-gray-700"><i class="fas fa-cog"></i></button>
                                 </div>
                             </div>
@@ -406,34 +420,8 @@
                                 <p class="text-right text-gray-500">Oct 07, 2025</p>
                             </div>
 
-                            <div class="space-y-3">
-                                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-                                    <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">Chief Complaints: Abdominal pain - 5 days</span>
-                                    <i class="fas fa-info-circle text-gray-400"></i>
-                                </div>
-                                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-                                    <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">Examination: Abdominal pain - 5 days</span>
-                                    <i class="fas fa-info-circle text-gray-400"></i>
-                                </div>
-                                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-                                    <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">Investigation: Abdominal pain - 5 days</span>
-                                    <i class="fas fa-info-circle text-gray-400"></i>
-                                </div>
-                                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-                                    <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">Diagnostic: Abdominal pain - 5 days</span>
-                                    <i class="fas fa-info-circle text-gray-400"></i>
-                                </div>
-                                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-                                    <div class="flex space-x-2">
-                                        <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">Prescription: Tab Gelusi MPS</span>
-                                        <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">Peracetamol</span>
-                                    </div>
-                                    <i class="fas fa-info-circle text-gray-400"></i>
-                                </div>
-                                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-                                    <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">Instructions: Abdominal pain - 5 days</span>
-                                    <i class="fas fa-info-circle text-gray-400"></i>
-                                </div>
+                            <div id="case-sheet-content" class="space-y-3" style="display: none;">
+                                <!-- Dynamic content will be generated here based on user selections -->
                             </div>
                         </div>
                     </div>
@@ -1733,6 +1721,16 @@
             btn.classList.remove('bg-white','border');
             Object.values(subpanels).forEach(p => p.classList.add('hidden'));
             subpanels[btn.dataset.subtab].classList.remove('hidden');
+            
+            // Show configure popup when Case Sheet (overview) tab is clicked
+            if (btn.dataset.subtab === 'overview') {
+                const hasConfig = localStorage.getItem('caseSheetConfig');
+                if (!hasConfig) {
+                    openConfigureCaseSheet();
+                } else {
+                    updateCaseSheetDisplay();
+                }
+            }
         }));
 
         // Lab Reports Sub-tabs functionality
@@ -1991,7 +1989,383 @@
             alert('Record added successfully!');
             clearForm();
         });
+
+        // Configure Case Sheet functionality
+        function openConfigureCaseSheet() {
+            document.getElementById('configure-case-sheet-modal').classList.remove('hidden');
+            loadCaseSheetConfig();
+        }
+
+        function closeConfigureCaseSheet() {
+            document.getElementById('configure-case-sheet-modal').classList.add('hidden');
+        }
+
+        function loadCaseSheetConfig() {
+            const config = JSON.parse(localStorage.getItem('caseSheetConfig') || '{}');
+            const checkboxes = [
+                'case-vitals', 'case-complaints', 'case-examination', 'case-investigation',
+                'case-diagnosis', 'case-prescription', 'case-therapy', 'case-instructions',
+                'case-tooth-chart', 'case-daycare', 'case-visit-summary', 'case-vaccine',
+                'case-brand-list', 'case-treatment-plan', 'case-nurse-notes'
+            ];
+            
+            // If no config exists, set all to checked by default
+            const hasConfig = Object.keys(config).length > 0;
+            
+            checkboxes.forEach(id => {
+                const checkbox = document.getElementById(id);
+                if (checkbox) {
+                    checkbox.checked = hasConfig ? (config[id] || false) : true;
+                }
+            });
+            
+            // Update Select All checkbox
+            const selectAllCheckbox = document.getElementById('select-all-sections');
+            if (selectAllCheckbox) {
+                const allChecked = checkboxes.every(id => {
+                    const checkbox = document.getElementById(id);
+                    return checkbox && checkbox.checked;
+                });
+                selectAllCheckbox.checked = allChecked;
+            }
+            
+            updateSaveButton();
+        }
+
+        function saveCaseSheetConfig() {
+            const config = {};
+            const checkboxes = [
+                'case-vitals', 'case-complaints', 'case-examination', 'case-investigation',
+                'case-diagnosis', 'case-prescription', 'case-therapy', 'case-instructions',
+                'case-tooth-chart', 'case-daycare', 'case-visit-summary', 'case-vaccine',
+                'case-brand-list', 'case-treatment-plan', 'case-nurse-notes'
+            ];
+            
+            checkboxes.forEach(id => {
+                const checkbox = document.getElementById(id);
+                if (checkbox) {
+                    config[id] = checkbox.checked;
+                }
+            });
+            
+            localStorage.setItem('caseSheetConfig', JSON.stringify(config));
+            updateCaseSheetDisplay();
+            closeConfigureCaseSheet();
+        }
+
+        function updateCaseSheetDisplay() {
+            const config = JSON.parse(localStorage.getItem('caseSheetConfig') || '{}');
+            const caseSheetContent = document.getElementById('case-sheet-content');
+            
+            if (!caseSheetContent) return;
+            
+            // Clear existing content
+            caseSheetContent.innerHTML = '';
+            
+            // Define section data
+            const sectionData = {
+                'case-vitals': { name: 'Vitals', content: 'Blood Pressure: 120/80, Heart Rate: 72 bpm, Temperature: 98.6°F' },
+                'case-complaints': { name: 'Chief Complaints', content: 'Abdominal pain - 5 days' },
+                'case-examination': { name: 'Examination', content: 'Abdominal tenderness, mild distension' },
+                'case-investigation': { name: 'Investigation', content: 'Blood tests, Ultrasound abdomen' },
+                'case-diagnosis': { name: 'Diagnosis', content: 'Acute gastritis with mild inflammation' },
+                'case-prescription': { name: 'Prescription', content: 'Tab Gelusi MPS, Paracetamol' },
+                'case-therapy': { name: 'Therapy', content: 'Diet modification, rest, follow-up in 3 days' },
+                'case-instructions': { name: 'Instructions', content: 'Take medication with food, avoid spicy foods' },
+                'case-tooth-chart': { name: 'Tooth Chart', content: 'Dental examination completed' },
+                'case-daycare': { name: 'DayCare Summary', content: 'Patient stable, vitals normal' },
+                'case-visit-summary': { name: 'Visit Summary', content: 'Follow-up scheduled for next week' },
+                'case-vaccine': { name: 'Vaccine', content: 'No vaccines required at this time' },
+                'case-brand-list': { name: 'Brand List', content: 'Generic medications prescribed' },
+                'case-treatment-plan': { name: 'Treatment Plan', content: 'Conservative management with medication' },
+                'case-nurse-notes': { name: 'Nurse Notes', content: 'Patient cooperative, no complications' }
+            };
+            
+            // Create sections based on configuration
+            let hasVisibleSections = false;
+            Object.entries(sectionData).forEach(([configKey, data]) => {
+                if (config[configKey]) {
+                    const sectionDiv = document.createElement('div');
+                    sectionDiv.className = 'bg-gray-50 p-3 rounded-lg';
+                    sectionDiv.innerHTML = `
+                        <div class="flex items-center space-x-2 overflow-x-auto">
+                            <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm whitespace-nowrap">${data.name}:</span>
+                            <div id="content-${configKey}" class="flex items-center space-x-2 flex-1 min-w-0"></div>
+                            <i class="fas fa-plus text-gray-400 cursor-pointer hover:text-orange-500 flex-shrink-0" onclick="addContentToSection('${configKey}', this)"></i>
+                        </div>
+                    `;
+                    caseSheetContent.appendChild(sectionDiv);
+                    hasVisibleSections = true;
+                }
+            });
+            
+            // Show case sheet content if there are visible sections
+            if (hasVisibleSections) {
+                caseSheetContent.style.display = 'block';
+            } else {
+                caseSheetContent.style.display = 'none';
+            }
+        }
+
+        function addContentToSection(sectionKey, plusIcon) {
+            const contentContainer = document.getElementById(`content-${sectionKey}`);
+            if (!contentContainer) return;
+            
+            // Create input field container
+            const inputContainer = document.createElement('div');
+            inputContainer.className = 'flex items-center space-x-1 bg-white px-2 py-1 rounded border border-gray-300';
+            
+            // Create input field with auto width
+            const inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.placeholder = 'Enter...';
+            inputField.className = 'px-2 py-1 border-none outline-none text-sm bg-transparent min-w-20 max-w-40';
+            inputField.style.width = '80px'; // Initial width
+            
+            // Auto-resize input based on content
+            inputField.addEventListener('input', function() {
+                this.style.width = Math.max(80, this.value.length * 8 + 20) + 'px';
+            });
+            
+            // Create save button
+            const saveBtn = document.createElement('button');
+            saveBtn.innerHTML = '<i class="fas fa-check text-green-500 text-xs"></i>';
+            saveBtn.className = 'hover:bg-green-50 rounded p-1';
+            saveBtn.onclick = () => saveContentToSection(sectionKey, inputField.value, inputContainer);
+            
+            // Create cancel button
+            const cancelBtn = document.createElement('button');
+            cancelBtn.innerHTML = '<i class="fas fa-times text-red-500 text-xs"></i>';
+            cancelBtn.className = 'hover:bg-red-50 rounded p-1';
+            cancelBtn.onclick = () => inputContainer.remove();
+            
+            // Add elements to container
+            inputContainer.appendChild(inputField);
+            inputContainer.appendChild(saveBtn);
+            inputContainer.appendChild(cancelBtn);
+            
+            // Add to content container
+            contentContainer.appendChild(inputContainer);
+            
+            // Focus on input field
+            inputField.focus();
+        }
+        
+        function saveContentToSection(sectionKey, content, inputContainer) {
+            if (!content.trim()) {
+                inputContainer.remove();
+                return;
+            }
+            
+            // Create content display element (inline)
+            const contentDisplay = document.createElement('div');
+            contentDisplay.className = 'flex items-center space-x-1 bg-blue-50 px-2 py-1 rounded border border-blue-200';
+            contentDisplay.innerHTML = `
+                <span class="text-sm text-gray-700 whitespace-nowrap">${content}</span>
+                <button onclick="editContent(this)" class="text-blue-500 hover:text-blue-700">
+                    <i class="fas fa-edit text-xs"></i>
+                </button>
+                <button onclick="deleteContent(this)" class="text-red-500 hover:text-red-700">
+                    <i class="fas fa-trash text-xs"></i>
+                </button>
+            `;
+            
+            // Replace input container with content display
+            inputContainer.parentNode.replaceChild(contentDisplay, inputContainer);
+        }
+        
+        function editContent(editBtn) {
+            const contentDisplay = editBtn.closest('.flex');
+            const contentSpan = contentDisplay.querySelector('span');
+            const currentContent = contentSpan.textContent;
+            
+            // Create input field
+            const inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.value = currentContent;
+            inputField.className = 'flex-1 px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:border-orange-500';
+            
+            // Create save button
+            const saveBtn = document.createElement('button');
+            saveBtn.innerHTML = '<i class="fas fa-check text-green-500"></i>';
+            saveBtn.className = 'px-2 py-1 hover:bg-green-50 rounded';
+            saveBtn.onclick = () => {
+                contentSpan.textContent = inputField.value;
+                inputField.parentNode.replaceChild(contentSpan, inputField);
+                saveBtn.parentNode.replaceChild(editBtn.parentNode, saveBtn.parentNode);
+            };
+            
+            // Replace content with input
+            contentSpan.parentNode.replaceChild(inputField, contentSpan);
+            editBtn.parentNode.replaceChild(saveBtn, editBtn.parentNode);
+            
+            inputField.focus();
+        }
+        
+        function deleteContent(deleteBtn) {
+            deleteBtn.closest('.flex').remove();
+        }
+
+        function updateSaveButton() {
+            const confirmCheckbox = document.getElementById('confirm-changes');
+            const saveBtn = document.getElementById('save-config-btn');
+            
+            if (confirmCheckbox && saveBtn) {
+                saveBtn.disabled = !confirmCheckbox.checked;
+            }
+        }
+
+        // Select All functionality
+        function toggleSelectAll() {
+            const selectAllCheckbox = document.getElementById('select-all-sections');
+            const checkboxes = [
+                'case-vitals', 'case-complaints', 'case-examination', 'case-investigation',
+                'case-diagnosis', 'case-prescription', 'case-therapy', 'case-instructions',
+                'case-tooth-chart', 'case-daycare', 'case-visit-summary', 'case-vaccine',
+                'case-brand-list', 'case-treatment-plan', 'case-nurse-notes'
+            ];
+            
+            checkboxes.forEach(id => {
+                const checkbox = document.getElementById(id);
+                if (checkbox) {
+                    checkbox.checked = selectAllCheckbox.checked;
+                }
+            });
+        }
+
+        // Add event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize case sheet - hide content initially
+            const caseSheetContent = document.getElementById('case-sheet-content');
+            if (caseSheetContent) {
+                caseSheetContent.style.display = 'none';
+            }
+            
+            // Check if we have a saved configuration
+            const hasConfig = localStorage.getItem('caseSheetConfig');
+            if (hasConfig) {
+                updateCaseSheetDisplay();
+            }
+            
+            // Add event listener for confirmation checkbox
+            const confirmCheckbox = document.getElementById('confirm-changes');
+            if (confirmCheckbox) {
+                confirmCheckbox.addEventListener('change', updateSaveButton);
+            }
+            
+            // Add event listener for Select All checkbox
+            const selectAllCheckbox = document.getElementById('select-all-sections');
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('change', toggleSelectAll);
+            }
+        });
     </script>
+
+    <!-- Configure Case Sheet Modal -->
+    <div id="configure-case-sheet-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between p-6 border-b">
+                <h3 class="text-lg font-semibold text-gray-800">Configure Case Sheet</h3>
+                <button onclick="closeConfigureCaseSheet()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="p-6">
+                <p class="text-sm text-gray-600 mb-4">Select which sections you want to display on the case sheet:</p>
+                
+                <!-- Select All Checkbox -->
+                <div class="flex items-center justify-between py-3 border-b-2 border-orange-200 mb-4">
+                    <span class="text-sm font-semibold text-gray-800">Select All</span>
+                    <input type="checkbox" id="select-all-sections" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500" checked>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span class="text-sm font-medium text-gray-700">Vitals</span>
+                        <input type="checkbox" id="case-vitals" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span class="text-sm font-medium text-gray-700">Chief Complaints</span>
+                        <input type="checkbox" id="case-complaints" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span class="text-sm font-medium text-gray-700">Examination</span>
+                        <input type="checkbox" id="case-examination" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span class="text-sm font-medium text-gray-700">Investigation</span>
+                        <input type="checkbox" id="case-investigation" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span class="text-sm font-medium text-gray-700">Diagnosis</span>
+                        <input type="checkbox" id="case-diagnosis" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span class="text-sm font-medium text-gray-700">Prescription</span>
+                        <input type="checkbox" id="case-prescription" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span class="text-sm font-medium text-gray-700">Therapy</span>
+                        <input type="checkbox" id="case-therapy" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span class="text-sm font-medium text-gray-700">Instructions</span>
+                        <input type="checkbox" id="case-instructions" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span class="text-sm font-medium text-gray-700">Tooth Chart</span>
+                        <input type="checkbox" id="case-tooth-chart" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span class="text-sm font-medium text-gray-700">DayCare Summary</span>
+                        <input type="checkbox" id="case-daycare" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span class="text-sm font-medium text-gray-700">Visit Summary</span>
+                        <input type="checkbox" id="case-visit-summary" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span class="text-sm font-medium text-gray-700">Vaccine</span>
+                        <input type="checkbox" id="case-vaccine" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span class="text-sm font-medium text-gray-700">Brand List</span>
+                        <input type="checkbox" id="case-brand-list" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span class="text-sm font-medium text-gray-700">Treatment Plan</span>
+                        <input type="checkbox" id="case-treatment-plan" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span class="text-sm font-medium text-gray-700">Nurse Notes</span>
+                        <input type="checkbox" id="case-nurse-notes" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-yellow-50 rounded-lg">
+                    <p class="text-sm text-yellow-800 mb-2">
+                        <strong>Note:</strong> Only selected sections will be accessible. Changes will affect your OP Case Sheet.
+                    </p>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="confirm-changes" class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                        <label for="confirm-changes" class="ml-2 text-sm text-gray-700">
+                            I want to continue with the changes
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-end space-x-3 p-6 border-t bg-gray-50">
+                <button onclick="closeConfigureCaseSheet()" class="px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-50">
+                    Cancel
+                </button>
+                <button onclick="saveCaseSheetConfig()" class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 disabled:opacity-50" id="save-config-btn" disabled>
+                    Save Configuration
+                </button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 
