@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Bill - HMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar" class="w-64 bg-white shadow-lg p-4">
+            <div class="flex items-center space-x-3 mb-6">
+                <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center"><i class="fas fa-plus text-white text-sm"></i></div>
+                <span class="text-lg font-bold text-gray-800">HOSPITAL</span>
+            </div>
+            <div class="space-y-2 text-sm">
+                <a href="index.html" class="block px-4 py-2 rounded hover:bg-gray-50"><i class="fas fa-tachometer-alt w-4 mr-3"></i>Dashboard</a>
+                <div class="px-4 py-2 rounded bg-orange-100 text-orange-600 border-r-4 border-orange-500"><i class="fas fa-users w-4 mr-3"></i>Patients</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <header class="bg-white shadow-sm border-b border-gray-200">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <div class="flex items-center space-x-4">
+                        <button onclick="goBack()" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-arrow-left text-xl"></i>
+                        </button>
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2 bg-orange-500 text-white rounded-lg">
+                                <i class="fas fa-file-invoice text-xl"></i>
+                            </div>
+                            <div>
+                                <h1 class="text-2xl font-bold text-gray-800">Create New Bill</h1>
+                                <p class="text-sm text-gray-600">Generate bill for patient services</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-2">
+                            <img src="https://via.placeholder.com/40x40" alt="Profile" class="w-8 h-8 rounded-full">
+                            <span class="text-sm font-medium text-gray-700">Dr. John Doe</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-auto p-6">
+                <div class="max-w-6xl mx-auto">
+                    <form id="billForm" class="space-y-6">
+
+                        <!-- Billing Details Card -->
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-calendar mr-2 text-orange-500"></i>
+                                Billing Details
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Billing Date *</label>
+                                    <input type="date" id="billingDate" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Due Date *</label>
+                                    <input type="date" id="dueDate" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Itemized Services Card -->
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                                    <i class="fas fa-list mr-2 text-orange-500"></i>
+                                    Itemized Services
+                                </h3>
+                                <button type="button" id="addLineItem" class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">
+                                    <i class="fas fa-plus mr-2"></i>Add Line Item
+                                </button>
+                            </div>
+                            
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-orange-50">
+                                        <tr>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Service Description</th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price (₹)</th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total (₹)</th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="lineItemsTable" class="bg-white divide-y divide-gray-200">
+                                        <!-- Line items will be added dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Billing Summary Card -->
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-calculator mr-2 text-orange-500"></i>
+                                Billing Summary
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm font-medium text-gray-600">Subtotal:</span>
+                                        <span id="subtotal" class="text-lg font-semibold text-gray-900">₹0.00</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm font-medium text-gray-600">Discount (%):</span>
+                                        <input type="number" id="discountPercent" min="0" max="100" value="0" class="w-20 px-2 py-1 border border-gray-300 rounded text-sm">
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm font-medium text-gray-600">Discount Amount:</span>
+                                        <span id="discountAmount" class="text-lg font-semibold text-gray-900">₹0.00</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm font-medium text-gray-600">Tax (%):</span>
+                                        <input type="number" id="taxPercent" min="0" max="100" value="18" class="w-20 px-2 py-1 border border-gray-300 rounded text-sm">
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm font-medium text-gray-600">Tax Amount:</span>
+                                        <span id="taxAmount" class="text-lg font-semibold text-gray-900">₹0.00</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-center">
+                                    <div class="text-center">
+                                        <div class="text-3xl font-bold text-orange-600 mb-2">Grand Total</div>
+                                        <div id="grandTotal" class="text-4xl font-bold text-gray-900">₹0.00</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status and Submit Card -->
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Bill Status *</label>
+                                    <div class="relative">
+                                        <select id="billStatus" class="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none" required>
+                                            <option value="">Select Status</option>
+                                            <option value="Pending">Pending</option>
+                                            <option value="Paid">Paid</option>
+                                        </select>
+                                        <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                                    </div>
+                                </div>
+                                <div class="flex items-end">
+                                    <button type="submit" class="w-full px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200">
+                                        <i class="fas fa-paper-plane mr-2"></i>Create Bill & Send
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Go back to bills page
+        function goBack() {
+            window.location.href = 'patient-detail.html#bills';
+        }
+
+        // Set current date as default billing date
+        document.getElementById('billingDate').valueAsDate = new Date();
+
+        // Add line item functionality
+        let lineItemCount = 0;
+        document.getElementById('addLineItem').addEventListener('click', function() {
+            addLineItem();
+        });
+
+        function addLineItem() {
+            lineItemCount++;
+            const tableBody = document.getElementById('lineItemsTable');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="px-4 py-3">
+                    <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter service description">
+                </td>
+                <td class="px-4 py-3">
+                    <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 date-input">
+                </td>
+                <td class="px-4 py-3">
+                    <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 quantity-input" min="1" value="1">
+                </td>
+                <td class="px-4 py-3">
+                    <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 price-input" min="0" step="0.01" value="0">
+                </td>
+                <td class="px-4 py-3">
+                    <span class="total-amount font-semibold">₹0.00</span>
+                </td>
+                <td class="px-4 py-3">
+                    <button type="button" class="text-red-600 hover:text-red-800 remove-line-item">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+
+            // Add event listeners to new row
+            const quantityInput = row.querySelector('.quantity-input');
+            const priceInput = row.querySelector('.price-input');
+            const dateInput = row.querySelector('.date-input');
+            const totalAmount = row.querySelector('.total-amount');
+            const removeBtn = row.querySelector('.remove-line-item');
+
+            // Set default date to current date
+            dateInput.valueAsDate = new Date();
+
+            quantityInput.addEventListener('input', calculateLineTotal);
+            priceInput.addEventListener('input', calculateLineTotal);
+            removeBtn.addEventListener('click', function() {
+                row.remove();
+                calculateGrandTotal();
+            });
+
+            function calculateLineTotal() {
+                const quantity = parseFloat(quantityInput.value) || 0;
+                const price = parseFloat(priceInput.value) || 0;
+                const total = quantity * price;
+                totalAmount.textContent = `₹${total.toFixed(2)}`;
+                calculateGrandTotal();
+            }
+        }
+
+        // Calculate grand total
+        function calculateGrandTotal() {
+            const lineItems = document.querySelectorAll('#lineItemsTable tr');
+            let subtotal = 0;
+
+            lineItems.forEach(row => {
+                const totalAmount = row.querySelector('.total-amount');
+                if (totalAmount) {
+                    const amount = parseFloat(totalAmount.textContent.replace('₹', '')) || 0;
+                    subtotal += amount;
+                }
+            });
+
+            const discountPercent = parseFloat(document.getElementById('discountPercent').value) || 0;
+            const taxPercent = parseFloat(document.getElementById('taxPercent').value) || 0;
+
+            const discountAmount = (subtotal * discountPercent) / 100;
+            const taxableAmount = subtotal - discountAmount;
+            const taxAmount = (taxableAmount * taxPercent) / 100;
+            const grandTotal = taxableAmount + taxAmount;
+
+            document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+            document.getElementById('discountAmount').textContent = `₹${discountAmount.toFixed(2)}`;
+            document.getElementById('taxAmount').textContent = `₹${taxAmount.toFixed(2)}`;
+            document.getElementById('grandTotal').textContent = `₹${grandTotal.toFixed(2)}`;
+        }
+
+        // Add event listeners for discount and tax calculations
+        document.getElementById('discountPercent').addEventListener('input', calculateGrandTotal);
+        document.getElementById('taxPercent').addEventListener('input', calculateGrandTotal);
+
+        // Form submission
+        document.getElementById('billForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const billData = {
+                patientId: document.getElementById('patientId').value,
+                patientName: document.getElementById('patientName').value,
+                billingDate: document.getElementById('billingDate').value,
+                dueDate: document.getElementById('dueDate').value,
+                billStatus: document.getElementById('billStatus').value,
+                lineItems: [],
+                subtotal: document.getElementById('subtotal').textContent,
+                discountAmount: document.getElementById('discountAmount').textContent,
+                taxAmount: document.getElementById('taxAmount').textContent,
+                grandTotal: document.getElementById('grandTotal').textContent,
+                timestamp: new Date().toLocaleString()
+            };
+
+            // Collect line items
+            const lineItems = document.querySelectorAll('#lineItemsTable tr');
+            lineItems.forEach(row => {
+                const description = row.querySelector('input[type="text"]').value;
+                const date = row.querySelector('.date-input').value;
+                const quantity = row.querySelector('.quantity-input').value;
+                const price = row.querySelector('.price-input').value;
+                const total = row.querySelector('.total-amount').textContent;
+
+                if (description && quantity && price) {
+                    billData.lineItems.push({
+                        description,
+                        date,
+                        quantity: parseFloat(quantity),
+                        price: parseFloat(price),
+                        total: total
+                    });
+                }
+            });
+
+            // Store in localStorage for demonstration
+            let bills = JSON.parse(localStorage.getItem('bills') || '[]');
+            bills.push(billData);
+            localStorage.setItem('bills', JSON.stringify(bills));
+
+            // Show success message
+            alert('Bill created successfully!');
+            
+            // Redirect back to patient detail page
+            window.location.href = 'patient-detail.html#bills';
+        });
+
+        // Add some visual feedback
+        document.querySelectorAll('input, select, textarea').forEach(element => {
+            element.addEventListener('focus', function() {
+                this.parentElement.classList.add('ring-2', 'ring-orange-200');
+            });
+            
+            element.addEventListener('blur', function() {
+                this.parentElement.classList.remove('ring-2', 'ring-orange-200');
+            });
+        });
+    </script>
+</body>
+</html>

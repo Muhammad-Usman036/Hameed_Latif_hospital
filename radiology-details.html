@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radiology Details - HMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="shared-sidebar.js"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar" class="w-64 bg-white shadow-lg p-4">
+            <div class="flex items-center space-x-3 mb-6">
+                <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center"><i class="fas fa-plus text-white text-sm"></i></div>
+                <span class="text-lg font-bold text-gray-800">HOSPITAL</span>
+            </div>
+            <div class="space-y-2 text-sm">
+                <a href="index.html" class="block px-4 py-2 rounded hover:bg-gray-50"><i class="fas fa-tachometer-alt w-4 mr-3"></i>Dashboard</a>
+                <div class="px-4 py-2 rounded bg-orange-100 text-orange-600 border-r-4 border-orange-500"><i class="fas fa-users w-4 mr-3"></i>Patients</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <header class="bg-white shadow-sm border-b border-gray-200">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <div class="flex items-center space-x-4">
+                        <button id="sidebar-toggle" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <button onclick="goBack()" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-arrow-left text-xl"></i>
+                        </button>
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2 bg-orange-500 text-white rounded-lg">
+                                <i class="fas fa-x-ray text-xl"></i>
+                            </div>
+                            <div>
+                                <h1 class="text-2xl font-bold text-gray-800">Radiology Details</h1>
+                                <p class="text-sm text-gray-600">Test ID: RAD-2024-001</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200">
+                            <i class="fas fa-download mr-2"></i>Download Report
+                        </button>
+                        <button class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200">
+                            <i class="fas fa-share mr-2"></i>Share
+                        </button>
+                        <div class="flex items-center space-x-2">
+                            <img src="https://via.placeholder.com/40x40" alt="Profile" class="w-8 h-8 rounded-full">
+                            <span class="text-sm font-medium text-gray-700">Dr. John Doe</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-auto p-6">
+                <div class="max-w-7xl mx-auto">
+                    <!-- Test Information Card -->
+                    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                            <div class="flex items-center space-x-3">
+                                <div class="p-3 bg-orange-500 text-white rounded-lg">
+                                    <i class="fas fa-x-ray text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800">Chest X-Ray</h3>
+                                    <p class="text-sm text-gray-600">Patient: John Smith</p>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-500 mb-1">Test ID</label>
+                                <p class="text-lg font-semibold text-gray-800">RAD-2024-001</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-500 mb-1">Date & Time</label>
+                                <p class="text-lg font-semibold text-gray-800">Dec 15, 2024</p>
+                                <p class="text-sm text-gray-600">2:30 PM</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-500 mb-1">Status</label>
+                                <span class="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full font-medium">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Radiology Viewer -->
+                    <div class="bg-white rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800">Radiology Image Viewer</h3>
+                            <div class="flex space-x-2">
+                                <button class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">
+                                    <i class="fas fa-save mr-2"></i>Save
+                                </button>
+                                <button class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-medium">
+                                    <i class="fas fa-undo mr-2"></i>Reset
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                                <!-- Main Image Viewer -->
+                                <div class="lg:col-span-3">
+                                    <div class="bg-gray-100 rounded-lg p-8 text-center">
+                                        <div class="w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden relative group">
+                                            <img src="assets/mri-image.webp" alt="Radiology Image" class="w-full h-full object-cover rounded-lg">
+                                            <!-- Image overlay controls -->
+                                            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                                <div class="flex space-x-2">
+                                                    <button class="p-2 bg-white bg-opacity-90 rounded-lg shadow-lg hover:bg-opacity-100">
+                                                        <i class="fas fa-search-plus text-gray-700"></i>
+                                                    </button>
+                                                    <button class="p-2 bg-white bg-opacity-90 rounded-lg shadow-lg hover:bg-opacity-100">
+                                                        <i class="fas fa-search-minus text-gray-700"></i>
+                                                    </button>
+                                                    <button class="p-2 bg-white bg-opacity-90 rounded-lg shadow-lg hover:bg-opacity-100">
+                                                        <i class="fas fa-rotate text-gray-700"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Image Information -->
+                                        <div class="mt-6 grid grid-cols-3 gap-4 text-sm">
+                                            <div class="text-center">
+                                                <label class="block text-gray-500 font-medium">Report Date</label>
+                                                <span class="text-lg font-semibold text-gray-800">Apr 25, 2024</span>
+                                            </div>
+                                            <div class="text-center">
+                                                <label class="block text-gray-500 font-medium">Radiologist</label>
+                                                <span class="text-lg font-semibold text-gray-800">Dr. Sarah Wilson</span>
+                                            </div>
+                                            <div class="text-center">
+                                                <label class="block text-gray-500 font-medium">Findings</label>
+                                                <span class="text-lg font-semibold text-gray-800">Normal</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Tools Sidebar -->
+                                <div class="space-y-6">
+                                    <!-- Viewing Tools -->
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+                                            <i class="fas fa-tools mr-2 text-orange-500"></i>
+                                            Viewing Tools
+                                        </h4>
+                                        <div class="space-y-2">
+                                            <button class="w-full px-4 py-3 bg-white border-2 border-orange-500 text-orange-500 rounded-lg text-sm font-medium hover:bg-orange-50 transition-all duration-200">
+                                                <i class="fas fa-search-plus mr-2"></i>Zoom In
+                                            </button>
+                                            <button class="w-full px-4 py-3 bg-white border-2 border-orange-500 text-orange-500 rounded-lg text-sm font-medium hover:bg-orange-50 transition-all duration-200">
+                                                <i class="fas fa-search-minus mr-2"></i>Zoom Out
+                                            </button>
+                                            <button class="w-full px-4 py-3 bg-white border-2 border-orange-500 text-orange-500 rounded-lg text-sm font-medium hover:bg-orange-50 transition-all duration-200">
+                                                <i class="fas fa-expand mr-2"></i>Full Screen
+                                            </button>
+                                            <button class="w-full px-4 py-3 bg-white border-2 border-orange-500 text-orange-500 rounded-lg text-sm font-medium hover:bg-orange-50 transition-all duration-200">
+                                                <i class="fas fa-rotate mr-2"></i>Rotate
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Window/Level Tools -->
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+                                            <i class="fas fa-sliders-h mr-2 text-orange-500"></i>
+                                            Window/Level
+                                        </h4>
+                                        <div class="space-y-2">
+                                            <button class="w-full px-4 py-3 bg-white border-2 border-orange-500 text-orange-500 rounded-lg text-sm font-medium hover:bg-orange-50 transition-all duration-200">
+                                                <i class="fas fa-adjust mr-2"></i>Auto Adjust
+                                            </button>
+                                            <button class="w-full px-4 py-3 bg-white border-2 border-orange-500 text-orange-500 rounded-lg text-sm font-medium hover:bg-orange-50 transition-all duration-200">
+                                                <i class="fas fa-sun mr-2"></i>Brightness
+                                            </button>
+                                            <button class="w-full px-4 py-3 bg-white border-2 border-orange-500 text-orange-500 rounded-lg text-sm font-medium hover:bg-orange-50 transition-all duration-200">
+                                                <i class="fas fa-circle mr-2"></i>Contrast
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Measurement Tools -->
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+                                            <i class="fas fa-ruler mr-2 text-orange-500"></i>
+                                            Measurement
+                                        </h4>
+                                        <div class="space-y-2">
+                                            <button class="w-full px-4 py-3 bg-white border-2 border-orange-500 text-orange-500 rounded-lg text-sm font-medium hover:bg-orange-50 transition-all duration-200">
+                                                <i class="fas fa-ruler-horizontal mr-2"></i>Distance
+                                            </button>
+                                            <button class="w-full px-4 py-3 bg-white border-2 border-orange-500 text-orange-500 rounded-lg text-sm font-medium hover:bg-orange-50 transition-all duration-200">
+                                                <i class="fas fa-circle mr-2"></i>Area
+                                            </button>
+                                            <button class="w-full px-4 py-3 bg-white border-2 border-orange-500 text-orange-500 rounded-lg text-sm font-medium hover:bg-orange-50 transition-all duration-200">
+                                                <i class="fas fa-angle-right mr-2"></i>Angle
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Annotation Tools -->
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+                                            <i class="fas fa-edit mr-2 text-orange-500"></i>
+                                            Annotation
+                                        </h4>
+                                        <div class="space-y-2">
+                                            <button class="w-full px-4 py-3 bg-white border-2 border-orange-500 text-orange-500 rounded-lg text-sm font-medium hover:bg-orange-50 transition-all duration-200">
+                                                <i class="fas fa-pen mr-2"></i>Freehand
+                                            </button>
+                                            <button class="w-full px-4 py-3 bg-white border-2 border-orange-500 text-orange-500 rounded-lg text-sm font-medium hover:bg-orange-50 transition-all duration-200">
+                                                <i class="fas fa-square mr-2"></i>Rectangle
+                                            </button>
+                                            <button class="w-full px-4 py-3 bg-white border-2 border-orange-500 text-orange-500 rounded-lg text-sm font-medium hover:bg-orange-50 transition-all duration-200">
+                                                <i class="fas fa-circle mr-2"></i>Ellipse
+                                            </button>
+                                            <button class="w-full px-4 py-3 bg-white border-2 border-orange-500 text-orange-500 rounded-lg text-sm font-medium hover:bg-orange-50 transition-all duration-200">
+                                                <i class="fas fa-font mr-2"></i>Text
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Report Section -->
+                    <div class="bg-white rounded-lg shadow-sm mt-6">
+                        <div class="p-6 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800">Radiology Report</h3>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-3">Clinical History</h4>
+                                    <p class="text-gray-600 text-sm leading-relaxed">
+                                        Patient presents with chest pain and shortness of breath. No history of trauma. 
+                                        Vital signs stable. Physical examination reveals normal heart sounds and clear lung fields.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-3">Technique</h4>
+                                    <p class="text-gray-600 text-sm leading-relaxed">
+                                        Standard PA and lateral chest radiographs obtained. Images are of diagnostic quality 
+                                        with appropriate exposure and positioning.
+                                    </p>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <h4 class="font-semibold text-gray-800 mb-3">Findings</h4>
+                                    <p class="text-gray-600 text-sm leading-relaxed">
+                                        The lungs are clear bilaterally with no evidence of consolidation, effusion, or pneumothorax. 
+                                        The cardiac silhouette is normal in size and contour. The mediastinal structures are unremarkable. 
+                                        The bony structures are intact with no acute fractures or destructive lesions identified.
+                                    </p>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <h4 class="font-semibold text-gray-800 mb-3">Impression</h4>
+                                    <p class="text-gray-600 text-sm leading-relaxed">
+                                        <strong>Normal chest radiograph.</strong> No acute cardiopulmonary abnormalities identified.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle functionality
+        document.getElementById('sidebar-toggle').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        });
+
+        // Go back to previous page
+        function goBack() {
+            window.history.back();
+        }
+
+        // Get selected test from localStorage
+        const selectedTest = localStorage.getItem('selectedRadiologyTest');
+        console.log('Selected test:', selectedTest);
+
+        // Add interactive effects to buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                if (this.classList.contains('border-orange-500')) {
+                    this.classList.add('shadow-md');
+                }
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                if (this.classList.contains('border-orange-500')) {
+                    this.classList.remove('shadow-md');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

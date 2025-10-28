@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radiology Prescription - HMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="shared-sidebar.js"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar" class="w-64 bg-white shadow-lg">
+            <!-- Sidebar content will be loaded here -->
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <header class="bg-white shadow-sm border-b border-gray-200">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <div class="flex items-center space-x-4">
+                        <button id="sidebar-toggle" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <h1 class="text-2xl font-bold text-gray-800">Radiology Prescription</h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <img src="https://via.placeholder.com/40x40" alt="Profile" class="w-8 h-8 rounded-full">
+                            <span class="text-sm font-medium text-gray-700">Dr. John Doe</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-auto p-6">
+                <div class="max-w-7xl mx-auto">
+                    <!-- Radiology Prescription Content -->
+                    <div class="bg-white rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800">Radiology Prescription</h3>
+                            <div class="flex space-x-2">
+                                <button class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">Save</button>
+                                <button class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-medium">Reset All</button>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                                <!-- MRI Image -->
+                                <div class="lg:col-span-3">
+                                    <div class="bg-gray-100 rounded-lg p-8 text-center">
+                                        <div class="w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
+                                          <img src="assets/mri-image.webp" alt="MRI Scan Image" class="w-full h-full object-cover rounded-lg">
+                                        </div>
+                                        <div class="mt-4 grid grid-cols-3 gap-4 text-sm">
+                                          <div>
+                                            <label class="block text-gray-500">Report Date</label>
+                                            <span class="font-medium">Apr 25, 2024</span>
+                                          </div>
+                                          <div>
+                                            <label class="block text-gray-500">Treatment</label>
+                                            <span class="font-medium">-</span>
+                                          </div>
+                                          <div>
+                                            <label class="block text-gray-500">Radiologist</label>
+                                            <span class="font-medium">-</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      
+                                </div>
+                                
+                                <!-- Tools Sidebar -->
+                                <div class="space-y-4">
+                                    <div>
+                                        <h4 class="text-sm font-medium text-gray-700 mb-2">Tools</h4>
+                                        <div class="space-y-2">
+                                            <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">Zoom</button>
+                                            <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">Win.Level</button>
+                                            <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">
+                                                <div class="text-xs">win</div>
+                                                <div class="text-xs">Level</div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <h4 class="text-sm font-medium text-gray-700 mb-2">Filter Tools</h4>
+                                        <div class="space-y-2">
+                                            <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">Threshold</button>
+                                            <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">Sharpen</button>
+                                            <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">Ellipse</button>
+                                            <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">FreeHand</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle functionality
+        document.getElementById('sidebar-toggle').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        });
+    </script>
+</body>
+</html>
