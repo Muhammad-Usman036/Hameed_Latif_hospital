@@ -29,70 +29,106 @@
         .bg-orange-500{background-color:var(--accent-500)!important}
         .bg-orange-600{background-color:var(--accent-600)!important}
         .text-orange-600{color:var(--accent-600)!important}
+        
+        /* Mobile Sidebar Overlay */
+        #sidebar-overlay {
+            display: none;
+        }
+        #sidebar-overlay.active {
+            display: block;
+        }
+        
+        /* Sidebar responsive behavior */
+        @media (max-width: 1024px) {
+            #shared-sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                height: 100vh;
+                z-index: 50;
+                transition: left 0.3s ease-in-out;
+            }
+            #shared-sidebar.active {
+                left: 0;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"></div>
+    
     <!-- Main Container -->
-    <div class="flex h-screen">
+    <div class="flex h-screen overflow-hidden">
         <!-- Shared Sidebar -->
         <div id="shared-sidebar"></div>
         
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
-            <header class="bg-gray-100 px-6 py-4 flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <button class="text-gray-600 hover:text-gray-800">
+            <header class="bg-gray-100 px-3 sm:px-4 lg:px-6 py-3 sm:py-4 flex items-center justify-between border-b border-gray-200 flex-shrink-0">
+                <div class="flex items-center space-x-2 sm:space-x-4 flex-1">
+                    <!-- Mobile Menu Toggle -->
+                    <button id="mobile-menu-btn" class="lg:hidden text-gray-600 hover:text-gray-800 p-2">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                    
+                    <button class="hidden sm:block text-gray-600 hover:text-gray-800">
                         <i class="fas fa-arrow-left text-lg"></i>
                     </button>
-                    <div class="relative">
-                        <input type="text" placeholder="Search anything..." 
-                               class="w-80 px-4 py-2 pl-10 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
-                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    <div class="relative flex-1 sm:flex-initial">
+                        <input type="text" placeholder="Search..." 
+                               class="w-full sm:w-48 md:w-64 lg:w-80 px-4 py-2 pl-10 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
                     </div>
                 </div>
                 
-                <div class="flex items-center space-x-4">
-                    <button class="text-gray-600 hover:text-gray-800">
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <button class="hidden sm:block text-gray-600 hover:text-gray-800">
                         <i class="fas fa-bell text-lg"></i>
                     </button>
-                    <button class="text-gray-600 hover:text-gray-800" id="open-settings">
-                        <i class="fas fa-cog text-lg"></i>
+                    <button class="text-gray-600 hover:text-gray-800 p-2" id="open-settings">
+                        <i class="fas fa-cog text-base sm:text-lg"></i>
                     </button>
-                    <button class="text-gray-600 hover:text-gray-800">
+                    <button class="hidden sm:block text-gray-600 hover:text-gray-800">
                         <i class="fas fa-question-circle text-lg"></i>
                     </button>
                     
-                    <div class="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg">
+                    <div class="hidden sm:flex items-center space-x-2 bg-white px-3 lg:px-4 py-2 rounded-lg">
                         <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
                             <span class="text-white text-sm font-medium">M</span>
                         </div>
-                        <div>
+                        <div class="hidden md:block">
                             <div class="text-sm font-medium text-gray-800">M. Usman</div>
                             <div class="text-xs text-gray-500">Admin</div>
                         </div>
-                        <i class="fas fa-chevron-down text-gray-400"></i>
+                        <i class="fas fa-chevron-down text-gray-400 hidden md:block"></i>
+                    </div>
+                    
+                    <!-- Mobile User Avatar -->
+                    <div class="sm:hidden w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                        <span class="text-white text-sm font-medium">M</span>
                     </div>
                 </div>
             </header>
             
             <!-- Appointments Content -->
-            <main class="flex-1 p-6 overflow-y-auto">
+            <main class="flex-1 p-3 sm:p-4 lg:p-6 overflow-y-auto">
                 <!-- Header Section -->
-                <div class="flex items-center justify-between mb-6">
-                    <h1 class="text-2xl font-semibold text-gray-900">Book Appointment</h1>
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3">
+                    <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">Book Appointment</h1>
                     <button id="view-appointments" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium">
                         <i class="fas fa-list mr-2"></i>View Appointments
                     </button>
                 </div>
 
                 <!-- Appointment Form -->
-                <div class="bg-white rounded-lg shadow-sm p-6">
-                    <form id="appointment-form" class="space-y-6">
+                <div class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6">
+                    <form id="appointment-form" class="space-y-4 sm:space-y-6">
                         <!-- Personal Information -->
-                        <div class="border-b border-gray-200 pb-6">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Patient Information</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="border-b border-gray-200 pb-4 sm:pb-6">
+                            <h3 class="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">Patient Information</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
                                     <input required type="text" name="fullName" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Enter patient's full name" />
@@ -405,6 +441,23 @@
 
         // Initialize
         loadAppointments();
+        
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.getElementById('shared-sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        
+        if (mobileMenuBtn && sidebar && overlay) {
+            mobileMenuBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            });
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        }
     </script>
 </body>
 </html>

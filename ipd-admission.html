@@ -53,92 +53,150 @@
         .border-orange-700{border-color:var(--accent-700)!important}
         .border-orange-800{border-color:var(--accent-800)!important}
         .border-orange-900{border-color:var(--accent-900)!important}
+        
+        /* Mobile Sidebar Overlay */
+        #sidebar-overlay {
+            display: none;
+        }
+        #sidebar-overlay.active {
+            display: block;
+        }
+        
+        /* Sidebar responsive behavior */
+        @media (max-width: 1024px) {
+            #shared-sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                height: 100vh;
+                z-index: 50;
+                transition: left 0.3s ease-in-out;
+            }
+            #shared-sidebar.active {
+                left: 0;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"></div>
+    
     <!-- Main Container -->
-    <div class="flex h-screen">
+    <div class="flex h-screen overflow-hidden">
         <!-- Shared Sidebar -->
         <div id="shared-sidebar"></div>
         
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
-            <header class="bg-gray-100 px-6 py-4 flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <div class="relative">
-                        <input type="text" placeholder="Search patients, beds, wards..." 
-                               class="w-80 px-4 py-2 pl-10 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
-                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+            <header class="bg-gray-100 px-3 sm:px-4 lg:px-6 py-3 sm:py-4 border-b border-gray-200 flex-shrink-0">
+                <div class="flex items-center justify-between mb-3 sm:mb-0">
+                    <div class="flex items-center space-x-2 sm:space-x-4 flex-1">
+                        <!-- Mobile Menu Toggle -->
+                        <button id="mobile-menu-btn" class="lg:hidden text-gray-600 hover:text-gray-800 p-2">
+                            <i class="fas fa-bars text-lg"></i>
+                        </button>
+                        
+                        <div class="relative flex-1 sm:flex-initial">
+                            <input type="text" placeholder="Search..." 
+                                   class="w-full sm:w-48 md:w-64 lg:w-80 px-4 py-2 pl-10 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2 sm:space-x-4">
+                        <button class="text-gray-600 hover:text-gray-800 p-2 sm:hidden">
+                            <i class="fas fa-cog text-base"></i>
+                        </button>
+                        
+                        <!-- Mobile User Avatar -->
+                        <div class="sm:hidden w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-medium">M</span>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="flex items-center space-x-4">
-                    <div class="flex items-center space-x-6">
-                        <span class="text-red-500 font-medium">42 Occupied</span>
-                        <span class="text-green-500 font-medium">18 Available</span>
-                        <span class="text-orange-500 font-medium">3 Pending</span>
+                <!-- Desktop Stats & User Info -->
+                <div class="hidden sm:flex items-center justify-between">
+                    <div class="flex items-center space-x-3 md:space-x-6">
+                        <span class="text-red-500 font-medium text-xs md:text-sm">42 Occupied</span>
+                        <span class="text-green-500 font-medium text-xs md:text-sm">18 Available</span>
+                        <span class="text-orange-500 font-medium text-xs md:text-sm">3 Pending</span>
                     </div>
                     
-                    <button class="text-gray-600 hover:text-gray-800">
-                        <i class="fas fa-cog text-lg"></i>
-                    </button>
-                    
+                    <div class="flex items-center space-x-3">
+                        <button class="text-gray-600 hover:text-gray-800">
+                            <i class="fas fa-cog text-lg"></i>
+                        </button>
+                        
+                        <div class="relative">
+                            <i class="fas fa-bell text-base md:text-lg text-gray-600"></i>
+                            <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
+                        </div>
+                        
+                        <div class="flex items-center space-x-2 bg-white px-3 lg:px-4 py-2 rounded-lg">
+                            <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                                <span class="text-white text-sm font-medium">M</span>
+                            </div>
+                            <div class="hidden md:block">
+                                <div class="text-sm font-medium text-gray-800">M.Usman</div>
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <i class="fas fa-chevron-down text-gray-400 hidden md:block"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mobile Stats Row -->
+                <div class="sm:hidden flex items-center justify-between mt-3 text-xs">
+                    <span class="text-red-500 font-medium">42 Occupied</span>
+                    <span class="text-green-500 font-medium">18 Available</span>
+                    <span class="text-orange-500 font-medium">3 Pending</span>
                     <div class="relative">
-                        <i class="fas fa-bell text-lg text-gray-600"></i>
-                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
-                    </div>
-                    
-                    <div class="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg">
-                        <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                            <span class="text-white text-sm font-medium">M</span>
-                        </div>
-                        <div>
-                            <div class="text-sm font-medium text-gray-800">M.Usman</div>
-                            <div class="text-xs text-gray-500">Admin</div>
-                        </div>
-                        <i class="fas fa-chevron-down text-gray-400"></i>
+                        <i class="fas fa-bell text-sm text-gray-600"></i>
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center" style="font-size: 10px;">5</span>
                     </div>
                 </div>
             </header>
             
             <!-- IPD Admission Content -->
-            <main class="flex-1 p-6 overflow-y-auto">
+            <main class="flex-1 p-3 sm:p-4 lg:p-6 overflow-y-auto">
                 <!-- Page Header -->
-                <div class="flex items-center justify-between mb-6">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3">
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-800">Patient Registration Form</h1>
-                        <p class="text-gray-600">Admit a new patient to in-patient department</p>
+                        <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Patient Registration Form</h1>
+                        <p class="text-sm sm:text-base text-gray-600">Admit a new patient to in-patient department</p>
                     </div>
-                    <a href="bed-board.html" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg font-medium">
+                    <a href="bed-board.html" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 sm:px-6 py-2 rounded-lg font-medium text-sm sm:text-base text-center">
                         Back to Bed Board
                     </a>
                 </div>
 
                 <!-- Search Patient Section -->
-                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-                    <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                        <i class="fas fa-search text-orange-500 mr-2"></i>
+                <div class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6 mb-4 sm:mb-6">
+                    <h2 class="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4 flex items-center">
+                        <i class="fas fa-search text-orange-500 mr-2 text-sm sm:text-base"></i>
                         Search Patient
                     </h2>
-                    <div class="flex items-center space-x-4">
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
                         <input type="text" placeholder="Enter Patient Id or MRN or Mobile No." 
-                               class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
-                        <button class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium">
+                               class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm">
+                        <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 sm:px-6 py-2 rounded-lg font-medium text-sm sm:text-base">
                             Search
                         </button>
                     </div>
                 </div>
 
                 <!-- Patient & Admission Details Section -->
-                <div class="bg-white rounded-lg shadow-sm p-6">
-                    <h2 class="text-lg font-semibold text-gray-800 mb-6 flex items-center">
-                        <i class="fas fa-user text-orange-500 mr-2"></i>
+                <div class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6">
+                    <h2 class="text-base sm:text-lg font-semibold text-gray-800 mb-4 sm:mb-6 flex items-center">
+                        <i class="fas fa-user text-orange-500 mr-2 text-sm sm:text-base"></i>
                         Patient & Admission Details
                     </h2>
                     
-                    <form class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <form class="space-y-4 sm:space-y-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                             <!-- Patient Information -->
                             <div class="space-y-4">
                                 <h3 class="text-md font-medium text-gray-700 border-b pb-2">Patient Information</h3>
@@ -212,7 +270,7 @@
                         </div>
                         
                         <!-- Additional Fields -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Reason for Admission</label>
                                 <textarea rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter reason for admission">Emergency</textarea>
@@ -229,31 +287,31 @@
                             </div>
                         </div>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Mobile No</label>
-                                <input type="tel" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter mobile number">
+                                <input type="tel" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm" placeholder="Enter mobile number">
                             </div>
                             
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Reason for Admission</label>
-                                <textarea rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter detailed reason for admission">Emergency</textarea>
+                                <textarea rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm" placeholder="Enter detailed reason for admission">Emergency</textarea>
                             </div>
                         </div>
                         
                         <!-- Action Buttons -->
-                        <div class="flex items-center justify-end space-x-4 pt-6 border-t">
-                            <button type="button" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium flex items-center space-x-2">
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-4 pt-4 sm:pt-6 border-t">
+                            <button type="button" class="bg-orange-500 hover:bg-orange-600 text-white px-4 sm:px-6 py-2 rounded-lg font-medium flex items-center justify-center space-x-2 text-sm sm:text-base">
                                 <i class="fas fa-user-plus"></i>
                                 <span>Admit Patient</span>
                             </button>
                             
-                            <button type="button" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-6 py-2 rounded-lg font-medium flex items-center space-x-2">
+                            <button type="button" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-4 sm:px-6 py-2 rounded-lg font-medium flex items-center justify-center space-x-2 text-sm sm:text-base">
                                 <i class="fas fa-print"></i>
                                 <span>Print AdmissionSlip</span>
                             </button>
                             
-                            <button type="button" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-6 py-2 rounded-lg font-medium">
+                            <button type="button" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-4 sm:px-6 py-2 rounded-lg font-medium text-sm sm:text-base">
                                 Cancel
                             </button>
                         </div>
@@ -273,6 +331,23 @@
             // Load shared sidebar
             document.getElementById('shared-sidebar').innerHTML = createSharedSidebar('admission');
             initSharedSidebar('admission');
+            
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('shared-sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            if (mobileMenuBtn && sidebar && overlay) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                    overlay.classList.toggle('active');
+                });
+                
+                overlay.addEventListener('click', function() {
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                });
+            }
         });
     </script>
 </body>

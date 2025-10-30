@@ -7,25 +7,58 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="shared-sidebar.js"></script>
+    <style>
+        /* Mobile Sidebar Overlay */
+        #sidebar-overlay {
+            display: none;
+        }
+        #sidebar-overlay.active {
+            display: block;
+        }
+        
+        /* Sidebar responsive behavior */
+        @media (max-width: 1024px) {
+            #shared-sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                height: 100vh;
+                z-index: 50;
+                transition: left 0.3s ease-in-out;
+            }
+            #shared-sidebar.active {
+                left: 0;
+            }
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"></div>
+    
     <!-- Main Container -->
-    <div class="flex h-screen">
+    <div class="flex h-screen overflow-hidden">
         <!-- Shared Sidebar -->
         <div id="shared-sidebar"></div>
         
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
-            <div class="p-6 overflow-y-auto">
+            <div class="p-3 sm:p-4 lg:p-6 overflow-y-auto">
         <!-- Header -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-800">Nurse Dashboard</h1>
-                    <p class="text-gray-600">Add patient vitals and monitor health status</p>
+        <div class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6 mb-4 sm:mb-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <!-- Mobile Menu Toggle -->
+                    <button id="mobile-menu-btn" class="lg:hidden text-gray-600 hover:text-gray-800 p-2">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Nurse Dashboard</h1>
+                        <p class="text-sm sm:text-base text-gray-600">Add patient vitals and monitor health status</p>
+                    </div>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <div class="text-right">
+                <div class="flex items-center space-x-3 sm:space-x-4">
+                    <div class="text-right hidden sm:block">
                         <p class="text-sm text-gray-600">Nurse</p>
                         <p class="font-semibold text-gray-800">Sarah Johnson</p>
                     </div>
@@ -37,39 +70,38 @@
         </div>
 
         <!-- Patient Selection -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-            <h2 class="text-lg font-semibold text-gray-800 mb-4">Select Patient</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6 mb-4 sm:mb-6">
+            <h2 class="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">Select Patient</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Patient ID / Name</label>
                     <input type="text" id="patient-search" placeholder="Search by ID or name..." 
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Room Number</label>
                     <input type="text" id="room-number" placeholder="Room number..." 
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm">
                 </div>
             </div>
         </div>
 
         <!-- Vitals Form -->
-        <div class="bg-white rounded-lg shadow-sm p-6">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-lg font-semibold text-gray-800">Patient Vitals</h2>
-                
+        <div class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6">
+            <div class="flex items-center justify-between mb-4 sm:mb-6">
+                <h2 class="text-base sm:text-lg font-semibold text-gray-800">Patient Vitals</h2>
             </div>
 
-            <form id="vitals-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <form id="vitals-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <!-- Blood Pressure -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">Blood Pressure (mmHg)</label>
                     <div class="flex space-x-2">
                         <input type="number" id="bp-systolic" placeholder="120" min="60" max="250" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm">
                         <span class="text-gray-500 self-center">/</span>
                         <input type="number" id="bp-diastolic" placeholder="80" min="40" max="150" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm">
                     </div>
                 </div>
 
@@ -77,162 +109,124 @@
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">Heart Rate (bpm)</label>
                     <input type="number" id="heart-rate" placeholder="72" min="30" max="200" 
-                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm">
                 </div>
 
                 <!-- Temperature -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">Temperature (°F)</label>
                     <input type="number" id="temperature" placeholder="98.6" min="90" max="110" step="0.1" 
-                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm">
                 </div>
 
                 <!-- Respiratory Rate -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">Respiratory Rate (per min)</label>
                     <input type="number" id="respiratory-rate" placeholder="16" min="8" max="40" 
-                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm">
                 </div>
 
                 <!-- SpO2 -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">SpO2 (%)</label>
                     <input type="number" id="spo2" placeholder="98" min="70" max="100" 
-                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm">
                 </div>
 
                 <!-- Weight -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">Weight (kg)</label>
                     <input type="number" id="weight" placeholder="70" min="20" max="300" step="0.1" 
-                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm">
                 </div>
 
                 <!-- Glucose -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">Glucose (mg/dL)</label>
                     <input type="number" id="glucose" placeholder="95" min="50" max="500" 
-                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm">
                 </div>
 
                 <!-- Additional Notes -->
                 <div class="space-y-2 md:col-span-2 lg:col-span-3">
                     <label class="block text-sm font-medium text-gray-700">Additional Notes</label>
-                    <textarea id="notes" placeholder="Any additional observations or notes..." rows="3" 
-                              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500"></textarea>
+                    <textarea id="notes" rows="3" 
+                              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm" 
+                              placeholder="Enter any additional observations or notes..."></textarea>
                 </div>
-                <div class="flex items-end justify-end col-span-3">
-                    <button id="save-vitals-btn" class="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors">
-                    <i class="fas fa-save mr-2"></i>Save Vitals
-                </button>
+
+                <!-- Submit Buttons -->
+                <div class="md:col-span-2 lg:col-span-3 flex flex-col sm:flex-row gap-2 sm:gap-4 pt-4 border-t">
+                    <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium text-sm sm:text-base">
+                        Save Vitals
+                    </button>
+                    <button type="button" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-medium text-sm sm:text-base">
+                        Clear Form
+                    </button>
                 </div>
-                
             </form>
         </div>
 
         <!-- Recent Vitals History -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mt-6">
-            <h2 class="text-lg font-semibold text-gray-800 mb-4">Recent Vitals History</h2>
-            <div id="vitals-history" class="space-y-3">
-                <!-- Dynamic content will be added here -->
+        <div class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6 mt-4 sm:mt-6">
+            <h2 class="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">Recent Vitals History</h2>
+            <div class="overflow-x-auto -mx-4 sm:mx-0">
+                <table class="min-w-full text-xs sm:text-sm">
+                    <thead class="border-b border-gray-200 text-gray-600">
+                        <tr>
+                            <th class="text-left px-3 sm:px-4 py-2 whitespace-nowrap">Time</th>
+                            <th class="text-left px-3 sm:px-4 py-2 whitespace-nowrap">BP</th>
+                            <th class="text-left px-3 sm:px-4 py-2 whitespace-nowrap">HR</th>
+                            <th class="text-left px-3 sm:px-4 py-2 whitespace-nowrap">Temp</th>
+                            <th class="text-left px-3 sm:px-4 py-2 whitespace-nowrap">SpO2</th>
+                            <th class="text-left px-3 sm:px-4 py-2 whitespace-nowrap">Nurse</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr>
+                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-800">10:30 AM</td>
+                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-700">120/80</td>
+                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-700">72</td>
+                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-700">98.6°F</td>
+                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-700">98%</td>
+                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-700">S. Johnson</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </div>
+            </div>
+        </div>
     </div>
 
     <script>
         // Initialize shared sidebar
         document.addEventListener('DOMContentLoaded', function() {
-            // Populate sidebar HTML
-            const sidebarDiv = document.getElementById('shared-sidebar');
-            if (sidebarDiv) {
-                sidebarDiv.innerHTML = createSharedSidebar('nurse');
-            }
-            
-            // Initialize sidebar functionality
+            document.getElementById('shared-sidebar').innerHTML = createSharedSidebar('nurse');
             initSharedSidebar('nurse');
-            loadVitalsHistory();
+            
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('shared-sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            if (mobileMenuBtn && sidebar && overlay) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                    overlay.classList.toggle('active');
+                });
+                
+                overlay.addEventListener('click', function() {
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                });
+            }
         });
 
-        // Save vitals function
-        function saveVitals() {
-            const vitalsData = {
-                patientId: document.getElementById('patient-search').value,
-                roomNumber: document.getElementById('room-number').value,
-                bpSystolic: document.getElementById('bp-systolic').value,
-                bpDiastolic: document.getElementById('bp-diastolic').value,
-                heartRate: document.getElementById('heart-rate').value,
-                temperature: document.getElementById('temperature').value,
-                respiratoryRate: document.getElementById('respiratory-rate').value,
-                spo2: document.getElementById('spo2').value,
-                weight: document.getElementById('weight').value,
-                glucose: document.getElementById('glucose').value,
-                notes: document.getElementById('notes').value,
-                timestamp: new Date().toISOString(),
-                nurseName: 'Sarah Johnson'
-            };
-
-            // Validate required fields
-            if (!vitalsData.patientId) {
-                alert('Please enter Patient ID or Name');
-                return;
-            }
-
-            // Save to localStorage
-            let vitalsHistory = JSON.parse(localStorage.getItem('vitalsHistory') || '[]');
-            vitalsHistory.unshift(vitalsData); // Add to beginning
-            localStorage.setItem('vitalsHistory', JSON.stringify(vitalsHistory));
-
-            // Clear form
-            document.getElementById('vitals-form').reset();
-
-            // Reload history
-            loadVitalsHistory();
-
-            // Show success message
+        // Form handling
+        document.getElementById('vitals-form').addEventListener('submit', function(e) {
+            e.preventDefault();
             alert('Vitals saved successfully!');
-        }
-
-        // Load vitals history
-        function loadVitalsHistory() {
-            const vitalsHistory = JSON.parse(localStorage.getItem('vitalsHistory') || '[]');
-            const historyContainer = document.getElementById('vitals-history');
-
-            if (vitalsHistory.length === 0) {
-                historyContainer.innerHTML = '<p class="text-gray-500 text-center py-4">No vitals recorded yet</p>';
-                return;
-            }
-
-            historyContainer.innerHTML = vitalsHistory.map(vitals => `
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <div class="flex items-center justify-between mb-2">
-                        <h3 class="font-semibold text-gray-800">${vitals.patientId}</h3>
-                        <span class="text-sm text-gray-500">${new Date(vitals.timestamp).toLocaleString()}</span>
-                    </div>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                        <div><span class="text-gray-600">BP:</span> ${vitals.bpSystolic}/${vitals.bpDiastolic}</div>
-                        <div><span class="text-gray-600">HR:</span> ${vitals.heartRate} bpm</div>
-                        <div><span class="text-gray-600">Temp:</span> ${vitals.temperature}°F</div>
-                        <div><span class="text-gray-600">RR:</span> ${vitals.respiratoryRate}/min</div>
-                        <div><span class="text-gray-600">SpO2:</span> ${vitals.spo2}%</div>
-                        <div><span class="text-gray-600">Weight:</span> ${vitals.weight} kg</div>
-                        <div><span class="text-gray-600">Glucose:</span> ${vitals.glucose} mg/dL</div>
-                        <div><span class="text-gray-600">Nurse:</span> ${vitals.nurseName}</div>
-                    </div>
-                    ${vitals.notes ? `<p class="text-sm text-gray-600 mt-2"><strong>Notes:</strong> ${vitals.notes}</p>` : ''}
-                </div>
-            `).join('');
-        }
-
-        // Add event listener for save button
-        document.getElementById('save-vitals-btn').addEventListener('click', saveVitals);
-
-        // Add Enter key support for form submission
-        document.getElementById('vitals-form').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                saveVitals();
-            }
         });
     </script>
 </body>

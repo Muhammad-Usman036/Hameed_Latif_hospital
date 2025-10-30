@@ -7,71 +7,120 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="shared-sidebar.js"></script>
+    <style>
+        /* Mobile Sidebar Overlay */
+        #sidebar-overlay-pres {
+            display: none;
+        }
+        #sidebar-overlay-pres.active {
+            display: block;
+        }
+        
+        /* Sidebar responsive behavior */
+        @media (max-width: 1024px) {
+            #sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                height: 100vh;
+                z-index: 50;
+                transition: left 0.3s ease-in-out;
+            }
+            #sidebar.active {
+                left: 0;
+            }
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
-    <div class="flex h-screen">
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebar-overlay-pres" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"></div>
+    
+    <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
-        <div id="sidebar" class="w-64 bg-white shadow-lg">
-            <!-- Sidebar content will be loaded here -->
+        <div id="sidebar" class="w-64 bg-white shadow-lg lg:static p-4">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center"><i class="fas fa-plus text-white text-sm"></i></div>
+                    <span class="text-lg font-bold text-gray-800">HOSPITAL</span>
+                </div>
+                <button id="close-sidebar-pres" class="lg:hidden text-gray-600 hover:text-gray-800">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="space-y-2 text-sm">
+                <a href="index.html" class="block px-4 py-2 rounded hover:bg-gray-50"><i class="fas fa-tachometer-alt w-4 mr-3"></i>Dashboard</a>
+                <div class="px-4 py-2 rounded bg-orange-100 text-orange-600 border-r-4 border-orange-500"><i class="fas fa-users w-4 mr-3"></i>Patients</div>
+            </div>
         </div>
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
             <header class="bg-white shadow-sm border-b border-gray-200">
-                <div class="flex items-center justify-between px-6 py-4">
-                    <div class="flex items-center space-x-4">
-                        <button id="sidebar-toggle" class="text-gray-500 hover:text-gray-700">
+                <div class="flex items-center justify-between px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex-wrap gap-3">
+                    <div class="flex items-center space-x-2 sm:space-x-4">
+                        <button id="mobile-menu-btn-pres" class="lg:hidden text-gray-500 hover:text-gray-700">
                             <i class="fas fa-bars text-xl"></i>
                         </button>
-                        <h1 class="text-2xl font-bold text-gray-800">Radiology Prescription</h1>
+                        <h1 class="text-base sm:text-xl md:text-2xl font-bold text-gray-800">Radiology Prescription</h1>
                     </div>
-                    <div class="flex items-center space-x-4">
-                        <div class="relative">
-                            <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    <div class="flex items-center space-x-2 sm:space-x-4">
+                        <div class="relative hidden md:block">
+                            <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm">
                             <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <img src="https://via.placeholder.com/40x40" alt="Profile" class="w-8 h-8 rounded-full">
-                            <span class="text-sm font-medium text-gray-700">Dr. John Doe</span>
+                        <div class="hidden sm:flex items-center space-x-2">
+                            <img src="https://via.placeholder.com/40x40" alt="Profile" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full">
+                            <span class="text-xs sm:text-sm font-medium text-gray-700">Dr. John Doe</span>
                         </div>
                     </div>
                 </div>
             </header>
 
             <!-- Main Content Area -->
-            <main class="flex-1 overflow-auto p-6">
+            <main class="flex-1 overflow-auto p-3 sm:p-4 md:p-6">
                 <div class="max-w-7xl mx-auto">
                     <!-- Radiology Prescription Content -->
                     <div class="bg-white rounded-lg shadow-sm">
-                        <div class="flex items-center justify-between p-6 border-b border-gray-200">
-                            <h3 class="text-lg font-semibold text-gray-800">Radiology Prescription</h3>
-                            <div class="flex space-x-2">
-                                <button class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">Save</button>
-                                <button class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-medium">Reset All</button>
+                        <!-- Header Section - Better Mobile Layout -->
+                        <div class="p-3 sm:p-4 md:p-6 border-b border-gray-200">
+                            <div class="flex flex-col gap-3">
+                                <!-- Title -->
+                                <h3 class="text-base sm:text-lg font-semibold text-gray-800">Radiology Prescription</h3>
+                                
+                                <!-- Buttons - Full Width on Mobile -->
+                                <div class="flex gap-2">
+                                    <button class="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium">
+                                        <i class="fas fa-save mr-1 sm:mr-2"></i>Save
+                                    </button>
+                                    <button class="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-xs sm:text-sm font-medium">
+                                        <i class="fas fa-redo mr-1 sm:mr-2"></i>Reset
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="p-6">
-                            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                        <div class="p-3 sm:p-4 md:p-6">
+                            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6">
                                 <!-- MRI Image -->
                                 <div class="lg:col-span-3">
-                                    <div class="bg-gray-100 rounded-lg p-8 text-center">
-                                        <div class="w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
+                                    <div class="bg-gray-100 rounded-lg p-3 sm:p-4 md:p-8 text-center">
+                                        <div class="w-full h-64 sm:h-80 md:h-96 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
                                           <img src="assets/mri-image.webp" alt="MRI Scan Image" class="w-full h-full object-cover rounded-lg">
                                         </div>
-                                        <div class="mt-4 grid grid-cols-3 gap-4 text-sm">
+                                        <div class="mt-3 sm:mt-4 grid grid-cols-3 gap-2 sm:gap-4 text-xs sm:text-sm">
                                           <div>
-                                            <label class="block text-gray-500">Report Date</label>
-                                            <span class="font-medium">Apr 25, 2024</span>
+                                            <label class="block text-gray-500 text-xs sm:text-sm">Report Date</label>
+                                            <span class="font-medium text-xs sm:text-sm">Apr 25, 2024</span>
                                           </div>
                                           <div>
-                                            <label class="block text-gray-500">Treatment</label>
-                                            <span class="font-medium">-</span>
+                                            <label class="block text-gray-500 text-xs sm:text-sm">Treatment</label>
+                                            <span class="font-medium text-xs sm:text-sm">-</span>
                                           </div>
                                           <div>
-                                            <label class="block text-gray-500">Radiologist</label>
-                                            <span class="font-medium">-</span>
+                                            <label class="block text-gray-500 text-xs sm:text-sm">Radiologist</label>
+                                            <span class="font-medium text-xs sm:text-sm">-</span>
                                           </div>
                                         </div>
                                       </div>
@@ -79,26 +128,23 @@
                                 </div>
                                 
                                 <!-- Tools Sidebar -->
-                                <div class="space-y-4">
+                                <div class="space-y-3 sm:space-y-4">
                                     <div>
-                                        <h4 class="text-sm font-medium text-gray-700 mb-2">Tools</h4>
-                                        <div class="space-y-2">
-                                            <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">Zoom</button>
-                                            <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">Win.Level</button>
-                                            <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">
-                                                <div class="text-xs">win</div>
-                                                <div class="text-xs">Level</div>
-                                            </button>
+                                        <h4 class="text-xs sm:text-sm font-medium text-gray-700 mb-2">Tools</h4>
+                                        <div class="grid grid-cols-3 lg:grid-cols-1 gap-2">
+                                            <button class="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-orange-500 text-orange-500 rounded text-xs sm:text-sm hover:bg-orange-50">Zoom</button>
+                                            <button class="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-orange-500 text-orange-500 rounded text-xs sm:text-sm hover:bg-orange-50">Win.Level</button>
+                                            <button class="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-orange-500 text-orange-500 rounded text-xs sm:text-sm hover:bg-orange-50">Level</button>
                                         </div>
                                     </div>
                                     
                                     <div>
-                                        <h4 class="text-sm font-medium text-gray-700 mb-2">Filter Tools</h4>
-                                        <div class="space-y-2">
-                                            <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">Threshold</button>
-                                            <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">Sharpen</button>
-                                            <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">Ellipse</button>
-                                            <button class="w-full px-3 py-2 bg-white border border-orange-500 text-orange-500 rounded text-sm hover:bg-orange-50">FreeHand</button>
+                                        <h4 class="text-xs sm:text-sm font-medium text-gray-700 mb-2">Filter Tools</h4>
+                                        <div class="grid grid-cols-2 lg:grid-cols-1 gap-2">
+                                            <button class="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-orange-500 text-orange-500 rounded text-xs sm:text-sm hover:bg-orange-50">Threshold</button>
+                                            <button class="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-orange-500 text-orange-500 rounded text-xs sm:text-sm hover:bg-orange-50">Sharpen</button>
+                                            <button class="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-orange-500 text-orange-500 rounded text-xs sm:text-sm hover:bg-orange-50">Ellipse</button>
+                                            <button class="w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-orange-500 text-orange-500 rounded text-xs sm:text-sm hover:bg-orange-50">FreeHand</button>
                                         </div>
                                     </div>
                                 </div>
@@ -111,11 +157,32 @@
     </div>
 
     <script>
-        // Sidebar toggle functionality
-        document.getElementById('sidebar-toggle').addEventListener('click', function() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('-translate-x-full');
-        });
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn-pres');
+        const closeSidebarBtn = document.getElementById('close-sidebar-pres');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay-pres');
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebar.classList.add('active');
+                overlay.classList.add('active');
+            });
+        }
+
+        if (closeSidebarBtn) {
+            closeSidebarBtn.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        }
+
+        if (overlay) {
+            overlay.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        }
     </script>
 </body>
 </html>
