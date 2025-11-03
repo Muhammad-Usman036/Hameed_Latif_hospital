@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Bank Orders - Hospital Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="shared-sidebar.js"></script>
+    <style>
+        :root {
+            --accent-50: #fff7ed;
+            --accent-100: #ffedd5;
+            --accent-500: #f97316;
+            --accent-600: #ea580c;
+        }
+        .bg-orange-50{background-color:var(--accent-50)!important}
+        .bg-orange-100{background-color:var(--accent-100)!important}
+        .bg-orange-500{background-color:var(--accent-500)!important}
+        .bg-orange-600{background-color:var(--accent-600)!important}
+        .text-orange-600{color:var(--accent-600)!important}
+        .hover\:bg-orange-600:hover{background-color:var(--accent-600)!important}
+        
+        .order-tab {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .order-tab.active {
+            background-color: var(--accent-100);
+            color: var(--accent-600);
+            border-left: 4px solid var(--accent-500);
+        }
+        .order-tab:hover {
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <div id="shared-sidebar"></div>
+        
+        <div class="flex-1 flex flex-col">
+            <header class="bg-gray-100 px-6 py-4 flex items-center justify-between border-b border-gray-200">
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Search anything..." 
+                               class="w-80 px-4 py-2 pl-10 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-bell text-lg"></i>
+                    </button>
+                    <button class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-cog text-lg"></i>
+                    </button>
+                    <div class="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg">
+                        <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-medium">M</span>
+                        </div>
+                        <div>
+                            <div class="text-sm font-medium text-gray-800">M. Usman</div>
+                            <div class="text-xs text-gray-500">Admin</div>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                </div>
+            </header>
+            
+            <main class="flex-1 flex overflow-hidden">
+                <div class="w-64 bg-white border-r border-gray-200 overflow-y-auto">
+                    <div class="p-4">
+                        <h2 class="text-lg font-semibold text-gray-800 mb-4">Orders Workbench</h2>
+                        <div class="text-xs text-gray-500 mb-4">Pending orders in workflow stages</div>
+                        
+                        <div class="space-y-1">
+                            <div class="order-tab px-3 py-2 rounded text-sm" onclick="window.location.href='orders-workbench.html'">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-x-ray w-4"></i>
+                                    <span>Radiology2</span>
+                                </div>
+                            </div>
+                            <div class="order-tab px-3 py-2 rounded text-sm" onclick="window.location.href='orders-workbench.html'">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-list w-4"></i>
+                                    <span>All Orders</span>
+                                </div>
+                            </div>
+                            <div class="order-tab px-3 py-2 rounded text-sm" onclick="window.location.href='orders-laboratory.html'">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-flask w-4"></i>
+                                    <span>Laboratory</span>
+                                </div>
+                            </div>
+                            <div class="order-tab active px-3 py-2 rounded text-sm">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-tint w-4"></i>
+                                    <span>Blood Bank</span>
+                                </div>
+                            </div>
+                            <div class="order-tab px-3 py-2 rounded text-sm" onclick="window.location.href='orders-pharmacy.html'">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-pills w-4"></i>
+                                    <span>Pharmacy</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex-1 overflow-y-auto p-6">
+                    <div class="mb-6">
+                        <h1 class="text-2xl font-semibold text-gray-900 mb-2">Blood Bank Requests</h1>
+                        <p class="text-sm text-gray-500">Manage blood product orders and inventory</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="flex items-center space-x-2">
+                                <label class="text-sm text-gray-600">Start:</label>
+                                <input type="date" class="border border-gray-300 rounded px-3 py-1.5 text-sm">
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <label class="text-sm text-gray-600">Finish:</label>
+                                <input type="date" class="border border-gray-300 rounded px-3 py-1.5 text-sm">
+                            </div>
+                            <select class="border border-gray-300 rounded px-3 py-1.5 text-sm">
+                                <option>Blood Type</option>
+                                <option>A+</option>
+                                <option>A-</option>
+                                <option>B+</option>
+                                <option>B-</option>
+                                <option>O+</option>
+                                <option>O-</option>
+                                <option>AB+</option>
+                                <option>AB-</option>
+                            </select>
+                            <select class="border border-gray-300 rounded px-3 py-1.5 text-sm">
+                                <option>Status</option>
+                                <option>Pending</option>
+                                <option>Approved</option>
+                                <option>Issued</option>
+                            </select>
+                            <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-1.5 rounded text-sm">
+                                <i class="fas fa-filter mr-1"></i> Filter
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-sm">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800">Blood Bank Requests</h3>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full text-sm">
+                                <thead class="bg-gray-50 border-b border-gray-200">
+                                    <tr>
+                                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase">Patient</th>
+                                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase">Blood Type</th>
+                                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase">Product</th>
+                                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase">Units</th>
+                                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase">Priority</th>
+                                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase">Date/Time</th>
+                                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase">Status</th>
+                                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="blood-tbody" class="divide-y divide-gray-100">
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                            <div class="text-sm text-gray-500">Showing <span id="blood-count">0</span> requests</div>
+                            <div class="flex space-x-1">
+                                <button class="px-3 py-1 border border-gray-300 rounded text-sm">Previous</button>
+                                <button class="px-3 py-1 bg-orange-500 text-white rounded text-sm">1</button>
+                                <button class="px-3 py-1 border border-gray-300 rounded text-sm">2</button>
+                                <button class="px-3 py-1 border border-gray-300 rounded text-sm">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+                        <div class="bg-white rounded-lg shadow-sm p-4 text-center">
+                            <div class="text-3xl font-bold text-orange-500">7</div>
+                            <div class="text-sm text-gray-600 mt-1">Pending Requests</div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-4 text-center">
+                            <div class="text-3xl font-bold text-blue-500">4</div>
+                            <div class="text-sm text-gray-600 mt-1">Cross-matching</div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-4 text-center">
+                            <div class="text-3xl font-bold text-green-500">28</div>
+                            <div class="text-sm text-gray-600 mt-1">Issued Today</div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-4 text-center">
+                            <div class="text-3xl font-bold text-red-500">2</div>
+                            <div class="text-sm text-gray-600 mt-1">Critical</div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        function loadTheme(){ 
+            const saved = localStorage.getItem('hm_accent_hex'); 
+            if(saved) document.documentElement.style.setProperty('--accent-500', saved);
+        }
+        loadTheme();
+
+        const bloodRequests = [
+            { patient: 'John Smith', bloodType: 'O+', product: 'Whole Blood', units: '2', priority: 'Stat', date: '2024-10-28 08:15', status: 'Pending' },
+            { patient: 'Mary Johnson', bloodType: 'A+', product: 'Packed RBC', units: '3', priority: 'Urgent', date: '2024-10-28 09:30', status: 'Cross-matching' },
+            { patient: 'Robert Davis', bloodType: 'B-', product: 'Platelets', units: '1', priority: 'Routine', date: '2024-10-28 10:45', status: 'Approved' },
+            { patient: 'Sarah Wilson', bloodType: 'AB+', product: 'Fresh Frozen Plasma', units: '2', priority: 'Urgent', date: '2024-10-28 11:20', status: 'Issued' },
+            { patient: 'James Brown', bloodType: 'O-', product: 'Whole Blood', units: '4', priority: 'Stat', date: '2024-10-28 13:00', status: 'Pending' },
+            { patient: 'Emily Davis', bloodType: 'A-', product: 'Packed RBC', units: '2', priority: 'Routine', date: '2024-10-28 14:30', status: 'Cross-matching' }
+        ];
+
+        function renderBloodRequests() {
+            const tbody = document.getElementById('blood-tbody');
+            document.getElementById('blood-count').textContent = bloodRequests.length;
+            
+            tbody.innerHTML = bloodRequests.map(request => {
+                let statusClass = 'bg-yellow-100 text-yellow-800';
+                if (request.status === 'Approved') statusClass = 'bg-green-100 text-green-800';
+                if (request.status === 'Issued') statusClass = 'bg-blue-100 text-blue-800';
+                if (request.status === 'Cross-matching') statusClass = 'bg-purple-100 text-purple-800';
+                
+                let priorityClass = 'bg-gray-100 text-gray-800';
+                if (request.priority === 'Urgent') priorityClass = 'bg-orange-100 text-orange-800';
+                if (request.priority === 'Stat') priorityClass = 'bg-red-100 text-red-800';
+                
+                return `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 text-gray-800 font-medium">${request.patient}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 bg-red-100 text-red-800 rounded text-xs font-medium">${request.bloodType}</span>
+                        </td>
+                        <td class="px-6 py-4 text-gray-700">${request.product}</td>
+                        <td class="px-6 py-4 text-gray-700">${request.units}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 rounded-full text-xs ${priorityClass}">${request.priority}</span>
+                        </td>
+                        <td class="px-6 py-4 text-gray-700">${request.date}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 rounded-full text-xs ${statusClass}">${request.status}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <button class="text-orange-600 hover:text-orange-800 mr-2">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="text-green-600 hover:text-green-800">
+                                <i class="fas fa-check"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('shared-sidebar').innerHTML = createSharedSidebar('orders');
+            initSharedSidebar('orders');
+            renderBloodRequests();
+        });
+    </script>
+</body>
+</html>
+

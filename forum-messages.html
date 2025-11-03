@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum Messages - Hospital Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="shared-sidebar.js"></script>
+    <style>
+        :root {
+            --accent-50: #fff7ed;
+            --accent-100: #ffedd5;
+            --accent-200: #fed7aa;
+            --accent-300: #fdba74;
+            --accent-400: #fb923c;
+            --accent-500: #f97316;
+            --accent-600: #ea580c;
+            --accent-700: #c2410c;
+            --accent-800: #9a3412;
+            --accent-900: #7c2d12;
+            --accent-950: #431407;
+        }
+        .bg-orange-50{background-color:var(--accent-50)!important}
+        .bg-orange-100{background-color:var(--accent-100)!important}
+        .bg-orange-200{background-color:var(--accent-200)!important}
+        .bg-orange-300{background-color:var(--accent-300)!important}
+        .bg-orange-400{background-color:var(--accent-400)!important}
+        .bg-orange-500{background-color:var(--accent-500)!important}
+        .bg-orange-600{background-color:var(--accent-600)!important}
+        .text-orange-600{color:var(--accent-600)!important}
+        .border-orange-500{border-color:var(--accent-500)!important}
+        .hover\:bg-orange-600:hover{background-color:var(--accent-600)!important}
+        
+        .message-list-item {
+            transition: background-color 0.2s;
+        }
+        .message-list-item:hover {
+            background-color: #f9fafb;
+        }
+        .message-list-item.active {
+            background-color: #f3f4f6;
+            border-left: 4px solid var(--accent-500);
+        }
+        
+        .chat-message {
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Main Container -->
+    <div class="flex h-screen">
+        <!-- Shared Sidebar -->
+        <div id="shared-sidebar"></div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <header class="bg-gray-100 px-6 py-4 flex items-center justify-between border-b border-gray-200">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-xl font-semibold text-gray-800">Message</h1>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-bell text-lg"></i>
+                    </button>
+                    <button class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-cog text-lg"></i>
+                    </button>
+                    <button class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-question-circle text-lg"></i>
+                    </button>
+                    
+                    <div class="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg">
+                        <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-medium">M</span>
+                        </div>
+                        <div>
+                            <div class="text-sm font-medium text-gray-800">M. Usman</div>
+                            <div class="text-xs text-gray-500">Admin</div>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Messages Content -->
+            <main class="flex-1 overflow-hidden flex">
+                <!-- Left Sidebar - Conversations List -->
+                <div class="w-96 bg-white border-r border-gray-200 flex flex-col">
+                    <!-- Search Bar -->
+                    <div class="p-4 border-b border-gray-200">
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="search-messages"
+                                placeholder="Search name, chat, etc" 
+                                class="w-full bg-gray-50 border border-gray-200 rounded-lg pl-10 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                            />
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                            <button class="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-sliders-h"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Conversations List -->
+                    <div id="conversations-list" class="flex-1 overflow-y-auto scrollbar-thin">
+                        <!-- Conversation items will be populated here -->
+                    </div>
+                    
+                    <!-- New Message Button -->
+                    <div class="p-4 border-t border-gray-200">
+                        <button class="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-lg py-3 text-sm font-medium flex items-center justify-center space-x-2">
+                            <i class="fas fa-plus"></i>
+                            <span>New Message</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Right Side - Active Conversation -->
+                <div class="flex-1 flex flex-col bg-gray-50">
+                    <!-- Chat Header -->
+                    <div id="chat-header" class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <img src="https://ui-avatars.com/api/?name=Dr+Michael+Brown&background=f97316&color=fff" 
+                                 alt="Profile" 
+                                 class="w-12 h-12 rounded-full">
+                            <div>
+                                <div class="text-sm font-semibold text-gray-800">Dr. Michael Brown</div>
+                                <div class="text-xs text-gray-500">last seen recently</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="text-gray-500 hover:text-gray-700 p-2">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Messages Area -->
+                    <div id="messages-area" class="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-thin">
+                        <!-- Messages will be populated here -->
+                    </div>
+                    
+                    <!-- Message Input -->
+                    <div class="bg-white border-t border-gray-200 p-4">
+                        <div class="flex items-center space-x-3">
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-paperclip text-lg"></i>
+                            </button>
+                            <input 
+                                type="text" 
+                                id="message-input"
+                                placeholder="Type a message..." 
+                                class="flex-1 bg-gray-50 border border-gray-200 rounded-full px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                            />
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <i class="far fa-smile text-lg"></i>
+                            </button>
+                            <button id="send-message" class="bg-orange-500 hover:bg-orange-600 text-white rounded-full p-2.5 w-10 h-10 flex items-center justify-center">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Theme loader
+        function loadTheme(){ 
+            const saved = localStorage.getItem('hm_accent_hex'); 
+            if(saved){ 
+                const root=document.documentElement; 
+                root.style.setProperty('--accent-500', saved);
+            } 
+        }
+        loadTheme();
+
+        // Sample conversations data
+        const conversationsData = [
+            {
+                id: 1,
+                name: 'Dr. Michael Brown',
+                role: 'Doctor',
+                avatar: 'Dr+Michael+Brown',
+                lastMessage: 'Can you confirm the schedule for the Geriatric Care session tomorrow afternoon?',
+                time: '10:04 A',
+                unread: 0,
+                active: true
+            },
+            {
+                id: 2,
+                name: 'John Doe',
+                role: 'Doctor',
+                avatar: 'John+Doe',
+                lastMessage: 'I need to reschedule my appointment for...',
+                time: '10:04 A',
+                unread: 2,
+                active: false
+            },
+            {
+                id: 3,
+                name: 'Mary Johnson',
+                role: 'Patient',
+                avatar: 'Mary+Johnson',
+                lastMessage: 'Thank you for the excellent of an on-g...',
+                time: '10:04 A',
+                unread: 0,
+                active: false
+            },
+            {
+                id: 4,
+                name: 'Susan Lee',
+                role: 'Patient',
+                avatar: 'Susan+Lee',
+                lastMessage: 'The neurology care doing i...',
+                time: '10:30 A',
+                unread: 0,
+                active: false
+            },
+            {
+                id: 5,
+                name: 'Kevin White',
+                role: 'Patient',
+                avatar: 'Kevin+White',
+                lastMessage: 'My symptoms have worsened. Can we set...',
+                time: '10:26 A',
+                unread: 0,
+                active: false
+            },
+            {
+                id: 6,
+                name: 'Dr. Linda Green',
+                role: 'Patient',
+                avatar: 'Linda+Green',
+                lastMessage: 'Mst symptoms have worsened.',
+                time: '03:35 A',
+                unread: 0,
+                active: false
+            },
+            {
+                id: 7,
+                name: 'Jennifer Adams',
+                role: 'Patient',
+                avatar: 'Jennifer+Adams',
+                lastMessage: 'Can you do re-operating on this nob...',
+                time: '10:30 A',
+                unread: 0,
+                active: false
+            },
+            {
+                id: 8,
+                name: 'Dr. Samuel Thompson',
+                role: 'doctor',
+                avatar: 'Samuel+Thompson',
+                lastMessage: 'The anesthesiologist has confirmed...',
+                time: '10:33',
+                unread: 0,
+                active: false
+            },
+            {
+                id: 9,
+                name: 'Mateus Fernandes',
+                role: 'Patient',
+                avatar: 'Mateus+Fernandes',
+                lastMessage: '',
+                time: '2/6/2018',
+                unread: 0,
+                active: false
+            }
+        ];
+
+        // Sample messages for active conversation
+        let messagesData = [
+            {
+                id: 1,
+                text: 'Can you confirm the schedule for the Geriatric Care session tomorrow afternoon?',
+                sender: 'Dr. Michael Brown',
+                time: '10:04 AM',
+                isSent: false
+            },
+            {
+                id: 2,
+                text: 'Sure, Dr. Brown. Let me check the schedule for you.',
+                sender: 'M. Usman',
+                time: '10:06 AM',
+                isSent: true
+            },
+            {
+                id: 3,
+                text: 'The Geriatric Care session is scheduled for 2:00 PM to 5:00 PM tomorrow. We have registered 4 patients.',
+                sender: 'M. Usman',
+                time: '10:06 AM',
+                isSent: true
+            },
+            {
+                id: 4,
+                text: 'Thank you. Can you please provide me the list of patients and their conditions?',
+                sender: 'Dr. Michael Brown',
+                time: '10:06 AM',
+                isSent: false
+            },
+            {
+                id: 5,
+                text: 'Of course. The patients are:\n1. James Wilson - Arthritis Management\n2. Mary Johnson - Diabetes Monitoring\n3. Susan Lee - Hypertension Check-Up\n4. Robert Davis - General Health Review\n5. Emily Thomson - Medication Review',
+                sender: 'M. Usman',
+                time: '10:06 AM',
+                isSent: true
+            }
+        ];
+
+        // Render conversations list
+        function renderConversations() {
+            const conversationsList = document.getElementById('conversations-list');
+            conversationsList.innerHTML = conversationsData.map(conv => `
+                <div class="message-list-item ${conv.active ? 'active' : ''} px-4 py-3 cursor-pointer border-b border-gray-100" 
+                     data-conversation-id="${conv.id}"
+                     onclick="loadConversation(${conv.id})">
+                    <div class="flex items-start space-x-3">
+                        <div class="relative">
+                            <img src="https://ui-avatars.com/api/?name=${conv.avatar}&background=random" 
+                                 alt="${conv.name}" 
+                                 class="w-12 h-12 rounded-full">
+                            ${conv.unread > 0 ? `<span class="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">${conv.unread}</span>` : ''}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-semibold text-gray-800 truncate">${conv.name}</span>
+                                <span class="text-xs text-gray-400">${conv.time}</span>
+                            </div>
+                            <div class="text-xs text-gray-500 mb-1">${conv.role}</div>
+                            <p class="text-xs text-gray-600 truncate">${conv.lastMessage}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render messages
+        function renderMessages() {
+            const messagesArea = document.getElementById('messages-area');
+            messagesArea.innerHTML = messagesData.map(msg => {
+                if (msg.isSent) {
+                    return `
+                        <div class="chat-message flex justify-end">
+                            <div class="max-w-md">
+                                <div class="bg-orange-100 text-gray-800 rounded-2xl rounded-tr-sm px-4 py-2.5">
+                                    <p class="text-sm whitespace-pre-wrap">${msg.text}</p>
+                                </div>
+                                <div class="text-xs text-gray-400 mt-1 text-right">${msg.time}</div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="chat-message flex justify-start">
+                            <div class="max-w-md">
+                                <div class="bg-white border border-gray-200 text-gray-800 rounded-2xl rounded-tl-sm px-4 py-2.5">
+                                    <p class="text-sm whitespace-pre-wrap">${msg.text}</p>
+                                </div>
+                                <div class="text-xs text-gray-400 mt-1">${msg.time}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+            
+            // Scroll to bottom
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        }
+
+        // Load conversation
+        function loadConversation(conversationId) {
+            // Update active state
+            conversationsData.forEach(conv => conv.active = conv.id === conversationId);
+            renderConversations();
+            
+            // Update chat header
+            const conversation = conversationsData.find(c => c.id === conversationId);
+            if (conversation) {
+                document.getElementById('chat-header').innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <img src="https://ui-avatars.com/api/?name=${conversation.avatar}&background=random" 
+                             alt="${conversation.name}" 
+                             class="w-12 h-12 rounded-full">
+                        <div>
+                            <div class="text-sm font-semibold text-gray-800">${conversation.name}</div>
+                            <div class="text-xs text-gray-500">last seen recently</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="text-gray-500 hover:text-gray-700 p-2">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </div>
+                `;
+            }
+            
+            // Load messages for this conversation
+            renderMessages();
+        }
+
+        // Send message
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const messageText = input.value.trim();
+            
+            if (messageText) {
+                const newMessage = {
+                    id: messagesData.length + 1,
+                    text: messageText,
+                    sender: 'M. Usman',
+                    time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+                    isSent: true
+                };
+                
+                messagesData.push(newMessage);
+                renderMessages();
+                input.value = '';
+            }
+        }
+
+        // Event listeners
+        document.getElementById('send-message').addEventListener('click', sendMessage);
+        document.getElementById('message-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Search functionality
+        document.getElementById('search-messages').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredConversations = conversationsData.filter(conv => 
+                conv.name.toLowerCase().includes(searchTerm) || 
+                conv.lastMessage.toLowerCase().includes(searchTerm)
+            );
+            
+            // Re-render with filtered results
+            const conversationsList = document.getElementById('conversations-list');
+            conversationsList.innerHTML = filteredConversations.map(conv => `
+                <div class="message-list-item ${conv.active ? 'active' : ''} px-4 py-3 cursor-pointer border-b border-gray-100" 
+                     data-conversation-id="${conv.id}"
+                     onclick="loadConversation(${conv.id})">
+                    <div class="flex items-start space-x-3">
+                        <div class="relative">
+                            <img src="https://ui-avatars.com/api/?name=${conv.avatar}&background=random" 
+                                 alt="${conv.name}" 
+                                 class="w-12 h-12 rounded-full">
+                            ${conv.unread > 0 ? `<span class="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">${conv.unread}</span>` : ''}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-semibold text-gray-800 truncate">${conv.name}</span>
+                                <span class="text-xs text-gray-400">${conv.time}</span>
+                            </div>
+                            <div class="text-xs text-gray-500 mb-1">${conv.role}</div>
+                            <p class="text-xs text-gray-600 truncate">${conv.lastMessage}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        });
+
+        // Initialize shared sidebar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load shared sidebar
+            document.getElementById('shared-sidebar').innerHTML = createSharedSidebar('forum');
+            initSharedSidebar('forum');
+            
+            // Render initial data
+            renderConversations();
+            renderMessages();
+        });
+    </script>
+</body>
+</html>
+
+
+

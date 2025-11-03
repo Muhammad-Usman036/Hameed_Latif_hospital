@@ -156,9 +156,9 @@ const navigationMap = {
     'transfer': 'transfer.html',
     'inventory': 'inventory.html',
     'departments': 'departments.html',
-    'orders': 'orders.html',
+    'orders': 'orders-workbench.html',
     'tender': 'tender.html',
-    'forum': 'forum.html'
+    'forum': 'forum-messages.html'
 };
 
 // Initialize shared sidebar
