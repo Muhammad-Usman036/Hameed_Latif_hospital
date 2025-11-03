@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="currency-helper.js"></script>
     <style>
         /* Mobile Sidebar Overlay */
         #sidebar-overlay {
@@ -1369,7 +1370,7 @@
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-sm font-medium text-gray-600">Total Billed</p>
-                                    <p class="text-2xl font-bold text-gray-900">₹7,999.00</p>
+                                    <p class="text-2xl font-bold text-gray-900" data-currency data-amount="7999">Rs. 7,999.00</p>
                                 </div>
                                 <div class="p-3 bg-orange-100 rounded-full">
                                     <i class="fas fa-file-invoice text-orange-600 text-xl"></i>
@@ -1380,7 +1381,7 @@
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-sm font-medium text-gray-600">Total Paid</p>
-                                    <p class="text-2xl font-bold text-green-600">₹7,999.00</p>
+                                    <p class="text-2xl font-bold text-green-600" data-currency data-amount="7999">Rs. 7,999.00</p>
                                 </div>
                                 <div class="p-3 bg-green-100 rounded-full">
                                     <i class="fas fa-check-circle text-green-600 text-xl"></i>
@@ -1391,7 +1392,7 @@
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-sm font-medium text-gray-600">Outstanding Balance</p>
-                                    <p class="text-2xl font-bold text-green-600">₹0.00</p>
+                                    <p class="text-2xl font-bold text-green-600" data-currency data-amount="0">Rs. 0.00</p>
                                 </div>
                                 <div class="p-3 bg-green-100 rounded-full">
                                     <i class="fas fa-balance-scale text-green-600 text-xl"></i>
@@ -1403,49 +1404,68 @@
                     <div class="bg-white rounded-lg shadow-sm">
                         <div class="flex items-center justify-between p-6 border-b border-gray-200">
                             <h3 class="text-lg font-semibold text-gray-800">Bills</h3>
+                            <div id="currency-selector-bills-container" class="w-48">
+                                <!-- Currency selector will be inserted here -->
+                            </div>
                         </div>
                         
                         <!-- Search and Filter Section -->
                         <div class="p-6 border-b border-gray-200">
-                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                <div>
+                           
+                            <div class="p-6 border-b border-gray-200">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[150px_150px_150px_1fr] gap-4 items-end">
+                                  
+                                  <!-- Bill Status -->
+                                  <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Bill Status</label>
                                     <div class="relative">
-                                        <select class="w-full px-3 py-2 pr-10 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm appearance-none">
-                                            <option>Select</option>
-                                            <option>Paid</option>
-                                            <option>Pending</option>
-                                            <option>Overdue</option>
-                                        </select>
-                                        <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                                      <select
+                                        class="w-full px-3 py-2 pr-10 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm appearance-none">
+                                        <option>Select</option>
+                                        <option>Paid</option>
+                                        <option>Pending</option>
+                                        <option>Overdue</option>
+                                      </select>
+                                      <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                                     </div>
-                                </div>
-                                <div>
+                                  </div>
+                              
+                                  <!-- From Date -->
+                                  <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">From Date</label>
                                     <div class="relative">
-                                        <input type="text" value="5/4/2022" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
-                                        <i class="fas fa-calendar absolute right-3 top-3 text-gray-400"></i>
+                                      <input type="date" value="5/4/2022"
+                                        class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
                                     </div>
-                                </div>
-                                <div>
+                                  </div>
+                              
+                                  <!-- To Date -->
+                                  <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">To Date</label>
                                     <div class="relative">
-                                        <input type="text" value="5/7/2024" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
-                                        <i class="fas fa-calendar absolute right-3 top-3 text-gray-400"></i>
+                                      <input type="date" value="5/7/2024"
+                                        class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
                                     </div>
-                                </div>
-                                <div class="flex items-end space-x-2">
-                                    <button class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">
-                                        <i class="fas fa-search mr-1"></i>Search
+                                  </div>
+                              
+                                  <!-- Buttons -->
+                                  <div class="flex flex-wrap sm:flex-nowrap justify-start sm:justify-end gap-2">
+                                    <button
+                                      class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium w-full sm:w-auto">
+                                      <i class="fas fa-search mr-1"></i>Search
                                     </button>
-                                    <button class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-medium">
-                                        <i class="fas fa-refresh mr-1"></i>Reset
+                                    <button
+                                      class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-medium w-full sm:w-auto">
+                                      <i class="fas fa-refresh mr-1"></i>Reset
                                     </button>
-                                    <a href="add-bill.html" class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">
-                                        <i class="fas fa-plus mr-1"></i>Add New Bill
+                                    <a href="add-bill.html"
+                                      class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium w-full sm:w-auto text-center">
+                                      <i class="fas fa-plus mr-1"></i>Add New Bill
                                     </a>
+                                  </div>
                                 </div>
-                            </div>
+                              </div>
+                              
                         </div>
 
                         <!-- Bills Table -->
@@ -1764,6 +1784,17 @@
             document.getElementById('pd-name').textContent = `Patient #${id}  John Smith `;
         }
 
+        // Initialize currency selector function (define before use)
+        function initCurrencySelector() {
+            const container = document.getElementById('currency-selector-bills-container');
+            if (container && !container.querySelector('select')) {
+                container.innerHTML = CurrencyHelper.createCurrencySelector(null, function(currency) {
+                    CurrencyHelper.updateCurrencyDisplays();
+                });
+            }
+            CurrencyHelper.updateCurrencyDisplays();
+        }
+
         // Tabs
         const tabs = document.querySelectorAll('.tab-btn');
         const panels = {
@@ -1781,6 +1812,13 @@
             btn.classList.remove('bg-white','border');
             Object.values(panels).forEach(p => p.classList.add('hidden'));
             panels[btn.dataset.tab].classList.remove('hidden');
+            
+            // Initialize currency selector when bills panel is shown
+            if (btn.dataset.tab === 'bills') {
+                setTimeout(() => {
+                    initCurrencySelector();
+                }, 150);
+            }
         }));
 
         // Sub-tabs functionality for Case Sheet
@@ -2410,6 +2448,26 @@
         // Check for new medicines when page loads
         checkForNewMedicines();
 
+        // Initialize currency on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait a bit for CurrencyHelper to be available
+            setTimeout(function() {
+                // Check if bills panel is visible (e.g., from URL hash)
+                if (window.location.hash === '#bills') {
+                    const billsPanel = document.getElementById('panel-bills');
+                    if (billsPanel) {
+                        billsPanel.classList.remove('hidden');
+                        initCurrencySelector();
+                    }
+                }
+                
+                // Also initialize if panel is already visible
+                const billsPanel = document.getElementById('panel-bills');
+                if (billsPanel && !billsPanel.classList.contains('hidden')) {
+                    initCurrencySelector();
+                }
+            }, 300);
+        });
 
     </script>
 
