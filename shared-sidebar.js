@@ -4,7 +4,7 @@
 function createSharedSidebar(currentPage = 'dashboard') {
     return `
         <!-- Sidebar -->
-        <div class="w-64 bg-white shadow-lg flex flex-col h-full">
+        <div class="w-48 bg-white shadow-lg flex flex-col h-full">
             <!-- Logo -->
             <div class="p-4 border-b border-gray-200 flex-shrink-0">
                 <div class="flex items-center space-x-3">
@@ -151,7 +151,7 @@ const navigationMap = {
     'doctors': 'doctors.html',
     'doctor-schedule': 'doctor-schedule.html',
     'payments': 'payments.html',
-    'discharge': 'discharge.html',
+    'discharge': 'patient-discharge.html',
     'clinical-chart': 'clinical-chart.html',
     'transfer': 'transfer.html',
     'inventory': 'inventory.html',

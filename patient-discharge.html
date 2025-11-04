@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Discharge - Hospital Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="shared-sidebar.js"></script>
+    <script src="currency-helper.js"></script>
+    <style>
+        :root {
+            --accent-50: #fff7ed;
+            --accent-100: #ffedd5;
+            --accent-200: #fed7aa;
+            --accent-300: #fdba74;
+            --accent-400: #fb923c;
+            --accent-500: #f97316;
+            --accent-600: #ea580c;
+            --accent-700: #c2410c;
+            --accent-800: #9a3412;
+            --accent-900: #7c2d12;
+        }
+        .bg-orange-50{background-color:var(--accent-50)!important}
+        .bg-orange-100{background-color:var(--accent-100)!important}
+        .bg-orange-500{background-color:var(--accent-500)!important}
+        .bg-orange-600{background-color:var(--accent-600)!important}
+        .text-orange-500{color:var(--accent-500)!important}
+        .text-orange-600{color:var(--accent-600)!important}
+        .border-orange-500{border-color:var(--accent-500)!important}
+        .hover\:bg-orange-600:hover{background-color:var(--accent-600)!important}
+        
+        /* Main Sidebar Mobile Styles */
+        @media (max-width: 1024px) {
+            #shared-sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                height: 100vh;
+                z-index: 50;
+                transition: left 0.3s ease;
+            }
+            #shared-sidebar.active {
+                left: 0;
+            }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .header-user-info {
+                display: none;
+            }
+            .progress-step-title {
+                font-size: 0.625rem;
+            }
+            .progress-step-desc {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Shared Sidebar -->
+        <div id="shared-sidebar"></div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <header class="bg-gray-100 px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between border-b border-gray-200">
+                <div class="flex items-center space-x-2 sm:space-x-4 flex-1">
+                    <!-- Mobile Menu Button for Main Sidebar -->
+                    <button id="mobile-menu-btn" class="mobile-menu-btn lg:hidden text-gray-600 hover:text-gray-800 p-2">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    
+                    <div class="flex items-center space-x-2 sm:space-x-3">
+                        <button onclick="history.back()" class="text-gray-600 hover:text-gray-800 p-2">
+                            <i class="fas fa-arrow-left text-lg"></i>
+                        </button>
+                        <div>
+                            <h1 class="text-base sm:text-lg font-semibold text-gray-900">Patient Discharge</h1>
+                            <p class="text-xs sm:text-sm text-gray-500">Complete discharge process</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <button class="text-gray-600 hover:text-gray-800 p-2">
+                        <i class="fas fa-bell text-base sm:text-lg"></i>
+                    </button>
+                    
+                    <div class="header-user-info flex items-center space-x-2 bg-white px-2 sm:px-4 py-2 rounded-lg">
+                        <div class="w-7 h-7 sm:w-8 sm:h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                            <span class="text-white text-xs sm:text-sm font-medium">M</span>
+                        </div>
+                        <div class="hidden sm:block">
+                            <div class="text-xs sm:text-sm font-medium text-gray-800">M. Usman</div>
+                            <div class="text-xs text-gray-500">Admin</div>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400 text-xs hidden sm:block"></i>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Sidebar Overlay for Main Sidebar (Mobile) -->
+            <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
+            
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6">
+                <!-- Progress Indicator -->
+                <div class="mb-6 sm:mb-8">
+                    <div class="flex items-center justify-between max-w-3xl mx-auto">
+                        <!-- Step 1 -->
+                        <div class="flex flex-col items-center flex-1">
+                            <div id="step1-indicator" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-orange-500 text-white flex items-center justify-center font-semibold text-sm sm:text-base mb-2">
+                                <span id="step1-icon">1</span>
+                            </div>
+                            <div class="text-center">
+                                <p class="progress-step-title text-xs sm:text-sm font-medium text-gray-800 mb-1">Discharge Summary</p>
+                                <p class="progress-step-desc text-xs text-gray-500">Patient history and treatment summary</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Connector Line 1 -->
+                        <div id="connector1" class="h-0.5 sm:h-1 flex-1 mx-2 sm:mx-4 bg-gray-300"></div>
+                        
+                        <!-- Step 2 -->
+                        <div class="flex flex-col items-center flex-1">
+                            <div id="step2-indicator" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center font-semibold text-sm sm:text-base mb-2">
+                                <span id="step2-icon">2</span>
+                            </div>
+                            <div class="text-center">
+                                <p class="progress-step-title text-xs sm:text-sm font-medium text-gray-800 mb-1">Final Bill</p>
+                                <p class="progress-step-desc text-xs text-gray-500">Review all charges and costs</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Connector Line 2 -->
+                        <div id="connector2" class="h-0.5 sm:h-1 flex-1 mx-2 sm:mx-4 bg-gray-300"></div>
+                        
+                        <!-- Step 3 -->
+                        <div class="flex flex-col items-center flex-1">
+                            <div id="step3-indicator" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center font-semibold text-sm sm:text-base mb-2">
+                                <span id="step3-icon">3</span>
+                            </div>
+                            <div class="text-center">
+                                <p class="progress-step-title text-xs sm:text-sm font-medium text-gray-800 mb-1">Print Slip</p>
+                                <p class="progress-step-desc text-xs text-gray-500">Generate final discharge document</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 1: Discharge Summary -->
+                <div id="step1-panel" class="step-panel max-w-4xl mx-auto">
+                    <div class="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+                        <div class="mb-4 sm:mb-6">
+                            <h2 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">Discharge Summary</h2>
+                            <p class="text-xs sm:text-sm text-gray-500">Document patient's diagnosis, treatment, and follow-up instructions</p>
+                        </div>
+                        
+                        <form id="discharge-summary-form" class="space-y-4 sm:space-y-6">
+                            <!-- Primary Diagnosis -->
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                                    Primary Diagnosis <span class="text-red-500">*</span>
+                                </label>
+                                <textarea 
+                                    id="primary-diagnosis" 
+                                    rows="4" 
+                                    class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-y text-xs sm:text-sm" 
+                                    placeholder="Enter primary diagnosis and relevant findings..."
+                                    required
+                                ></textarea>
+                            </div>
+                            
+                            <!-- Treatment Summary -->
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Treatment Summary</label>
+                                <textarea 
+                                    id="treatment-summary" 
+                                    rows="5" 
+                                    class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-y text-xs sm:text-sm" 
+                                    placeholder="Describe treatment procedures, interventions, and hospital course..."
+                                ></textarea>
+                            </div>
+                            
+                            <!-- Discharge Medications -->
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Discharge Medications</label>
+                                <textarea 
+                                    id="discharge-medications" 
+                                    rows="4" 
+                                    class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-y text-xs sm:text-sm" 
+                                    placeholder="List medications with dosage and frequency..."
+                                ></textarea>
+                            </div>
+                            
+                            <!-- Follow-up Instructions -->
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Follow-up Instructions</label>
+                                <textarea 
+                                    id="follow-up-instructions" 
+                                    rows="4" 
+                                    class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-y text-xs sm:text-sm" 
+                                    placeholder="Provide follow-up care instructions and appointment recommendations..."
+                                ></textarea>
+                            </div>
+                        </form>
+                        
+                        <!-- Navigation Buttons -->
+                        <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-between gap-3 pt-4 sm:pt-6 border-t border-gray-200">
+                            <button 
+                                onclick="goToStep(0)" 
+                                class="px-4 sm:px-6 py-2 sm:py-3 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg text-xs sm:text-sm font-medium w-full sm:w-auto"
+                                disabled
+                            >
+                                < Back
+                            </button>
+                            <button 
+                                onclick="goToStep(2)" 
+                                class="px-4 sm:px-6 py-2 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium w-full sm:w-auto"
+                            >
+                                Next >
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Final Bill Review -->
+                <div id="step2-panel" class="step-panel max-w-4xl mx-auto" style="display: none;">
+                    <div class="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+                        <div class="mb-4 sm:mb-6">
+                            <h2 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">Final Bill Review</h2>
+                            <p class="text-xs sm:text-sm text-gray-500">Review all charges and costs before discharge</p>
+                        </div>
+                        
+                        <!-- Bill Items Table -->
+                        <div class="mb-4 sm:mb-6">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                            <th scope="col" class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                            <th scope="col" class="px-3 sm:px-6 py-2 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Amount (<span data-currency-symbol></span>)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900">Room Charges</td>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-700">General Ward - 5 days</td>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 text-right" data-currency data-amount="15000">Rs. 15,000.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900">Pharmacy</td>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-700">Medications and supplies</td>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 text-right" data-currency data-amount="8500">Rs. 8,500.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900">Laboratory</td>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-700">Blood tests and diagnostics</td>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 text-right" data-currency data-amount="4200">Rs. 4,200.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900">Radiology</td>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-700">X-ray and imaging</td>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 text-right" data-currency data-amount="3500">Rs. 3,500.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900">Doctor Consultation</td>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-700">Daily visits</td>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 text-right" data-currency data-amount="5000">Rs. 5,000.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900">Nursing Care</td>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-700">24/7 nursing services</td>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 text-right" data-currency data-amount="6000">Rs. 6,000.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900">Procedures</td>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-700">Minor procedures</td>
+                                            <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 text-right" data-currency data-amount="7900">Rs. 7,900.00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Bill Summary -->
+                        <div class="bg-gray-50 rounded-lg p-4 sm:p-6 mb-4 sm:mb-6">
+                            <div class="space-y-2 sm:space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs sm:text-sm text-gray-600">Subtotal</span>
+                                    <span id="bill-subtotal" class="text-xs sm:text-sm font-medium text-gray-900" data-currency data-amount="50000">Rs. 50,000.00</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs sm:text-sm text-gray-600">Tax (5%)</span>
+                                    <span id="bill-tax" class="text-xs sm:text-sm font-medium text-gray-900" data-currency data-amount="2500">Rs. 2,500.00</span>
+                                </div>
+                                <div class="flex justify-between items-center pt-2 sm:pt-3 border-t border-gray-300">
+                                    <span class="text-sm sm:text-base font-semibold text-gray-900">Total Amount</span>
+                                    <span id="bill-total" class="text-lg sm:text-xl font-bold text-orange-500" data-currency data-amount="52500">Rs. 52,500.00</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Payment Status -->
+                            <div class="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-300">
+                                <div class="flex items-center space-x-2">
+                                    <span class="px-2 sm:px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs sm:text-sm font-medium">
+                                        Paid - Payment received via Credit Card
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Navigation Buttons -->
+                        <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-between gap-3 pt-4 sm:pt-6 border-t border-gray-200">
+                            <button 
+                                onclick="goToStep(1)" 
+                                class="px-4 sm:px-6 py-2 sm:py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-xs sm:text-sm font-medium w-full sm:w-auto"
+                            >
+                                < Back
+                            </button>
+                            <button 
+                                onclick="goToStep(3)" 
+                                class="px-4 sm:px-6 py-2 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium w-full sm:w-auto"
+                            >
+                                Next >
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Print Slip -->
+                <div id="step3-panel" class="step-panel max-w-4xl mx-auto" style="display: none;">
+                    <div class="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+                        <div class="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                            <div>
+                                <h2 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">Hospital Discharge Summary</h2>
+                            </div>
+                            <div>
+                                <span class="px-3 sm:px-4 py-1 sm:py-2 bg-green-100 text-green-700 rounded-full text-xs sm:text-sm font-medium">
+                                    Discharged
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Discharge Document Content -->
+                        <div class="space-y-4 sm:space-y-6">
+                            <!-- Patient Information -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pb-4 sm:pb-6 border-b border-gray-200">
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Patient Name</label>
+                                    <p class="text-xs sm:text-sm text-gray-900 font-medium">John Doe</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Patient ID</label>
+                                    <p class="text-xs sm:text-sm text-gray-900 font-medium">PT-2024-001</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Admission Date</label>
+                                    <p class="text-xs sm:text-sm text-gray-900 font-medium">October 13, 2024</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Discharge Date</label>
+                                    <p class="text-xs sm:text-sm text-gray-900 font-medium">October 17, 2024</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Ward</label>
+                                    <p class="text-xs sm:text-sm text-gray-900 font-medium">General Ward - Bed B-204</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Attending Physician</label>
+                                    <p class="text-xs sm:text-sm text-gray-900 font-medium">Dr. Sarah Johnson</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Medical Summary -->
+                            <div class="space-y-4 sm:space-y-6">
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium text-orange-600 mb-2">Primary Diagnosis</label>
+                                    <p id="discharge-diagnosis" class="text-xs sm:text-sm text-gray-900">-</p>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium text-orange-600 mb-2">Treatment Summary</label>
+                                    <p id="discharge-treatment" class="text-xs sm:text-sm text-gray-900 whitespace-pre-line">-</p>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium text-orange-600 mb-2">Discharge Medications</label>
+                                    <p id="discharge-meds" class="text-xs sm:text-sm text-gray-900 whitespace-pre-line">-</p>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium text-orange-600 mb-2">Follow-up Instructions</label>
+                                    <p id="discharge-followup" class="text-xs sm:text-sm text-gray-900 whitespace-pre-line">-</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Financial Summary -->
+                            <div class="pt-4 sm:pt-6 border-t border-gray-200">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Total Amount Due</label>
+                                        <p id="discharge-total" class="text-base sm:text-lg font-semibold text-green-600" data-currency data-amount="752325">Rs. 752,325.00</p>
+                                    </div>
+                                    <div>
+                                        <span class="px-3 sm:px-4 py-1 sm:py-2 bg-green-100 text-green-700 rounded-full text-xs sm:text-sm font-medium">
+                                            Paid in Full
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Footer -->
+                            <div class="pt-4 sm:pt-6 border-t border-gray-200">
+                                <p class="text-xs text-gray-500 text-center">
+                                    This is an official discharge document from Medical Center Healthcare. For queries, contact at +91 (105)-453-70901 discharge@medicalcenter.com
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Navigation Buttons -->
+                        <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-between gap-3 pt-4 sm:pt-6 border-t border-gray-200">
+                            <button 
+                                onclick="goToStep(2)" 
+                                class="px-4 sm:px-6 py-2 sm:py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-xs sm:text-sm font-medium w-full sm:w-auto"
+                            >
+                                < Back
+                            </button>
+                            <button 
+                                onclick="printDischargeSlip()" 
+                                class="px-4 sm:px-6 py-2 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium w-full sm:w-auto"
+                            >
+                                <i class="fas fa-print mr-2"></i>Print Discharge Slip
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Theme loader
+        function loadTheme() {
+            const saved = localStorage.getItem("hm_accent_hex");
+            if (saved) {
+                document.documentElement.style.setProperty("--accent-500", saved);
+            }
+        }
+        loadTheme();
+
+        let currentStep = 1;
+
+        // Step Navigation
+        function goToStep(step) {
+            // Validate step 1 before proceeding
+            if (step === 2 && currentStep === 1) {
+                const form = document.getElementById("discharge-summary-form");
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+            }
+
+            // Hide all panels
+            document.querySelectorAll(".step-panel").forEach(panel => {
+                panel.style.display = "none";
+            });
+
+            // Show selected panel
+            if (step === 1) {
+                document.getElementById("step1-panel").style.display = "block";
+                currentStep = 1;
+            } else if (step === 2) {
+                document.getElementById("step2-panel").style.display = "block";
+                currentStep = 2;
+                // Update currency displays
+                if (typeof CurrencyHelper !== 'undefined') {
+                    CurrencyHelper.updateCurrencyDisplays();
+                }
+            } else if (step === 3) {
+                document.getElementById("step3-panel").style.display = "block";
+                currentStep = 3;
+                // Populate discharge document with form data
+                populateDischargeDocument();
+                // Update currency displays
+                if (typeof CurrencyHelper !== 'undefined') {
+                    CurrencyHelper.updateCurrencyDisplays();
+                }
+            }
+
+            updateProgressIndicator();
+        }
+
+        // Update Progress Indicator
+        function updateProgressIndicator() {
+            // Step 1
+            const step1Indicator = document.getElementById("step1-indicator");
+            const step1Icon = document.getElementById("step1-icon");
+            const connector1 = document.getElementById("connector1");
+
+            // Step 2
+            const step2Indicator = document.getElementById("step2-indicator");
+            const step2Icon = document.getElementById("step2-icon");
+            const connector2 = document.getElementById("connector2");
+
+            // Step 3
+            const step3Indicator = document.getElementById("step3-indicator");
+            const step3Icon = document.getElementById("step3-icon");
+
+            if (currentStep >= 1) {
+                step1Indicator.classList.remove("bg-gray-300", "text-gray-600");
+                step1Indicator.classList.add("bg-orange-500", "text-white");
+                step1Icon.innerHTML = currentStep > 1 ? '<i class="fas fa-check"></i>' : '1';
+            }
+
+            if (currentStep >= 2) {
+                connector1.classList.remove("bg-gray-300");
+                connector1.classList.add("bg-orange-500");
+                step2Indicator.classList.remove("bg-gray-300", "text-gray-600");
+                step2Indicator.classList.add("bg-orange-500", "text-white");
+                step2Icon.innerHTML = currentStep > 2 ? '<i class="fas fa-check"></i>' : '2';
+            } else {
+                connector1.classList.remove("bg-orange-500");
+                connector1.classList.add("bg-gray-300");
+                step2Indicator.classList.remove("bg-orange-500", "text-white");
+                step2Indicator.classList.add("bg-gray-300", "text-gray-600");
+                step2Icon.textContent = '2';
+            }
+
+            if (currentStep >= 3) {
+                connector2.classList.remove("bg-gray-300");
+                connector2.classList.add("bg-orange-500");
+                step3Indicator.classList.remove("bg-gray-300", "text-gray-600");
+                step3Indicator.classList.add("bg-orange-500", "text-white");
+                step3Icon.innerHTML = '<i class="fas fa-check"></i>';
+            } else {
+                connector2.classList.remove("bg-orange-500");
+                connector2.classList.add("bg-gray-300");
+                step3Indicator.classList.remove("bg-orange-500", "text-white");
+                step3Indicator.classList.add("bg-gray-300", "text-gray-600");
+                step3Icon.textContent = '3';
+            }
+        }
+
+        // Populate Discharge Document
+        function populateDischargeDocument() {
+            const diagnosis = document.getElementById("primary-diagnosis").value || "-";
+            const treatment = document.getElementById("treatment-summary").value || "-";
+            const medications = document.getElementById("discharge-medications").value || "-";
+            const followup = document.getElementById("follow-up-instructions").value || "-";
+
+            document.getElementById("discharge-diagnosis").textContent = diagnosis;
+            document.getElementById("discharge-treatment").textContent = treatment;
+            document.getElementById("discharge-meds").textContent = medications;
+            document.getElementById("discharge-followup").textContent = followup;
+        }
+
+        // Print Discharge Slip
+        function printDischargeSlip() {
+            window.print();
+        }
+
+        // Main sidebar toggle function
+        function toggleMainSidebar() {
+            const sidebar = document.getElementById("shared-sidebar");
+            const overlay = document.getElementById("sidebar-overlay");
+            if (sidebar && overlay) {
+                sidebar.classList.toggle("active");
+                overlay.classList.toggle("hidden");
+            }
+        }
+
+        // Initialize
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("shared-sidebar").innerHTML = createSharedSidebar("discharge");
+            initSharedSidebar("discharge");
+
+            // Main sidebar mobile menu functionality
+            const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+            const sidebar = document.getElementById("shared-sidebar");
+            const overlay = document.getElementById("sidebar-overlay");
+
+            if (mobileMenuBtn && sidebar && overlay) {
+                mobileMenuBtn.addEventListener("click", function () {
+                    toggleMainSidebar();
+                });
+
+                overlay.addEventListener("click", function () {
+                    toggleMainSidebar();
+                });
+            }
+
+            // Initialize currency helper if available
+            if (typeof CurrencyHelper !== 'undefined') {
+                // Add currency selector to step 2
+                const billSection = document.getElementById("step2-panel");
+                if (billSection) {
+                    const currencyContainer = document.createElement("div");
+                    currencyContainer.id = "currency-selector-container";
+                    currencyContainer.className = "mb-4 sm:mb-6";
+                    billSection.querySelector(".bg-white").insertBefore(currencyContainer, billSection.querySelector(".mb-4"));
+                    
+                    currencyContainer.innerHTML = CurrencyHelper.createCurrencySelector('discharge-currency-selector', function(currency) {
+                        CurrencyHelper.updateCurrencyDisplays();
+                    });
+                }
+                CurrencyHelper.updateCurrencyDisplays();
+            }
+
+            // Initialize progress indicator
+            updateProgressIndicator();
+        });
+    </script>
+</body>
+</html>
+

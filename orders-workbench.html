@@ -1,306 +1,2430 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Orders Workbench - Hospital Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <script src="shared-sidebar.js"></script>
     <style>
-        :root {
-            --accent-50: #fff7ed;
-            --accent-100: #ffedd5;
-            --accent-200: #fed7aa;
-            --accent-300: #fdba74;
-            --accent-400: #fb923c;
-            --accent-500: #f97316;
-            --accent-600: #ea580c;
-            --accent-700: #c2410c;
-            --accent-800: #9a3412;
-            --accent-900: #7c2d12;
+      :root {
+        --accent-50: #fff7ed;
+        --accent-100: #ffedd5;
+        --accent-200: #fed7aa;
+        --accent-300: #fdba74;
+        --accent-400: #fb923c;
+        --accent-500: #f97316;
+        --accent-600: #ea580c;
+        --accent-700: #c2410c;
+        --accent-800: #9a3412;
+        --accent-900: #7c2d12;
+      }
+      .bg-orange-50 {
+        background-color: var(--accent-50) !important;
+      }
+      .bg-orange-100 {
+        background-color: var(--accent-100) !important;
+      }
+      .bg-orange-500 {
+        background-color: var(--accent-500) !important;
+      }
+      .bg-orange-600 {
+        background-color: var(--accent-600) !important;
+      }
+      .text-orange-500 {
+        color: var(--accent-500) !important;
+      }
+      .text-orange-600 {
+        color: var(--accent-600) !important;
+      }
+      .border-orange-500 {
+        border-color: var(--accent-500) !important;
+      }
+      .hover\:bg-orange-600:hover {
+        background-color: var(--accent-600) !important;
+      }
+
+      .order-tab-btn {
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .order-tab-btn.active {
+        background-color: var(--accent-100) !important;
+        color: var(--accent-600) !important;
+        border-color: var(--accent-500) !important;
+      }
+      .order-tab-btn:hover {
+        background-color: #f9fafb;
+      }
+
+      /* Main Sidebar Mobile Styles */
+      @media (max-width: 1024px) {
+        #shared-sidebar {
+          position: fixed;
+          left: -100%;
+          top: 0;
+          height: 100vh;
+          z-index: 50;
+          transition: left 0.3s ease;
         }
-        .bg-orange-50{background-color:var(--accent-50)!important}
-        .bg-orange-100{background-color:var(--accent-100)!important}
-        .bg-orange-500{background-color:var(--accent-500)!important}
-        .bg-orange-600{background-color:var(--accent-600)!important}
-        .text-orange-500{color:var(--accent-500)!important}
-        .text-orange-600{color:var(--accent-600)!important}
-        .border-orange-500{border-color:var(--accent-500)!important}
-        .hover\:bg-orange-600:hover{background-color:var(--accent-600)!important}
-        
-        .order-tab {
-            cursor: pointer;
-            transition: all 0.2s;
+        #shared-sidebar.active {
+          left: 0;
         }
-        .order-tab.active {
-            background-color: var(--accent-100);
-            color: var(--accent-600);
-            border-left: 4px solid var(--accent-500);
+      }
+
+      @media (max-width: 768px) {
+        .mobile-menu-btn {
+          display: block;
         }
-        .order-tab:hover {
-            background-color: #f9fafb;
+        .table-container {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
         }
+        .table-mobile {
+          min-width: 800px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .header-user-info {
+          display: none;
+        }
+        .table-header-mobile-hidden {
+          display: none;
+        }
+        .table-cell-mobile-hidden {
+          display: none;
+        }
+      }
     </style>
-</head>
-<body class="bg-gray-50">
+  </head>
+  <body class="bg-gray-50">
     <div class="flex h-screen">
-        <!-- Shared Sidebar -->
-        <div id="shared-sidebar"></div>
-        
-        <!-- Main Content -->
-        <div class="flex-1 flex flex-col">
-            <!-- Header -->
-            <header class="bg-gray-100 px-6 py-4 flex items-center justify-between border-b border-gray-200">
-                <div class="flex items-center space-x-4">
-                    <div class="relative">
-                        <input type="text" placeholder="Search anything..." 
-                               class="w-80 px-4 py-2 pl-10 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
-                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                    </div>
+      <!-- Shared Sidebar -->
+      <div id="shared-sidebar"></div>
+
+      <!-- Main Content -->
+      <div class="flex-1 flex flex-col">
+        <!-- Header -->
+        <header
+          class="bg-gray-100 px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between border-b border-gray-200"
+        >
+          <div class="flex items-center space-x-2 sm:space-x-4 flex-1">
+            <!-- Mobile Menu Button for Main Sidebar -->
+            <button
+              id="mobile-menu-btn"
+              class="mobile-menu-btn lg:hidden text-gray-600 hover:text-gray-800 p-2"
+            >
+              <i class="fas fa-bars text-xl"></i>
+            </button>
+
+            <div class="relative flex-1 sm:flex-none">
+              <input
+                type="text"
+                placeholder="Search anything..."
+                class="w-full sm:w-80 px-3 sm:px-4 py-2 pl-8 sm:pl-10 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+              />
+              <i
+                class="fas fa-search absolute left-2 sm:left-3 top-3 text-gray-400"
+              ></i>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-2 sm:space-x-4">
+            <button class="text-gray-600 hover:text-gray-800 p-2">
+              <i class="fas fa-bell text-base sm:text-lg"></i>
+            </button>
+            <button
+              class="text-gray-600 hover:text-gray-800 p-2 hidden sm:block"
+            >
+              <i class="fas fa-cog text-base sm:text-lg"></i>
+            </button>
+            <button
+              class="text-gray-600 hover:text-gray-800 p-2 hidden sm:block"
+            >
+              <i class="fas fa-question-circle text-base sm:text-lg"></i>
+            </button>
+
+            <div
+              class="header-user-info flex items-center space-x-2 bg-white px-2 sm:px-4 py-2 rounded-lg"
+            >
+              <div
+                class="w-7 h-7 sm:w-8 sm:h-8 bg-orange-500 rounded-full flex items-center justify-center"
+              >
+                <span class="text-white text-xs sm:text-sm font-medium">M</span>
+              </div>
+              <div class="hidden sm:block">
+                <div class="text-xs sm:text-sm font-medium text-gray-800">
+                  M. Usman
                 </div>
-                
-                <div class="flex items-center space-x-4">
-                    <button class="text-gray-600 hover:text-gray-800">
-                        <i class="fas fa-bell text-lg"></i>
+                <div class="text-xs text-gray-500">Admin</div>
+              </div>
+              <i
+                class="fas fa-chevron-down text-gray-400 text-xs hidden sm:block"
+              ></i>
+            </div>
+          </div>
+        </header>
+
+        <!-- Sidebar Overlay for Main Sidebar (Mobile) -->
+        <div
+          id="sidebar-overlay"
+          class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"
+        ></div>
+
+        <!-- Orders Content -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+          <!-- Horizontal Tabs Navigation -->
+          <div
+            class="bg-white border-b border-gray-200 px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex-shrink-0"
+          >
+            <div class="mb-3">
+              <h2 class="text-base sm:text-lg font-semibold text-gray-800">
+                Orders Workbench
+              </h2>
+              <p class="text-xs text-gray-500 mt-1">
+                Pending orders in workflow stages
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2 sm:gap-3 overflow-x-auto">
+              <button
+                class="order-tab-btn px-4 sm:px-5 py-2 rounded-lg text-xs sm:text-sm font-medium flex items-center space-x-2 whitespace-nowrap bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                onclick="loadOrderType('all-orders', event)"
+                data-order-type="all-orders"
+              >
+                <i class="fas fa-list"></i>
+                <span>All Orders</span>
+              </button>
+              <button
+                class="order-tab-btn active px-4 sm:px-5 py-2 rounded-lg text-xs sm:text-sm font-medium flex items-center space-x-2 whitespace-nowrap bg-orange-100 text-orange-700 border border-orange-300"
+                onclick="loadOrderType('radiology', event)"
+                data-order-type="radiology"
+              >
+                <i class="fas fa-x-ray"></i>
+                <span>Radiology2</span>
+              </button>
+              <button
+                class="order-tab-btn px-4 sm:px-5 py-2 rounded-lg text-xs sm:text-sm font-medium flex items-center space-x-2 whitespace-nowrap bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                onclick="loadOrderType('laboratory', event)"
+                data-order-type="laboratory"
+              >
+                <i class="fas fa-flask"></i>
+                <span>Laboratory</span>
+              </button>
+
+              <button
+                class="order-tab-btn px-4 sm:px-5 py-2 rounded-lg text-xs sm:text-sm font-medium flex items-center space-x-2 whitespace-nowrap bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                onclick="loadOrderType('blood-bank', event)"
+                data-order-type="blood-bank"
+              >
+                <i class="fas fa-tint"></i>
+                <span>Blood Bank</span>
+              </button>
+
+              <button
+                class="order-tab-btn px-4 sm:px-5 py-2 rounded-lg text-xs sm:text-sm font-medium flex items-center space-x-2 whitespace-nowrap bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                onclick="loadOrderType('pharmacy', event)"
+                data-order-type="pharmacy"
+              >
+                <i class="fas fa-pills"></i>
+                <span>Pharmacy</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Content Area -->
+          <div class="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6">
+            <!-- Radiology Orders Content (Default) -->
+            <div id="radiology-orders-panel" class="order-panel">
+              <div class="mb-4 sm:mb-6">
+                <div
+                  class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3"
+                >
+                  <div>
+                    <h1
+                      class="text-xl sm:text-2xl font-semibold text-gray-900 mb-1 sm:mb-2"
+                    >
+                      Radiology Orders
+                    </h1>
+                    <p class="text-xs sm:text-sm text-gray-500">
+                      Manage and track all radiology orders
+                    </p>
+                  </div>
+                  <div class="flex space-x-2">
+                    <button
+                      onclick="openNewOrderModal()"
+                      class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium"
+                    >
+                      <i class="fas fa-plus mr-1 sm:mr-2"></i>New Record
                     </button>
-                    <button class="text-gray-600 hover:text-gray-800">
-                        <i class="fas fa-cog text-lg"></i>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Search and Filter Section -->
+              <div class="mb-4 sm:mb-6 border-b border-gray-200 pb-4 sm:pb-6">
+                <div
+                  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
+                >
+                  <div>
+                    <label
+                      class="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                      >Search</label
+                    >
+                    <input
+                      type="text"
+                      placeholder="Search orders..."
+                      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-xs sm:text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                      >From Date</label
+                    >
+                    <input
+                      type="date"
+                      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-xs sm:text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                      >To Date</label
+                    >
+                    <input
+                      type="date"
+                      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-xs sm:text-sm"
+                    />
+                  </div>
+                  <div class="flex items-end space-x-2">
+                    <button
+                      class="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium"
+                    >
+                      Search
                     </button>
-                    <button class="text-gray-600 hover:text-gray-800">
-                        <i class="fas fa-question-circle text-lg"></i>
+                    <button
+                      class="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-xs sm:text-sm font-medium"
+                    >
+                      Reset
                     </button>
-                    
-                    <div class="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg">
-                        <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                            <span class="text-white text-sm font-medium">M</span>
-                        </div>
-                        <div>
-                            <div class="text-sm font-medium text-gray-800">M. Usman</div>
-                            <div class="text-xs text-gray-500">Admin</div>
-                        </div>
-                        <i class="fas fa-chevron-down text-gray-400"></i>
-                    </div>
+                  </div>
                 </div>
-            </header>
-            
-            <!-- Orders Content -->
-            <main class="flex-1 flex overflow-hidden">
-                <!-- Left Sidebar - Order Types -->
-                <div class="w-64 bg-white border-r border-gray-200 overflow-y-auto">
-                    <div class="p-4">
-                        <h2 class="text-lg font-semibold text-gray-800 mb-4">Orders Workbench</h2>
-                        <div class="text-xs text-gray-500 mb-4">Pending orders in workflow stages</div>
-                        
-                        <div class="space-y-1">
-                            <div class="order-tab active px-3 py-2 rounded text-sm flex items-center justify-between" onclick="loadOrderType('radiology')">
-                                <div class="flex items-center space-x-2">
-                                    <i class="fas fa-x-ray w-4"></i>
-                                    <span>Radiology2</span>
-                                </div>
+              </div>
+
+              <!-- Radiology Orders Table -->
+              <div class="mb-4 sm:mb-6">
+                <div class="bg-white rounded-lg shadow-sm">
+                  <div class="table-container overflow-x-auto">
+                    <table
+                      class="table-mobile min-w-full divide-y divide-gray-200"
+                    >
+                      <thead class="bg-orange-50">
+                        <tr>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Order ID
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Patient
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider table-header-mobile-hidden"
+                          >
+                            Type
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Item/Test
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider table-header-mobile-hidden"
+                          >
+                            Ordered By
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Status
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider table-header-mobile-hidden"
+                          >
+                            Time
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        id="radiology-orders-tbody"
+                        class="bg-white divide-y divide-gray-200"
+                      >
+                        <!-- Sample radiology order -->
+                        <tr>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900"
+                          >
+                            ORD-003
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            <div>Michael Chen</div>
+                            <div class="text-xs text-gray-500">MRN-1247</div>
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Radiology
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            Chest X-Ray
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Dr. Usman
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            <span
+                              class="px-2 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-medium"
+                              >In Progress</span
+                            >
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            2014-01-15 10:00
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium"
+                          >
+                            <div
+                              class="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2"
+                            >
+                              <button
+                                onclick="viewOrder('radiology', 'ORD-003')"
+                                class="px-2 sm:px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs"
+                              >
+                                View
+                              </button>
+                              <button
+                                onclick="editOrder('radiology', 'ORD-003')"
+                                class="px-2 sm:px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onclick="deleteOrder('radiology', 'ORD-003')"
+                                class="px-2 sm:px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs"
+                              >
+                                Delete
+                              </button>
                             </div>
-                            
-                            <div class="order-tab px-3 py-2 rounded text-sm flex items-center justify-between" onclick="window.location.href='orders-workbench.html'">
-                                <div class="flex items-center space-x-2">
-                                    <i class="fas fa-list w-4"></i>
-                                    <span>All Orders</span>
-                                </div>
-                            </div>
-                            
-                            <div class="order-tab px-3 py-2 rounded text-sm flex items-center justify-between" onclick="window.location.href='orders-laboratory.html'">
-                                <div class="flex items-center space-x-2">
-                                    <i class="fas fa-flask w-4"></i>
-                                    <span>Laboratory</span>
-                                </div>
-                            </div>
-                            
-                            <div class="order-tab px-3 py-2 rounded text-sm flex items-center justify-between" onclick="window.location.href='orders-blood-bank.html'">
-                                <div class="flex items-center space-x-2">
-                                    <i class="fas fa-tint w-4"></i>
-                                    <span>Blood Bank</span>
-                                </div>
-                            </div>
-                            
-                            <div class="order-tab px-3 py-2 rounded text-sm flex items-center justify-between" onclick="window.location.href='orders-pharmacy.html'">
-                                <div class="flex items-center space-x-2">
-                                    <i class="fas fa-pills w-4"></i>
-                                    <span>Pharmacy</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-                
-                <!-- Right Content Area -->
-                <div class="flex-1 overflow-y-auto p-6">
-                    <div class="mb-6">
-                        <h1 class="text-2xl font-semibold text-gray-900 mb-2">Orders Workbench</h1>
-                        <p class="text-sm text-gray-500">Manage and track all pending orders across departments</p>
+              </div>
+
+              <!-- Summary Cards -->
+              <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"
+              >
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-orange-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        Pending Approval
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-orange-500 mt-1"
+                      >
+                        2
+                      </p>
                     </div>
-                    
-                    <!-- Filters -->
-                    <div class="bg-white rounded-lg shadow-sm p-4 mb-4">
-                        <div class="flex items-center space-x-3">
-                            <div class="flex items-center space-x-2">
-                                <label class="text-sm text-gray-600">Start:</label>
-                                <input type="date" class="border border-gray-300 rounded px-3 py-1.5 text-sm">
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <label class="text-sm text-gray-600">Finish:</label>
-                                <input type="date" class="border border-gray-300 rounded px-3 py-1.5 text-sm">
-                            </div>
-                            <select class="border border-gray-300 rounded px-3 py-1.5 text-sm">
-                                <option>Patient</option>
-                                <option>All Patients</option>
-                            </select>
-                            <select class="border border-gray-300 rounded px-3 py-1.5 text-sm">
-                                <option>Location</option>
-                                <option>All Locations</option>
-                            </select>
-                            <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-1.5 rounded text-sm">
-                                <i class="fas fa-search mr-1"></i> Search
-                            </button>
-                        </div>
+                    <div class="p-2 sm:p-3 bg-orange-100 rounded-full">
+                      <i
+                        class="fas fa-clock text-orange-500 text-lg sm:text-xl"
+                      ></i>
                     </div>
-                    
-                    <!-- Orders Table -->
-                    <div class="bg-white rounded-lg shadow-sm">
-                        <div class="px-6 py-4 border-b border-gray-200">
-                            <h3 class="text-lg font-semibold text-gray-800">Pending Orders</h3>
-                        </div>
-                        
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full text-sm">
-                                <thead class="bg-gray-50 border-b border-gray-200">
-                                    <tr>
-                                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase">Patient</th>
-                                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase">Order</th>
-                                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase">Priority</th>
-                                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase">Location</th>
-                                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase">Date</th>
-                                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase">Status</th>
-                                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="orders-tbody" class="divide-y divide-gray-100">
-                                    <!-- Orders will be populated here -->
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <!-- Pagination -->
-                        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
-                            <div class="text-sm text-gray-500">Showing <span id="order-count">0</span> orders</div>
-                            <div class="flex space-x-1">
-                                <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">Previous</button>
-                                <button class="px-3 py-1 bg-orange-500 text-white rounded text-sm">1</button>
-                                <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
-                                <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">Next</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Stats Cards -->
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
-                        <div class="bg-white rounded-lg shadow-sm p-4 text-center">
-                            <div class="text-3xl font-bold text-orange-500">24</div>
-                            <div class="text-sm text-gray-600 mt-1">Pending</div>
-                        </div>
-                        <div class="bg-white rounded-lg shadow-sm p-4 text-center">
-                            <div class="text-3xl font-bold text-blue-500">12</div>
-                            <div class="text-sm text-gray-600 mt-1">In Progress</div>
-                        </div>
-                        <div class="bg-white rounded-lg shadow-sm p-4 text-center">
-                            <div class="text-3xl font-bold text-green-500">45</div>
-                            <div class="text-sm text-gray-600 mt-1">Completed</div>
-                        </div>
-                        <div class="bg-white rounded-lg shadow-sm p-4 text-center">
-                            <div class="text-3xl font-bold text-red-500">3</div>
-                            <div class="text-sm text-gray-600 mt-1">Urgent</div>
-                        </div>
-                    </div>
+                  </div>
                 </div>
-            </main>
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-orange-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        In Progress
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-orange-500 mt-1"
+                      >
+                        1
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-orange-100 rounded-full">
+                      <i
+                        class="fas fa-spinner text-orange-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-green-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        Completed Today
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-green-500 mt-1"
+                      >
+                        1
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-green-100 rounded-full">
+                      <i
+                        class="fas fa-check-circle text-green-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-orange-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        Total Today
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-orange-500 mt-1"
+                      >
+                        5
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-orange-100 rounded-full">
+                      <i
+                        class="fas fa-list-alt text-orange-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- All Orders Content -->
+            <div
+              id="all-orders-panel"
+              class="order-panel"
+              style="display: none"
+            >
+              <div class="mb-4 sm:mb-6">
+                <div
+                  class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3"
+                >
+                  <div>
+                    <h1
+                      class="text-xl sm:text-2xl font-semibold text-gray-900 mb-1 sm:mb-2"
+                    >
+                      All Orders
+                    </h1>
+                    <p class="text-xs sm:text-sm text-gray-500">
+                      View all orders across all departments
+                    </p>
+                  </div>
+                  <div class="flex space-x-2">
+                    <button
+                      onclick="openNewOrderModal()"
+                      class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium"
+                    >
+                      <i class="fas fa-plus mr-1 sm:mr-2"></i>New Record
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Search and Filter Section -->
+              <div class="mb-4 sm:mb-6 border-b border-gray-200 pb-4 sm:pb-6">
+                <div
+                  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
+                >
+                  <div>
+                    <label
+                      class="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                      >Search</label
+                    >
+                    <input
+                      type="text"
+                      placeholder="Search orders..."
+                      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-xs sm:text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                      >From Date</label
+                    >
+                    <input
+                      type="date"
+                      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-xs sm:text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                      >To Date</label
+                    >
+                    <input
+                      type="date"
+                      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-xs sm:text-sm"
+                    />
+                  </div>
+                  <div class="flex items-end space-x-2">
+                    <button
+                      class="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium"
+                    >
+                      Search
+                    </button>
+                    <button
+                      class="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-xs sm:text-sm font-medium"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- All Orders Table -->
+              <div class="mb-4 sm:mb-6">
+                <div class="bg-white rounded-lg shadow-sm">
+                  <div class="table-container overflow-x-auto">
+                    <table
+                      class="table-mobile min-w-full divide-y divide-gray-200"
+                    >
+                      <thead class="bg-orange-50">
+                        <tr>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Order ID
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Patient
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider table-header-mobile-hidden"
+                          >
+                            Type
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Item/Test
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider table-header-mobile-hidden"
+                          >
+                            Ordered By
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Status
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider table-header-mobile-hidden"
+                          >
+                            Time
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        id="all-orders-tbody"
+                        class="bg-white divide-y divide-gray-200"
+                      >
+                        <!-- Lab Order -->
+                        <tr>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900"
+                          >
+                            ORD-001
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            <div>Sarah Johnson</div>
+                            <div class="text-xs text-gray-500">MRN-1245</div>
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Lab
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            Blood Test
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Dr. John Doe
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            <span
+                              class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium"
+                              >Completed</span
+                            >
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Dec 15, 2024 09:30
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium"
+                          >
+                            <div
+                              class="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2"
+                            >
+                              <button
+                                onclick="viewOrder('laboratory', 'ORD-001')"
+                                class="px-2 sm:px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs"
+                              >
+                                View
+                              </button>
+                              <button
+                                onclick="editOrder('laboratory', 'ORD-001')"
+                                class="px-2 sm:px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onclick="deleteOrder('laboratory', 'ORD-001')"
+                                class="px-2 sm:px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                        <!-- Radiology Order -->
+                        <tr>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900"
+                          >
+                            ORD-002
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            <div>Michael Chen</div>
+                            <div class="text-xs text-gray-500">MRN-1247</div>
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Radiology
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            CT Scan
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Dr. Jane Smith
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            <span
+                              class="px-2 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-medium"
+                              >Pending</span
+                            >
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Dec 14, 2024 14:20
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium"
+                          >
+                            <div
+                              class="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2"
+                            >
+                              <button
+                                onclick="viewOrder('radiology', 'ORD-002')"
+                                class="px-2 sm:px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs"
+                              >
+                                View
+                              </button>
+                              <button
+                                onclick="editOrder('radiology', 'ORD-002')"
+                                class="px-2 sm:px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onclick="deleteOrder('radiology', 'ORD-002')"
+                                class="px-2 sm:px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                        <!-- Pharmacy Order -->
+                        <tr>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900"
+                          >
+                            ORD-003
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            <div>Emily Davis</div>
+                            <div class="text-xs text-gray-500">MRN-1250</div>
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Pharmacy
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            Antibiotics
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Dr. Mark Wilson
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            <span
+                              class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium"
+                              >Completed</span
+                            >
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Dec 13, 2024 11:15
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium"
+                          >
+                            <div
+                              class="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2"
+                            >
+                              <button
+                                onclick="viewOrder('pharmacy', 'ORD-003')"
+                                class="px-2 sm:px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs"
+                              >
+                                View
+                              </button>
+                              <button
+                                onclick="editOrder('pharmacy', 'ORD-003')"
+                                class="px-2 sm:px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onclick="deleteOrder('pharmacy', 'ORD-003')"
+                                class="px-2 sm:px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Summary Cards for All Orders -->
+              <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"
+              >
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-orange-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        Total Orders
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-orange-500 mt-1"
+                      >
+                        15
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-orange-100 rounded-full">
+                      <i
+                        class="fas fa-list-alt text-orange-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-blue-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        Lab Orders
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-blue-500 mt-1"
+                      >
+                        8
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-blue-100 rounded-full">
+                      <i
+                        class="fas fa-vial text-blue-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-purple-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        Radiology Orders
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-purple-500 mt-1"
+                      >
+                        5
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-purple-100 rounded-full">
+                      <i
+                        class="fas fa-x-ray text-purple-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-green-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        Pharmacy Orders
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-green-500 mt-1"
+                      >
+                        2
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-green-100 rounded-full">
+                      <i
+                        class="fas fa-pills text-green-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Laboratory Orders Content -->
+            <div
+              id="laboratory-orders-panel"
+              class="order-panel"
+              style="display: none"
+            >
+              <div class="mb-4 sm:mb-6">
+                <div
+                  class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3"
+                >
+                  <div>
+                    <h1
+                      class="text-xl sm:text-2xl font-semibold text-gray-900 mb-1 sm:mb-2"
+                    >
+                      Laboratory Orders
+                    </h1>
+                    <p class="text-xs sm:text-sm text-gray-500">
+                      Manage and track all laboratory orders
+                    </p>
+                  </div>
+                  <div class="flex space-x-2">
+                    <button
+                      onclick="openNewOrderModal()"
+                      class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium"
+                    >
+                      <i class="fas fa-plus mr-1 sm:mr-2"></i>New Record
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Search and Filter Section -->
+              <div class="mb-4 sm:mb-6 border-b border-gray-200 pb-4 sm:pb-6">
+                <div
+                  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
+                >
+                  <div>
+                    <label
+                      class="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                      >Search</label
+                    >
+                    <input
+                      type="text"
+                      placeholder="Search orders..."
+                      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-xs sm:text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                      >From Date</label
+                    >
+                    <input
+                      type="date"
+                      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-xs sm:text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                      >To Date</label
+                    >
+                    <input
+                      type="date"
+                      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-xs sm:text-sm"
+                    />
+                  </div>
+                  <div class="flex items-end space-x-2">
+                    <button
+                      class="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium"
+                    >
+                      Search
+                    </button>
+                    <button
+                      class="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-xs sm:text-sm font-medium"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Laboratory Orders Table -->
+              <div class="mb-4 sm:mb-6">
+                <div class="bg-white rounded-lg shadow-sm">
+                  <div class="table-container overflow-x-auto">
+                    <table
+                      class="table-mobile min-w-full divide-y divide-gray-200"
+                    >
+                      <thead class="bg-orange-50">
+                        <tr>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Order ID
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Patient
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider table-header-mobile-hidden"
+                          >
+                            Type
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Item/Test
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider table-header-mobile-hidden"
+                          >
+                            Ordered By
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Status
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider table-header-mobile-hidden"
+                          >
+                            Time
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        id="laboratory-orders-tbody"
+                        class="bg-white divide-y divide-gray-200"
+                      >
+                        <!-- Sample laboratory order -->
+                        <tr>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900"
+                          >
+                            ORD-001
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            <div>Sarah Johnson</div>
+                            <div class="text-xs text-gray-500">MRN-1245</div>
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Lab
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            Blood Test
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Dr. John Doe
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            <span
+                              class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium"
+                              >Completed</span
+                            >
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Dec 15, 2024 09:30
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium"
+                          >
+                            <div
+                              class="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2"
+                            >
+                              <button
+                                onclick="viewOrder('laboratory', 'ORD-001')"
+                                class="px-2 sm:px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs"
+                              >
+                                View
+                              </button>
+                              <button
+                                onclick="editOrder('laboratory', 'ORD-001')"
+                                class="px-2 sm:px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onclick="deleteOrder('laboratory', 'ORD-001')"
+                                class="px-2 sm:px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Summary Cards for Laboratory -->
+              <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"
+              >
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-blue-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        Pending Approval
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-blue-500 mt-1"
+                      >
+                        3
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-blue-100 rounded-full">
+                      <i
+                        class="fas fa-clock text-blue-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-blue-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        In Progress
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-blue-500 mt-1"
+                      >
+                        2
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-blue-100 rounded-full">
+                      <i
+                        class="fas fa-spinner text-blue-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-green-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        Completed Today
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-green-500 mt-1"
+                      >
+                        5
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-green-100 rounded-full">
+                      <i
+                        class="fas fa-check-circle text-green-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-blue-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        Total Today
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-blue-500 mt-1"
+                      >
+                        10
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-blue-100 rounded-full">
+                      <i
+                        class="fas fa-list-alt text-blue-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Blood Bank Orders Content -->
+            <div
+              id="blood-bank-orders-panel"
+              class="order-panel"
+              style="display: none"
+            >
+              <div class="mb-4 sm:mb-6">
+                <div
+                  class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3"
+                >
+                  <div>
+                    <h1
+                      class="text-xl sm:text-2xl font-semibold text-gray-900 mb-1 sm:mb-2"
+                    >
+                      Blood Bank Orders
+                    </h1>
+                    <p class="text-xs sm:text-sm text-gray-500">
+                      Manage and track all blood bank orders
+                    </p>
+                  </div>
+                  <div class="flex space-x-2">
+                    <button
+                      onclick="openNewOrderModal()"
+                      class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium"
+                    >
+                      <i class="fas fa-plus mr-1 sm:mr-2"></i>New Record
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Search and Filter Section -->
+              <div class="mb-4 sm:mb-6 border-b border-gray-200 pb-4 sm:pb-6">
+                <div
+                  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
+                >
+                  <div>
+                    <label
+                      class="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                      >Search</label
+                    >
+                    <input
+                      type="text"
+                      placeholder="Search orders..."
+                      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-xs sm:text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                      >From Date</label
+                    >
+                    <input
+                      type="date"
+                      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-xs sm:text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                      >To Date</label
+                    >
+                    <input
+                      type="date"
+                      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-xs sm:text-sm"
+                    />
+                  </div>
+                  <div class="flex items-end space-x-2">
+                    <button
+                      class="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium"
+                    >
+                      Search
+                    </button>
+                    <button
+                      class="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-xs sm:text-sm font-medium"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Blood Bank Orders Table -->
+              <div class="mb-4 sm:mb-6">
+                <div class="bg-white rounded-lg shadow-sm">
+                  <div class="table-container overflow-x-auto">
+                    <table
+                      class="table-mobile min-w-full divide-y divide-gray-200"
+                    >
+                      <thead class="bg-orange-50">
+                        <tr>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Order ID
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Patient
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider table-header-mobile-hidden"
+                          >
+                            Type
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Item/Test
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider table-header-mobile-hidden"
+                          >
+                            Ordered By
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Status
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider table-header-mobile-hidden"
+                          >
+                            Time
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        id="blood-bank-orders-tbody"
+                        class="bg-white divide-y divide-gray-200"
+                      >
+                        <!-- Sample blood bank order -->
+                        <tr>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900"
+                          >
+                            ORD-004
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            <div>Robert Wilson</div>
+                            <div class="text-xs text-gray-500">MRN-1251</div>
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Blood Bank
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            Blood Unit
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Dr. Sarah Lee
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            <span
+                              class="px-2 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-medium"
+                              >Pending</span
+                            >
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Dec 16, 2024 11:20
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium"
+                          >
+                            <div
+                              class="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2"
+                            >
+                              <button
+                                onclick="viewOrder('blood-bank', 'ORD-004')"
+                                class="px-2 sm:px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs"
+                              >
+                                View
+                              </button>
+                              <button
+                                onclick="editOrder('blood-bank', 'ORD-004')"
+                                class="px-2 sm:px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onclick="deleteOrder('blood-bank', 'ORD-004')"
+                                class="px-2 sm:px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Summary Cards for Blood Bank -->
+              <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"
+              >
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-red-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        Pending Approval
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-red-500 mt-1"
+                      >
+                        1
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-red-100 rounded-full">
+                      <i
+                        class="fas fa-clock text-red-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-red-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        In Progress
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-red-500 mt-1"
+                      >
+                        0
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-red-100 rounded-full">
+                      <i
+                        class="fas fa-spinner text-red-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-green-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        Completed Today
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-green-500 mt-1"
+                      >
+                        2
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-green-100 rounded-full">
+                      <i
+                        class="fas fa-check-circle text-green-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-red-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        Total Today
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-red-500 mt-1"
+                      >
+                        3
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-red-100 rounded-full">
+                      <i
+                        class="fas fa-list-alt text-red-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pharmacy Orders Content -->
+            <div
+              id="pharmacy-orders-panel"
+              class="order-panel"
+              style="display: none"
+            >
+              <div class="mb-4 sm:mb-6">
+                <div
+                  class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3"
+                >
+                  <div>
+                    <h1
+                      class="text-xl sm:text-2xl font-semibold text-gray-900 mb-1 sm:mb-2"
+                    >
+                      Pharmacy Orders
+                    </h1>
+                    <p class="text-xs sm:text-sm text-gray-500">
+                      Manage and track all pharmacy orders
+                    </p>
+                  </div>
+                  <div class="flex space-x-2">
+                    <button
+                      onclick="openNewOrderModal()"
+                      class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium"
+                    >
+                      <i class="fas fa-plus mr-1 sm:mr-2"></i>New Record
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Search and Filter Section -->
+              <div class="mb-4 sm:mb-6 border-b border-gray-200 pb-4 sm:pb-6">
+                <div
+                  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
+                >
+                  <div>
+                    <label
+                      class="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                      >Search</label
+                    >
+                    <input
+                      type="text"
+                      placeholder="Search orders..."
+                      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-xs sm:text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                      >From Date</label
+                    >
+                    <input
+                      type="date"
+                      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-xs sm:text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                      >To Date</label
+                    >
+                    <input
+                      type="date"
+                      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-xs sm:text-sm"
+                    />
+                  </div>
+                  <div class="flex items-end space-x-2">
+                    <button
+                      class="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium"
+                    >
+                      Search
+                    </button>
+                    <button
+                      class="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-xs sm:text-sm font-medium"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pharmacy Orders Table -->
+              <div class="mb-4 sm:mb-6">
+                <div class="bg-white rounded-lg shadow-sm">
+                  <div class="table-container overflow-x-auto">
+                    <table
+                      class="table-mobile min-w-full divide-y divide-gray-200"
+                    >
+                      <thead class="bg-orange-50">
+                        <tr>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Order ID
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Patient
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider table-header-mobile-hidden"
+                          >
+                            Type
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Item/Test
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider table-header-mobile-hidden"
+                          >
+                            Ordered By
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Status
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider table-header-mobile-hidden"
+                          >
+                            Time
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        id="pharmacy-orders-tbody"
+                        class="bg-white divide-y divide-gray-200"
+                      >
+                        <!-- Sample pharmacy order -->
+                        <tr>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900"
+                          >
+                            ORD-003
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            <div>Emily Davis</div>
+                            <div class="text-xs text-gray-500">MRN-1250</div>
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Pharmacy
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            Antibiotics
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Dr. Mark Wilson
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700"
+                          >
+                            <span
+                              class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium"
+                              >Completed</span
+                            >
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-700 table-cell-mobile-hidden"
+                          >
+                            Dec 13, 2024 11:15
+                          </td>
+                          <td
+                            class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium"
+                          >
+                            <div
+                              class="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2"
+                            >
+                              <button
+                                onclick="viewOrder('pharmacy', 'ORD-003')"
+                                class="px-2 sm:px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs"
+                              >
+                                View
+                              </button>
+                              <button
+                                onclick="editOrder('pharmacy', 'ORD-003')"
+                                class="px-2 sm:px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onclick="deleteOrder('pharmacy', 'ORD-003')"
+                                class="px-2 sm:px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Summary Cards for Pharmacy -->
+              <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"
+              >
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-green-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        Pending Approval
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-green-500 mt-1"
+                      >
+                        1
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-green-100 rounded-full">
+                      <i
+                        class="fas fa-clock text-green-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-green-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        In Progress
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-green-500 mt-1"
+                      >
+                        1
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-green-100 rounded-full">
+                      <i
+                        class="fas fa-spinner text-green-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-green-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        Completed Today
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-green-500 mt-1"
+                      >
+                        3
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-green-100 rounded-full">
+                      <i
+                        class="fas fa-check-circle text-green-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-green-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs sm:text-sm font-medium text-gray-600">
+                        Total Today
+                      </p>
+                      <p
+                        class="text-xl sm:text-2xl font-bold text-green-500 mt-1"
+                      >
+                        5
+                      </p>
+                    </div>
+                    <div class="p-2 sm:p-3 bg-green-100 rounded-full">
+                      <i
+                        class="fas fa-list-alt text-green-500 text-lg sm:text-xl"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- CRUD Modals -->
+    <!-- New/Edit Order Modal -->
+    <div id="order-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div class="sticky top-0 bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex items-center justify-between z-10">
+          <h3 id="modal-title" class="text-lg sm:text-xl font-semibold text-gray-900">New Order</h3>
+          <button onclick="closeOrderModal()" class="text-gray-400 hover:text-gray-600">
+            <i class="fas fa-times text-xl"></i>
+          </button>
         </div>
+        
+        <form id="order-form" class="p-4 sm:p-6">
+          <input type="hidden" id="order-id" />
+          <input type="hidden" id="order-type-field" />
+          
+          <div class="space-y-4 sm:space-y-6">
+            <!-- Order Type (Only for All Orders tab) -->
+            <div id="order-type-selector" class="hidden">
+              <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Order Type *</label>
+              <select id="order-type" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" required>
+                <option value="">Select Type</option>
+                <option value="radiology">Radiology</option>
+                <option value="laboratory">Laboratory</option>
+                <option value="blood-bank">Blood Bank</option>
+                <option value="pharmacy">Pharmacy</option>
+              </select>
+            </div>
+            
+            <!-- Patient Selection -->
+            <div>
+              <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Patient *</label>
+              <select id="patient-select" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" required>
+                <option value="">Select Patient</option>
+                <option value="MRN-1247">Michael Chen (MRN-1247)</option>
+                <option value="MRN-1245">Sarah Johnson (MRN-1245)</option>
+                <option value="MRN-1250">Emily Davis (MRN-1250)</option>
+                <option value="MRN-1251">Robert Wilson (MRN-1251)</option>
+              </select>
+            </div>
+            
+            <!-- Item/Test -->
+            <div>
+              <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Item/Test *</label>
+              <input type="text" id="item-test" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" placeholder="e.g., Chest X-Ray, Blood Test" required />
+            </div>
+            
+            <!-- Ordered By -->
+            <div>
+              <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Ordered By *</label>
+              <select id="ordered-by" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" required>
+                <option value="">Select Doctor</option>
+                <option value="Dr. Usman">Dr. Usman</option>
+                <option value="Dr. John Doe">Dr. John Doe</option>
+                <option value="Dr. Jane Smith">Dr. Jane Smith</option>
+                <option value="Dr. Mark Wilson">Dr. Mark Wilson</option>
+                <option value="Dr. Sarah Lee">Dr. Sarah Lee</option>
+              </select>
+            </div>
+            
+            <!-- Status -->
+            <div>
+              <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Status *</label>
+              <select id="order-status" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" required>
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+            
+            <!-- Date and Time -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Order Date *</label>
+                <input type="date" id="order-date" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" required />
+              </div>
+              <div>
+                <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Order Time *</label>
+                <input type="time" id="order-time" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" required />
+              </div>
+            </div>
+            
+            <!-- Priority (optional) -->
+            <div>
+              <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Priority</label>
+              <select id="order-priority" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm">
+                <option value="routine">Routine</option>
+                <option value="urgent">Urgent</option>
+                <option value="stat">Stat</option>
+              </select>
+            </div>
+            
+            <!-- Notes (optional) -->
+            <div>
+              <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Notes</label>
+              <textarea id="order-notes" rows="3" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" placeholder="Additional notes or instructions..."></textarea>
+            </div>
+          </div>
+          
+          <!-- Modal Actions -->
+          <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-2 sm:gap-3 justify-end pt-4 sm:pt-6 border-t border-gray-200">
+            <button type="button" onclick="closeOrderModal()" class="px-4 sm:px-6 py-2 sm:py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-xs sm:text-sm font-medium w-full sm:w-auto">
+              Cancel
+            </button>
+            <button type="submit" class="px-4 sm:px-6 py-2 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium w-full sm:w-auto">
+              <i class="fas fa-save mr-2"></i>Save Order
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- View Order Modal -->
+    <div id="view-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div class="sticky top-0 bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex items-center justify-between z-10">
+          <h3 class="text-lg sm:text-xl font-semibold text-gray-900">Order Details</h3>
+          <button onclick="closeViewModal()" class="text-gray-400 hover:text-gray-600">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+        
+        <div id="view-modal-content" class="p-4 sm:p-6">
+          <!-- Content will be dynamically loaded -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+        <div class="p-4 sm:p-6">
+          <div class="flex items-center mb-4">
+            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+              <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+            </div>
+          </div>
+          <div class="text-center">
+            <h3 class="text-base sm:text-lg font-medium text-gray-900 mb-2">Delete Order</h3>
+            <p class="text-xs sm:text-sm text-gray-500 mb-6">
+              Are you sure you want to delete this order? This action cannot be undone.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
+              <button onclick="closeDeleteModal()" class="px-4 sm:px-6 py-2 sm:py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-xs sm:text-sm font-medium w-full sm:w-auto">
+                Cancel
+              </button>
+              <button onclick="confirmDelete()" class="px-4 sm:px-6 py-2 sm:py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg text-xs sm:text-sm font-medium w-full sm:w-auto">
+                <i class="fas fa-trash mr-2"></i>Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script>
-        // Theme loader
-        function loadTheme(){ 
-            const saved = localStorage.getItem('hm_accent_hex'); 
-            if(saved){ 
-                document.documentElement.style.setProperty('--accent-500', saved);
-            } 
+      // Theme loader
+      function loadTheme() {
+        const saved = localStorage.getItem("hm_accent_hex");
+        if (saved) {
+          document.documentElement.style.setProperty("--accent-500", saved);
         }
-        loadTheme();
+      }
+      loadTheme();
 
-        // Sample orders data
-        const ordersData = [
-            { id: 1, patient: 'John Smith', order: 'CT Scan - Head', priority: 'Urgent', location: 'ER - Room 101', date: '2024-10-28 09:30', status: 'Pending', type: 'radiology' },
-            { id: 2, patient: 'Mary Johnson', order: 'X-Ray - Chest', priority: 'Routine', location: 'Ward A - 205', date: '2024-10-28 10:15', status: 'In Progress', type: 'radiology' },
-            { id: 3, patient: 'Robert Davis', order: 'MRI - Spine', priority: 'Stat', location: 'ICU - Bed 3', date: '2024-10-28 11:00', status: 'Pending', type: 'radiology' },
-            { id: 4, patient: 'Sarah Wilson', order: 'Ultrasound', priority: 'Routine', location: 'OPD - Room 5', date: '2024-10-28 14:20', status: 'Scheduled', type: 'radiology' },
-            { id: 5, patient: 'James Brown', order: 'CT Scan - Abdomen', priority: 'Urgent', location: 'Ward B - 312', date: '2024-10-28 15:45', status: 'Pending', type: 'radiology' }
-        ];
+      let currentOrderType = "radiology"; // Default to radiology
 
-        let currentFilter = 'radiology'; // Default to radiology
+      function loadOrderType(type, event) {
+        currentOrderType = type;
 
-        function renderOrders() {
-            const tbody = document.getElementById('orders-tbody');
-            const filteredOrders = currentFilter === 'radiology' ? ordersData : ordersData;
-            document.getElementById('order-count').textContent = filteredOrders.length;
-            
-            tbody.innerHTML = filteredOrders.map(order => {
-                let statusClass = 'bg-yellow-100 text-yellow-800';
-                if (order.status === 'In Progress') statusClass = 'bg-blue-100 text-blue-800';
-                if (order.status === 'Scheduled') statusClass = 'bg-green-100 text-green-800';
-                
-                let priorityClass = 'bg-gray-100 text-gray-800';
-                if (order.priority === 'Urgent') priorityClass = 'bg-orange-100 text-orange-800';
-                if (order.priority === 'Stat') priorityClass = 'bg-red-100 text-red-800';
-                
-                return `
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 text-gray-800 font-medium">${order.patient}</td>
-                        <td class="px-6 py-4 text-gray-700">${order.order}</td>
-                        <td class="px-6 py-4">
-                            <span class="px-2 py-1 rounded-full text-xs ${priorityClass}">${order.priority}</span>
-                        </td>
-                        <td class="px-6 py-4 text-gray-700">${order.location}</td>
-                        <td class="px-6 py-4 text-gray-700">${order.date}</td>
-                        <td class="px-6 py-4">
-                            <span class="px-2 py-1 rounded-full text-xs ${statusClass}">${order.status}</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <button class="text-orange-600 hover:text-orange-800">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function loadOrderType(type) {
-            currentFilter = type;
-            
-            // Update active tab visual
-            document.querySelectorAll('.order-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            event.target.closest('.order-tab').classList.add('active');
-            
-            // Re-render orders
-            renderOrders();
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('shared-sidebar').innerHTML = createSharedSidebar('orders');
-            initSharedSidebar('orders');
-            renderOrders();
+        // Hide all panels
+        document.querySelectorAll(".order-panel").forEach((panel) => {
+          panel.style.display = "none";
         });
-    </script>
-</body>
-</html>
 
+        // Show the selected panel
+        if (type === "radiology") {
+          document.getElementById("radiology-orders-panel").style.display =
+            "block";
+        } else if (type === "all-orders") {
+          document.getElementById("all-orders-panel").style.display = "block";
+        } else if (type === "laboratory") {
+          document.getElementById("laboratory-orders-panel").style.display =
+            "block";
+        } else if (type === "blood-bank") {
+          document.getElementById("blood-bank-orders-panel").style.display =
+            "block";
+        } else if (type === "pharmacy") {
+          document.getElementById("pharmacy-orders-panel").style.display =
+            "block";
+        }
+
+        // Update active tab visual
+        document.querySelectorAll(".order-tab-btn").forEach((tab) => {
+          tab.classList.remove("active");
+          tab.classList.add(
+            "bg-white",
+            "text-gray-700",
+            "border-gray-300",
+            "hover:bg-gray-50"
+          );
+          tab.classList.remove(
+            "bg-orange-100",
+            "text-orange-700",
+            "border-orange-300"
+          );
+        });
+
+        // Find and activate the clicked tab
+        if (event) {
+          const clickedTab = event.target.closest(".order-tab-btn");
+          if (clickedTab) {
+            clickedTab.classList.add(
+              "active",
+              "bg-orange-100",
+              "text-orange-700",
+              "border-orange-300"
+            );
+            clickedTab.classList.remove(
+              "bg-white",
+              "text-gray-700",
+              "border-gray-300"
+            );
+          }
+        } else {
+          // If no event, find tab by data attribute
+          const tab = document.querySelector(`[data-order-type="${type}"]`);
+          if (tab) {
+            tab.classList.add(
+              "active",
+              "bg-orange-100",
+              "text-orange-700",
+              "border-orange-300"
+            );
+            tab.classList.remove(
+              "bg-white",
+              "text-gray-700",
+              "border-gray-300"
+            );
+          }
+        }
+      }
+
+      // Main sidebar toggle function
+      function toggleMainSidebar() {
+        const sidebar = document.getElementById("shared-sidebar");
+        const overlay = document.getElementById("sidebar-overlay");
+        if (sidebar && overlay) {
+          sidebar.classList.toggle("active");
+          overlay.classList.toggle("hidden");
+        }
+      }
+
+      // CRUD Functions
+      let currentEditingOrderId = null;
+      let currentDeletingOrderId = null;
+      let currentDeletingOrderType = null;
+
+      // Open New Order Modal
+      function openNewOrderModal() {
+        const modal = document.getElementById("order-modal");
+        const form = document.getElementById("order-form");
+        const title = document.getElementById("modal-title");
+        const orderTypeSelector = document.getElementById("order-type-selector");
+        
+        // Reset form
+        form.reset();
+        document.getElementById("order-id").value = "";
+        currentEditingOrderId = null;
+        title.textContent = "New Order";
+        
+        // Show order type selector only for "All Orders" tab
+        if (currentOrderType === "all-orders") {
+          orderTypeSelector.classList.remove("hidden");
+          document.getElementById("order-type").required = true;
+        } else {
+          orderTypeSelector.classList.add("hidden");
+          document.getElementById("order-type").required = false;
+          document.getElementById("order-type-field").value = currentOrderType;
+        }
+        
+        // Set default date to today
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("order-date").value = today;
+        
+        // Set default time to current time
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        document.getElementById("order-time").value = `${hours}:${minutes}`;
+        
+        modal.classList.remove("hidden");
+      }
+
+      // Close Order Modal
+      function closeOrderModal() {
+        document.getElementById("order-modal").classList.add("hidden");
+        document.getElementById("order-form").reset();
+        currentEditingOrderId = null;
+      }
+
+      // Edit Order
+      function editOrder(orderType, orderId) {
+        // In a real app, you would fetch order data from API
+        // For now, we'll simulate with sample data
+        const modal = document.getElementById("order-modal");
+        const form = document.getElementById("order-form");
+        const title = document.getElementById("modal-title");
+        
+        currentEditingOrderId = orderId;
+        document.getElementById("order-id").value = orderId;
+        document.getElementById("order-type-field").value = orderType;
+        title.textContent = "Edit Order";
+        
+        // Hide order type selector for specific tabs
+        document.getElementById("order-type-selector").classList.add("hidden");
+        
+        // Sample data - in real app, fetch from API
+        document.getElementById("patient-select").value = "MRN-1247";
+        document.getElementById("item-test").value = "Chest X-Ray";
+        document.getElementById("ordered-by").value = "Dr. Usman";
+        document.getElementById("order-status").value = "in-progress";
+        document.getElementById("order-date").value = "2014-01-15";
+        document.getElementById("order-time").value = "10:00";
+        document.getElementById("order-priority").value = "routine";
+        document.getElementById("order-notes").value = "";
+        
+        modal.classList.remove("hidden");
+      }
+
+      // View Order
+      function viewOrder(orderType, orderId) {
+        // In a real app, you would fetch order data from API
+        const modal = document.getElementById("view-modal");
+        const content = document.getElementById("view-modal-content");
+        
+        // Sample data - in real app, fetch from API
+        const orderData = {
+          id: orderId,
+          type: orderType.charAt(0).toUpperCase() + orderType.slice(1).replace("-", " "),
+          patient: "Michael Chen (MRN-1247)",
+          itemTest: "Chest X-Ray",
+          orderedBy: "Dr. Usman",
+          status: "In Progress",
+          date: "2014-01-15",
+          time: "10:00",
+          priority: "Routine",
+          notes: "Standard chest X-ray examination"
+        };
+        
+        content.innerHTML = `
+          <div class="space-y-4 sm:space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Order ID</label>
+                <p class="text-xs sm:text-sm text-gray-900 font-medium">${orderData.id}</p>
+              </div>
+              <div>
+                <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Type</label>
+                <p class="text-xs sm:text-sm text-gray-900 font-medium">${orderData.type}</p>
+              </div>
+              <div>
+                <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Patient</label>
+                <p class="text-xs sm:text-sm text-gray-900 font-medium">${orderData.patient}</p>
+              </div>
+              <div>
+                <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Item/Test</label>
+                <p class="text-xs sm:text-sm text-gray-900 font-medium">${orderData.itemTest}</p>
+              </div>
+              <div>
+                <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Ordered By</label>
+                <p class="text-xs sm:text-sm text-gray-900 font-medium">${orderData.orderedBy}</p>
+              </div>
+              <div>
+                <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Status</label>
+                <span class="inline-block px-2 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-medium">${orderData.status}</span>
+              </div>
+              <div>
+                <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Date</label>
+                <p class="text-xs sm:text-sm text-gray-900 font-medium">${orderData.date}</p>
+              </div>
+              <div>
+                <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Time</label>
+                <p class="text-xs sm:text-sm text-gray-900 font-medium">${orderData.time}</p>
+              </div>
+              <div>
+                <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Priority</label>
+                <p class="text-xs sm:text-sm text-gray-900 font-medium">${orderData.priority}</p>
+              </div>
+            </div>
+            ${orderData.notes ? `
+              <div>
+                <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1">Notes</label>
+                <p class="text-xs sm:text-sm text-gray-900">${orderData.notes}</p>
+              </div>
+            ` : ""}
+          </div>
+          <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-2 sm:gap-3 justify-end pt-4 sm:pt-6 border-t border-gray-200">
+            <button onclick="closeViewModal(); editOrder('${orderType}', '${orderId}');" class="px-4 sm:px-6 py-2 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium w-full sm:w-auto">
+              <i class="fas fa-edit mr-2"></i>Edit Order
+            </button>
+          </div>
+        `;
+        
+        modal.classList.remove("hidden");
+      }
+
+      // Close View Modal
+      function closeViewModal() {
+        document.getElementById("view-modal").classList.add("hidden");
+      }
+
+      // Delete Order
+      function deleteOrder(orderType, orderId) {
+        currentDeletingOrderId = orderId;
+        currentDeletingOrderType = orderType;
+        document.getElementById("delete-modal").classList.remove("hidden");
+      }
+
+      // Close Delete Modal
+      function closeDeleteModal() {
+        document.getElementById("delete-modal").classList.add("hidden");
+        currentDeletingOrderId = null;
+        currentDeletingOrderType = null;
+      }
+
+      // Confirm Delete
+      function confirmDelete() {
+        if (currentDeletingOrderId) {
+          // In a real app, you would call API to delete
+          console.log(`Deleting order ${currentDeletingOrderId} of type ${currentDeletingOrderType}`);
+          
+          // Remove from UI (in real app, refresh from API)
+          // For now, show success message
+          alert(`Order ${currentDeletingOrderId} deleted successfully!`);
+          
+          closeDeleteModal();
+          
+          // Refresh the current tab (in real app, reload data from API)
+          // loadOrderType(currentOrderType);
+        }
+      }
+
+      // Handle Form Submit (Create/Update)
+      document.getElementById("order-form").addEventListener("submit", function(e) {
+        e.preventDefault();
+        
+        const formData = {
+          id: document.getElementById("order-id").value || null,
+          type: currentOrderType === "all-orders" 
+            ? document.getElementById("order-type").value 
+            : document.getElementById("order-type-field").value || currentOrderType,
+          patient: document.getElementById("patient-select").value,
+          itemTest: document.getElementById("item-test").value,
+          orderedBy: document.getElementById("ordered-by").value,
+          status: document.getElementById("order-status").value,
+          date: document.getElementById("order-date").value,
+          time: document.getElementById("order-time").value,
+          priority: document.getElementById("order-priority").value,
+          notes: document.getElementById("order-notes").value
+        };
+        
+        // In a real app, you would call API here
+        if (currentEditingOrderId) {
+          console.log("Updating order:", formData);
+          alert(`Order ${formData.id} updated successfully!`);
+        } else {
+          console.log("Creating new order:", formData);
+          alert("New order created successfully!");
+        }
+        
+        closeOrderModal();
+        
+        // Refresh the current tab (in real app, reload data from API)
+        // loadOrderType(currentOrderType);
+      });
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("shared-sidebar").innerHTML =
+          createSharedSidebar("orders");
+        initSharedSidebar("orders");
+
+        // Set default panel (radiology)
+        loadOrderType("radiology");
+
+        // Main sidebar mobile menu functionality
+        const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+        const sidebar = document.getElementById("shared-sidebar");
+        const overlay = document.getElementById("sidebar-overlay");
+
+        if (mobileMenuBtn && sidebar && overlay) {
+          mobileMenuBtn.addEventListener("click", function () {
+            toggleMainSidebar();
+          });
+
+          overlay.addEventListener("click", function () {
+            toggleMainSidebar();
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -828,26 +828,326 @@
                     <!-- Radiology Test Results Content -->
                     <div id="subpanel-radiology" class="hidden">
                         <div class="bg-white rounded-lg shadow-sm">
-                            <div class="flex items-center justify-between p-6 border-b border-gray-200">
-                                <h3 class="text-lg font-semibold text-gray-800">Radiology Test Results</h3>
-                                <div class="flex space-x-2">
-                                    <a href="radiology-test-results.html" class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">
-                                        <i class="fas fa-external-link-alt mr-2"></i>View All Tests
-                                    </a>
+                            <!-- Radiology Sub-tabs -->
+                            <div class="flex flex-wrap gap-2 text-sm mb-4 p-6 pb-4">
+                                <button data-radio-subtab="radiology" class="radio-subtab-btn px-4 py-2 rounded-full bg-orange-500 text-white">Radiology</button>
+                                <button data-radio-subtab="all-orders" class="radio-subtab-btn px-4 py-2 rounded-full bg-white border">All Orders</button>
+                            </div>
+
+                            <!-- Radiology Content (Default) -->
+                            <div id="radio-subpanel-radiology" class="radio-subtab-panel" style="display: block;">
+                                <div class="p-6">
+                                    <div class="flex items-center justify-between mb-6">
+                                        <h3 class="text-lg font-semibold text-gray-800">Radiology Orders</h3>
+                                        <div class="flex space-x-2">
+                                            <button class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">
+                                                <i class="fas fa-plus mr-2"></i>New Order
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Search and Filter Section -->
+                                    <div class="mb-6 border-b border-gray-200 pb-6">
+                                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                                                <input type="text" placeholder="Search orders..." class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">From Date</label>
+                                                <input type="date" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">To Date</label>
+                                                <input type="date" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                            </div>
+                                            <div class="flex items-end space-x-2">
+                                                <button class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">Search</button>
+                                                <button class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-medium">Reset</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Radiology Orders Table -->
+                                    <div class="mb-6">
+                                        <div class="overflow-x-auto">
+                                            <table class="min-w-full divide-y divide-gray-200">
+                                                <thead class="bg-orange-50">
+                                                    <tr>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item/Test</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ordered By</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="radiology-orders-tbody" class="bg-white divide-y divide-gray-200">
+                                                    <!-- Sample radiology order -->
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ORD-003</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <div>Michael Chen</div>
+                                                            <div class="text-xs text-gray-500">MRN-1247</div>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Radiology</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Chest X-Ray</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dr. Usman</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <span class="px-2 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-medium">In Progress</span>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">2014-01-15 10:00</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                            <div class="flex space-x-2">
+                                                                <button class="px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs">Complete</button>
+                                                                <button class="px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs">View</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <!-- Summary Cards -->
+                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                                        <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-500">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-600">Pending Approval</p>
+                                                    <p class="text-2xl font-bold text-orange-500 mt-1">2</p>
+                                                </div>
+                                                <div class="p-3 bg-orange-100 rounded-full">
+                                                    <i class="fas fa-clock text-orange-500 text-xl"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-500">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-600">In Progress</p>
+                                                    <p class="text-2xl font-bold text-orange-500 mt-1">1</p>
+                                                </div>
+                                                <div class="p-3 bg-orange-100 rounded-full">
+                                                    <i class="fas fa-spinner text-orange-500 text-xl"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-600">Completed Today</p>
+                                                    <p class="text-2xl font-bold text-green-500 mt-1">1</p>
+                                                </div>
+                                                <div class="p-3 bg-green-100 rounded-full">
+                                                    <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-500">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-600">Total Today</p>
+                                                    <p class="text-2xl font-bold text-orange-500 mt-1">5</p>
+                                                </div>
+                                                <div class="p-3 bg-orange-100 rounded-full">
+                                                    <i class="fas fa-list-alt text-orange-500 text-xl"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            
-                            <div class="p-6">
-                                <div class="text-center py-12">
-                                    <div class="mx-auto w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mb-4">
-                                        <i class="fas fa-x-ray text-4xl text-orange-500"></i>
+
+                            <!-- All Orders Content -->
+                            <div id="radio-subpanel-all-orders" class="radio-subtab-panel" style="display: none;">
+                                <div class="p-6">
+                                    <div class="flex items-center justify-between mb-6">
+                                        <h3 class="text-lg font-semibold text-gray-800">All Orders</h3>
+                                        <div class="flex space-x-2">
+                                            <button class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">
+                                                <i class="fas fa-plus mr-2"></i>New Order
+                                            </button>
+                                        </div>
                                     </div>
-                                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Radiology Test Results</h3>
-                                    <p class="text-gray-600 mb-6">View and manage all radiology examinations in one place</p>
-                                    <a href="radiology-test-results.html" class="inline-flex items-center px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200">
-                                        <i class="fas fa-arrow-right mr-2"></i>
-                                        Go to Radiology Tests
-                                    </a>
+                                    
+                                    <!-- Search and Filter Section -->
+                                    <div class="mb-6 border-b border-gray-200 pb-6">
+                                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                                                <input type="text" placeholder="Search orders..." class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">From Date</label>
+                                                <input type="date" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">To Date</label>
+                                                <input type="date" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                                            </div>
+                                            <div class="flex items-end space-x-2">
+                                                <button class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium">Search</button>
+                                                <button class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-medium">Reset</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- All Orders Table -->
+                                    <div class="mb-6">
+                                        <div class="overflow-x-auto">
+                                            <table class="min-w-full divide-y divide-gray-200">
+                                                <thead class="bg-orange-50">
+                                                    <tr>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item/Test</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ordered By</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="all-orders-tbody" class="bg-white divide-y divide-gray-200">
+                                                    <!-- Lab Order -->
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ORD-001</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <div>Sarah Johnson</div>
+                                                            <div class="text-xs text-gray-500">MRN-1245</div>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Lab</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Blood Test</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dr. John Doe</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">Completed</span>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dec 15, 2024 09:30</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                            <div class="flex space-x-2">
+                                                                <button class="px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs">View</button>
+                                                                <button class="px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs">Share</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- Radiology Order -->
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ORD-002</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <div>Michael Chen</div>
+                                                            <div class="text-xs text-gray-500">MRN-1247</div>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Radiology</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">CT Scan</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dr. Jane Smith</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <span class="px-2 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-medium">Pending</span>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dec 14, 2024 14:20</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                            <div class="flex space-x-2">
+                                                                <button class="px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs">View</button>
+                                                                <button class="px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs">Share</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- Pharmacy Order -->
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ORD-003</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <div>Emily Davis</div>
+                                                            <div class="text-xs text-gray-500">MRN-1250</div>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Pharmacy</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Antibiotics</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dr. Mark Wilson</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">Completed</span>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dec 13, 2024 11:15</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                            <div class="flex space-x-2">
+                                                                <button class="px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs">View</button>
+                                                                <button class="px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs">Share</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- Another Lab Order -->
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ORD-004</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <div>Robert Brown</div>
+                                                            <div class="text-xs text-gray-500">MRN-1252</div>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Lab</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Urine Analysis</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dr. Sarah Lee</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            <span class="px-2 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-medium">In Progress</span>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dec 12, 2024 16:45</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                            <div class="flex space-x-2">
+                                                                <button class="px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs">View</button>
+                                                                <button class="px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs">Share</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <!-- Summary Cards for All Orders -->
+                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                                        <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-500">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-600">Total Orders</p>
+                                                    <p class="text-2xl font-bold text-orange-500 mt-1">15</p>
+                                                </div>
+                                                <div class="p-3 bg-orange-100 rounded-full">
+                                                    <i class="fas fa-list-alt text-orange-500 text-xl"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-600">Lab Orders</p>
+                                                    <p class="text-2xl font-bold text-blue-500 mt-1">8</p>
+                                                </div>
+                                                <div class="p-3 bg-blue-100 rounded-full">
+                                                    <i class="fas fa-vial text-blue-500 text-xl"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-600">Radiology Orders</p>
+                                                    <p class="text-2xl font-bold text-purple-500 mt-1">5</p>
+                                                </div>
+                                                <div class="p-3 bg-purple-100 rounded-full">
+                                                    <i class="fas fa-x-ray text-purple-500 text-xl"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-600">Pharmacy Orders</p>
+                                                    <p class="text-2xl font-bold text-green-500 mt-1">2</p>
+                                                </div>
+                                                <div class="p-3 bg-green-100 rounded-full">
+                                                    <i class="fas fa-pills text-green-500 text-xl"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -863,7 +1163,7 @@
                             </div>
 
                             <!-- Lab Order Wise Content (Default) -->
-                            <div id="lab-subpanel-order" class="lab-subtab-panel">
+                            <div id="lab-subpanel-order" class="lab-subtab-panel" style="display: block;">
                                 <div class="bg-white rounded-lg shadow-sm">
                                     <div class="flex items-center justify-between p-6 border-b border-gray-200">
                                 <h3 class="text-lg font-semibold text-gray-800">Lab Reports</h3>
@@ -1069,7 +1369,7 @@
                             </div>
 
                             <!-- Test Wise Content -->
-                            <div id="lab-subpanel-test" class="lab-subtab-panel hidden">
+                            <div id="lab-subpanel-test" class="lab-subtab-panel" style="display: none;">
                                 <div class="bg-white rounded-lg shadow-sm">
                                     <div class="flex items-center justify-between p-6 border-b border-gray-200">
                                 <h3 class="text-lg font-semibold text-gray-800">Lab Reports</h3>
@@ -1908,9 +2208,49 @@
             labSubtabs.forEach(b => b.classList.add('bg-white','border'));
             btn.classList.add('bg-orange-500','text-white');
             btn.classList.remove('bg-white','border');
-            Object.values(labSubpanels).forEach(p => p.classList.add('hidden'));
-            labSubpanels[btn.dataset.labSubtab].classList.remove('hidden');
+            // Hide all lab subpanels using both class and style
+            Object.values(labSubpanels).forEach(p => {
+                if (p) {
+                    p.classList.add('hidden');
+                    p.style.display = 'none';
+                }
+            });
+            // Show selected lab subpanel
+            const selectedPanel = labSubpanels[btn.dataset.labSubtab];
+            if (selectedPanel) {
+                selectedPanel.classList.remove('hidden');
+                selectedPanel.style.display = 'block';
+            }
         }));
+
+        // Radiology Sub-tabs functionality
+        const radioSubtabs = document.querySelectorAll('.radio-subtab-btn');
+        const radioSubpanels = {
+            'radiology': document.getElementById('radio-subpanel-radiology'),
+            'all-orders': document.getElementById('radio-subpanel-all-orders')
+        };
+
+        if (radioSubtabs.length > 0) {
+            radioSubtabs.forEach(btn => btn.addEventListener('click', () => {
+                radioSubtabs.forEach(b => b.classList.remove('bg-orange-500','text-white'));
+                radioSubtabs.forEach(b => b.classList.add('bg-white','border'));
+                btn.classList.add('bg-orange-500','text-white');
+                btn.classList.remove('bg-white','border');
+                // Hide all radiology subpanels using both class and style
+                Object.values(radioSubpanels).forEach(p => {
+                    if (p) {
+                        p.classList.add('hidden');
+                        p.style.display = 'none';
+                    }
+                });
+                // Show selected radiology subpanel
+                const selectedPanel = radioSubpanels[btn.dataset.radioSubtab];
+                if (selectedPanel) {
+                    selectedPanel.classList.remove('hidden');
+                    selectedPanel.style.display = 'block';
+                }
+            }));
+        }
 
         // Clinical Insights Sub-tabs functionality
         const insightSubtabs = document.querySelectorAll('.insight-subtab-btn');
