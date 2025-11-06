@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Invoice - HMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script src="currency-helper.js"></script>
+    <script src="shared-sidebar.js"></script>
+    <style>
+      /* Mobile Sidebar Overlay */
+      #sidebar-overlay-invoice {
+        display: none;
+      }
+      /* Add this to your existing styles */
+      #currency-selector-container .fa-chevron-down {
+        display: none !important;
+      }
+      #sidebar-overlay-invoice.active {
+        display: block;
+      }
+
+      /* Sidebar responsive behavior */
+      @media (max-width: 1024px) {
+        #shared-sidebar {
+          position: fixed;
+          left: -100%;
+          top: 0;
+          height: 100vh;
+          z-index: 50;
+          transition: left 0.3s ease-in-out;
+        }
+        #shared-sidebar.active {
+          left: 0;
+        }
+      }
+
+      /* Custom Select Styling */
+      select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 1.25rem;
+        padding-right: 2.5rem;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+      <!-- Shared Sidebar -->
+      <div id="shared-sidebar"></div>
+
+      <!-- Sidebar Overlay for Mobile -->
+      <div
+        id="sidebar-overlay-invoice"
+        class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+      ></div>
+
+      <!-- Main Content -->
+      <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+          <div
+            class="flex items-center justify-between px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex-wrap gap-3"
+          >
+            <div class="flex items-center space-x-2 sm:space-x-4">
+              <button
+                id="mobile-menu-btn-invoice"
+                class="lg:hidden text-gray-500 hover:text-gray-700"
+              >
+                <i class="fas fa-bars text-xl"></i>
+              </button>
+              <button
+                onclick="goBack()"
+                class="text-gray-500 hover:text-gray-700 hidden sm:block"
+              >
+                <i class="fas fa-arrow-left text-xl"></i>
+              </button>
+              <div class="flex items-center space-x-2 sm:space-x-3">
+                <div class="p-1.5 sm:p-2 bg-orange-500 text-white rounded-lg">
+                  <i class="fas fa-file-invoice text-base sm:text-xl"></i>
+                </div>
+                <div>
+                  <h1
+                    class="text-base sm:text-xl md:text-2xl font-bold text-gray-800"
+                  >
+                    Create New Invoice
+                  </h1>
+                  <p class="text-xs sm:text-sm text-gray-600 hidden sm:block">
+                    Generate invoice for any patient
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2 hidden sm:flex">
+              <img
+                src="https://via.placeholder.com/40x40"
+                alt="Profile"
+                class="w-7 h-7 sm:w-8 sm:h-8 rounded-full"
+              />
+              <span class="text-xs sm:text-sm font-medium text-gray-700"
+                >Dr. John Doe</span
+              >
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-auto p-3 sm:p-4 md:p-6">
+          <div class="max-w-6xl mx-auto">
+            <form id="invoiceForm" class="space-y-4 sm:space-y-6">
+              <!-- Patient Selection Card -->
+              <div class="bg-white rounded-lg shadow-md p-3 sm:p-4 md:p-6">
+                <h3
+                  class="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4 flex items-center"
+                >
+                  <i
+                    class="fas fa-user mr-2 text-orange-500 text-sm sm:text-base"
+                  ></i>
+                  Patient Selection
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Select Patient *</label
+                    >
+                    <div class="relative">
+                      <select
+                        id="patientSelect"
+                        class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm appearance-none"
+                        required
+                      >
+                        <option value="">-- Select Patient --</option>
+                        <!-- Patient options will be populated dynamically -->
+                      </select>
+                    </div>
+                  </div>
+                  <div id="selectedPatientInfo" class="hidden">
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Patient Information</label
+                    >
+                    <div
+                      class="px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border border-gray-300 rounded-lg"
+                    >
+                      <p
+                        class="text-sm font-medium text-gray-900"
+                        id="patientNameDisplay"
+                      >
+                        -
+                      </p>
+                      <p class="text-xs text-gray-600" id="patientIdDisplay">
+                        -
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Billing Details Card -->
+              <div class="bg-white rounded-lg shadow-md p-3 sm:p-4 md:p-6">
+                <h3
+                  class="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4 flex items-center"
+                >
+                  <i
+                    class="fas fa-calendar mr-2 text-orange-500 text-sm sm:text-base"
+                  ></i>
+                  Billing Details
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Billing Date *</label
+                    >
+                    <input
+                      type="date"
+                      id="billingDate"
+                      class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Due Date *</label
+                    >
+                    <input
+                      type="date"
+                      id="dueDate"
+                      class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
+                      required
+                    />
+                  </div>
+                  <div id="currency-selector-container">
+                    <!-- Currency selector will be inserted here -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Itemized Services Card -->
+              <div class="bg-white rounded-lg shadow-md p-3 sm:p-4 md:p-6">
+                <div
+                  class="flex items-center justify-between mb-3 sm:mb-4 flex-wrap gap-3"
+                >
+                  <h3
+                    class="text-base sm:text-lg font-semibold text-gray-800 flex items-center"
+                  >
+                    <i
+                      class="fas fa-list mr-2 text-orange-500 text-sm sm:text-base"
+                    ></i>
+                    Itemized Services
+                  </h3>
+                  <button
+                    type="button"
+                    id="addLineItem"
+                    class="px-3 sm:px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs sm:text-sm font-medium"
+                  >
+                    <i class="fas fa-plus mr-2"></i>Add Line Item
+                  </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-orange-50">
+                      <tr>
+                        <th
+                          scope="col"
+                          class="px-3 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                          Service Description
+                        </th>
+                        <th
+                          scope="col"
+                          class="px-3 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell"
+                        >
+                          Date
+                        </th>
+                        <th
+                          scope="col"
+                          class="px-3 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                          Qty
+                        </th>
+                        <th
+                          scope="col"
+                          class="px-3 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                          Price (<span data-currency-symbol></span>)
+                        </th>
+                        <th
+                          scope="col"
+                          class="px-3 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                          Total (<span data-currency-symbol></span>)
+                        </th>
+                        <th
+                          scope="col"
+                          class="px-3 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                          Action
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      id="lineItemsTable"
+                      class="bg-white divide-y divide-gray-200"
+                    >
+                      <!-- Line items will be added dynamically -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Billing Summary Card -->
+              <div class="bg-white rounded-lg shadow-md p-3 sm:p-4 md:p-6">
+                <h3
+                  class="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4 flex items-center"
+                >
+                  <i
+                    class="fas fa-calculator mr-2 text-orange-500 text-sm sm:text-base"
+                  ></i>
+                  Billing Summary
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                  <div class="space-y-3 sm:space-y-4">
+                    <div class="flex justify-between items-center">
+                      <span class="text-xs sm:text-sm font-medium text-gray-600"
+                        >Subtotal:</span
+                      >
+                      <span
+                        id="subtotal"
+                        class="text-base sm:text-lg font-semibold text-gray-900"
+                        data-currency
+                        data-amount="0"
+                        >Rs. 0.00</span
+                      >
+                    </div>
+                    <div
+                      class="flex justify-between items-center flex-wrap gap-2"
+                    >
+                      <span class="text-xs sm:text-sm font-medium text-gray-600"
+                        >Discount (%):</span
+                      >
+                      <input
+                        type="number"
+                        id="discountPercent"
+                        min="0"
+                        max="100"
+                        value="0"
+                        class="w-20 px-2 py-1 border border-gray-300 rounded text-xs sm:text-sm"
+                      />
+                    </div>
+                    <div class="flex justify-between items-center">
+                      <span class="text-xs sm:text-sm font-medium text-gray-600"
+                        >Discount Amount:</span
+                      >
+                      <span
+                        id="discountAmount"
+                        class="text-base sm:text-lg font-semibold text-gray-900"
+                        data-currency
+                        data-amount="0"
+                        >Rs. 0.00</span
+                      >
+                    </div>
+                    <div
+                      class="flex justify-between items-center flex-wrap gap-2"
+                    >
+                      <span class="text-xs sm:text-sm font-medium text-gray-600"
+                        >Tax (%):</span
+                      >
+                      <input
+                        type="number"
+                        id="taxPercent"
+                        min="0"
+                        max="100"
+                        value="18"
+                        class="w-20 px-2 py-1 border border-gray-300 rounded text-xs sm:text-sm"
+                      />
+                    </div>
+                    <div class="flex justify-between items-center">
+                      <span class="text-xs sm:text-sm font-medium text-gray-600"
+                        >Tax Amount:</span
+                      >
+                      <span
+                        id="taxAmount"
+                        class="text-base sm:text-lg font-semibold text-gray-900"
+                        data-currency
+                        data-amount="0"
+                        >Rs. 0.00</span
+                      >
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-center">
+                    <div class="text-center">
+                      <div
+                        class="text-xl sm:text-2xl md:text-3xl font-bold text-orange-600 mb-2"
+                      >
+                        Grand Total
+                      </div>
+                      <div
+                        id="grandTotal"
+                        class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900"
+                        data-currency
+                        data-amount="0"
+                      >
+                        Rs. 0.00
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Status and Submit Card -->
+              <div class="bg-white rounded-lg shadow-md p-3 sm:p-4 md:p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                  <div>
+                    <label
+                      class="block text-xs sm:text-sm font-medium text-gray-700 mb-2"
+                      >Invoice Status *</label
+                    >
+                    <div class="relative">
+                      <select
+                        id="invoiceStatus"
+                        class="w-full px-3 sm:px-4 py-2 sm:py-3 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none text-sm"
+                        required
+                      >
+                        <option value="">Select Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Paid">Paid</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="flex items-end">
+                    <button
+                      type="submit"
+                      class="w-full px-4 sm:px-6 py-2 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 text-sm sm:text-base"
+                    >
+                      <i class="fas fa-paper-plane mr-2"></i>Create Invoice &
+                      Send
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      // Sample patient data - In production, fetch from API
+      const samplePatients = [
+        { id: "P001", name: "John Doe", age: 35 },
+        { id: "P002", name: "Mary Johnson", age: 42 },
+        { id: "P003", name: "Robert Brown", age: 28 },
+        { id: "P004", name: "Susan Lee", age: 55 },
+        { id: "P005", name: "James Wilson", age: 38 },
+        { id: "P006", name: "Caren G. Simpson", age: 35 },
+        { id: "P007", name: "Edgar Warlow", age: 28 },
+        { id: "P008", name: "Ocean Jane Lupre", age: 20 },
+        { id: "P009", name: "Shane Riddick", age: 50 },
+        { id: "P010", name: "Queen Lawiston", age: 60 },
+      ];
+
+      // Go back to payments page
+      function goBack() {
+        window.location.href = "payments.html";
+      }
+
+      // Set current date as default billing date
+      document.getElementById("billingDate").valueAsDate = new Date();
+
+      // Initialize patient dropdown
+      function loadPatients() {
+        const patientSelect = document.getElementById("patientSelect");
+        samplePatients.forEach((patient) => {
+          const option = document.createElement("option");
+          option.value = patient.id;
+          option.textContent = `${patient.name} (ID: ${patient.id})`;
+          option.dataset.patientName = patient.name;
+          option.dataset.patientId = patient.id;
+          patientSelect.appendChild(option);
+        });
+      }
+
+      // Update patient info display
+      document
+        .getElementById("patientSelect")
+        .addEventListener("change", function () {
+          const selectedOption = this.options[this.selectedIndex];
+          const patientInfoDiv = document.getElementById("selectedPatientInfo");
+
+          if (this.value && selectedOption.dataset.patientName) {
+            document.getElementById("patientNameDisplay").textContent =
+              selectedOption.dataset.patientName;
+            document.getElementById(
+              "patientIdDisplay"
+            ).textContent = `ID: ${selectedOption.dataset.patientId}`;
+            patientInfoDiv.classList.remove("hidden");
+          } else {
+            patientInfoDiv.classList.add("hidden");
+          }
+        });
+
+      // Initialize currency selector
+      document.addEventListener("DOMContentLoaded", function () {
+        loadPatients();
+
+        const container = document.getElementById(
+          "currency-selector-container"
+        );
+        if (container) {
+          container.innerHTML = `
+                    <div>
+                        ${CurrencyHelper.createCurrencySelector(
+                          null,
+                          function (currency) {
+                            calculateGrandTotal();
+                          }
+                        )}
+                    </div>
+                `;
+        }
+
+        // Update currency displays
+        CurrencyHelper.updateCurrencyDisplays();
+      });
+
+      // Add line item functionality
+      let lineItemCount = 0;
+      document
+        .getElementById("addLineItem")
+        .addEventListener("click", function () {
+          addLineItem();
+        });
+
+      function addLineItem() {
+        lineItemCount++;
+        const tableBody = document.getElementById("lineItemsTable");
+        const row = document.createElement("tr");
+        row.innerHTML = `
+                <td class="px-3 sm:px-4 py-2 sm:py-3">
+                    <input type="text" class="w-full px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" placeholder="Enter service description" required>
+                </td>
+                <td class="px-3 sm:px-4 py-2 sm:py-3 hidden sm:table-cell">
+                    <input type="date" class="w-full px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 date-input text-xs sm:text-sm">
+                </td>
+                <td class="px-3 sm:px-4 py-2 sm:py-3">
+                    <input type="number" class="w-full px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 quantity-input text-xs sm:text-sm" min="1" value="1" required>
+                </td>
+                <td class="px-3 sm:px-4 py-2 sm:py-3">
+                    <input type="number" class="w-full px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 price-input text-xs sm:text-sm" min="0" step="0.01" value="0" required>
+                </td>
+                <td class="px-3 sm:px-4 py-2 sm:py-3">
+                    <span class="total-amount font-semibold text-xs sm:text-sm" data-currency data-amount="0">Rs. 0.00</span>
+                </td>
+                <td class="px-3 sm:px-4 py-2 sm:py-3">
+                    <button type="button" class="text-red-600 hover:text-red-800 remove-line-item text-xs sm:text-sm">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+        tableBody.appendChild(row);
+
+        // Add event listeners to new row
+        const quantityInput = row.querySelector(".quantity-input");
+        const priceInput = row.querySelector(".price-input");
+        const dateInput = row.querySelector(".date-input");
+        const totalAmount = row.querySelector(".total-amount");
+        const removeBtn = row.querySelector(".remove-line-item");
+
+        // Set default date to current date
+        if (dateInput) {
+          dateInput.valueAsDate = new Date();
+        }
+
+        quantityInput.addEventListener("input", calculateLineTotal);
+        priceInput.addEventListener("input", calculateLineTotal);
+        removeBtn.addEventListener("click", function () {
+          row.remove();
+          calculateGrandTotal();
+        });
+
+        function calculateLineTotal() {
+          const quantity = parseFloat(quantityInput.value) || 0;
+          const price = parseFloat(priceInput.value) || 0;
+          const total = quantity * price;
+          totalAmount.setAttribute("data-amount", total);
+          totalAmount.textContent = CurrencyHelper.formatCurrency(total);
+          calculateGrandTotal();
+        }
+      }
+
+      // Calculate grand total
+      function calculateGrandTotal() {
+        const lineItems = document.querySelectorAll("#lineItemsTable tr");
+        let subtotal = 0;
+
+        lineItems.forEach((row) => {
+          const totalAmount = row.querySelector(".total-amount");
+          if (totalAmount) {
+            const amount =
+              parseFloat(totalAmount.getAttribute("data-amount") || 0) ||
+              CurrencyHelper.parseCurrency(totalAmount.textContent);
+            subtotal += amount;
+          }
+        });
+
+        const discountPercent =
+          parseFloat(document.getElementById("discountPercent").value) || 0;
+        const taxPercent =
+          parseFloat(document.getElementById("taxPercent").value) || 0;
+
+        const discountAmount = (subtotal * discountPercent) / 100;
+        const taxableAmount = subtotal - discountAmount;
+        const taxAmount = (taxableAmount * taxPercent) / 100;
+        const grandTotal = taxableAmount + taxAmount;
+
+        // Update with currency formatting
+        const subtotalEl = document.getElementById("subtotal");
+        const discountEl = document.getElementById("discountAmount");
+        const taxEl = document.getElementById("taxAmount");
+        const grandEl = document.getElementById("grandTotal");
+
+        subtotalEl.setAttribute("data-amount", subtotal);
+        discountEl.setAttribute("data-amount", discountAmount);
+        taxEl.setAttribute("data-amount", taxAmount);
+        grandEl.setAttribute("data-amount", grandTotal);
+
+        subtotalEl.textContent = CurrencyHelper.formatCurrency(subtotal);
+        discountEl.textContent = CurrencyHelper.formatCurrency(discountAmount);
+        taxEl.textContent = CurrencyHelper.formatCurrency(taxAmount);
+        grandEl.textContent = CurrencyHelper.formatCurrency(grandTotal);
+      }
+
+      // Handle currency change
+      window.onCurrencyChange = function (currencyCode) {
+        // Recalculate all amounts with new currency
+        const lineItems = document.querySelectorAll("#lineItemsTable tr");
+        lineItems.forEach((row) => {
+          const totalAmount = row.querySelector(".total-amount");
+          const priceInput = row.querySelector(".price-input");
+          const quantityInput = row.querySelector(".quantity-input");
+          if (totalAmount && priceInput && quantityInput) {
+            const quantity = parseFloat(quantityInput.value) || 0;
+            const price = parseFloat(priceInput.value) || 0;
+            const total = quantity * price;
+            totalAmount.setAttribute("data-amount", total);
+            totalAmount.textContent = CurrencyHelper.formatCurrency(total);
+          }
+        });
+        calculateGrandTotal();
+      };
+
+      // Add event listeners for discount and tax calculations
+      document
+        .getElementById("discountPercent")
+        .addEventListener("input", calculateGrandTotal);
+      document
+        .getElementById("taxPercent")
+        .addEventListener("input", calculateGrandTotal);
+
+      // Form submission
+      document
+        .getElementById("invoiceForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const patientSelect = document.getElementById("patientSelect");
+          const selectedOption =
+            patientSelect.options[patientSelect.selectedIndex];
+
+          if (!patientSelect.value) {
+            alert("Please select a patient");
+            return;
+          }
+
+          // Get form data
+          const invoiceData = {
+            patientId: selectedOption.dataset.patientId,
+            patientName: selectedOption.dataset.patientName,
+            billingDate: document.getElementById("billingDate").value,
+            dueDate: document.getElementById("dueDate").value,
+            invoiceStatus: document.getElementById("invoiceStatus").value,
+            lineItems: [],
+            subtotal: document.getElementById("subtotal").textContent,
+            discountAmount:
+              document.getElementById("discountAmount").textContent,
+            taxAmount: document.getElementById("taxAmount").textContent,
+            grandTotal: document.getElementById("grandTotal").textContent,
+            timestamp: new Date().toLocaleString(),
+          };
+
+          // Collect line items
+          const lineItems = document.querySelectorAll("#lineItemsTable tr");
+          if (lineItems.length === 0) {
+            alert("Please add at least one line item");
+            return;
+          }
+
+          lineItems.forEach((row) => {
+            const description = row.querySelector('input[type="text"]').value;
+            const dateInput = row.querySelector(".date-input");
+            const date = dateInput ? dateInput.value : "";
+            const quantity = row.querySelector(".quantity-input").value;
+            const price = row.querySelector(".price-input").value;
+            const total = row.querySelector(".total-amount").textContent;
+
+            if (description && quantity && price) {
+              invoiceData.lineItems.push({
+                description,
+                date,
+                quantity: parseFloat(quantity),
+                price: parseFloat(price),
+                total: total,
+              });
+            }
+          });
+
+          // Store in localStorage for demonstration
+          // In production, send to API
+          let invoices = JSON.parse(localStorage.getItem("invoices") || "[]");
+          invoices.push(invoiceData);
+          localStorage.setItem("invoices", JSON.stringify(invoices));
+
+          // Show success message
+          alert("Invoice created successfully!");
+
+          // Redirect back to payments page
+          window.location.href = "payments.html";
+        });
+
+      // Mobile Menu Toggle
+      const mobileMenuBtn = document.getElementById("mobile-menu-btn-invoice");
+      const sidebar = document.getElementById("shared-sidebar");
+      const overlay = document.getElementById("sidebar-overlay-invoice");
+
+      // Initialize sidebar
+      document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("shared-sidebar").innerHTML =
+          createSharedSidebar("payments");
+        initSharedSidebar("payments");
+
+        if (mobileMenuBtn) {
+          mobileMenuBtn.addEventListener("click", () => {
+            sidebar.classList.add("active");
+            overlay.classList.add("active");
+          });
+        }
+
+        if (overlay) {
+          overlay.addEventListener("click", () => {
+            sidebar.classList.remove("active");
+            overlay.classList.remove("active");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
+
+

@@ -360,21 +360,16 @@
                         <button class="text-orange-600 text-xs sm:text-sm font-medium">View All</button>
                     </div>
                     
-                    <!-- Date Navigation -->
-                    <div class="flex gap-1 mb-3 sm:mb-4 overflow-x-auto pb-2 scrollbar-hide">
-                        <button class="px-2 sm:px-3 py-1 bg-blue-600 text-white rounded text-xs sm:text-sm whitespace-nowrap">Mon 12</button>
-                        <button class="px-2 sm:px-3 py-1 bg-gray-100 text-gray-600 rounded text-xs sm:text-sm whitespace-nowrap">Tue 12</button>
-                        <button class="px-2 sm:px-3 py-1 bg-gray-100 text-gray-600 rounded text-xs sm:text-sm whitespace-nowrap">Wed 12</button>
-                        <button class="px-2 sm:px-3 py-1 bg-gray-100 text-gray-600 rounded text-xs sm:text-sm whitespace-nowrap">Thu 12</button>
-                        <button class="px-2 sm:px-3 py-1 bg-gray-100 text-gray-600 rounded text-xs sm:text-sm whitespace-nowrap">Fri 12</button>
-                        <button class="px-2 sm:px-3 py-1 bg-gray-100 text-gray-600 rounded text-xs sm:text-sm whitespace-nowrap">Sat 12</button>
-                        <button class="px-2 sm:px-3 py-1 bg-gray-100 text-gray-600 rounded text-xs sm:text-sm whitespace-nowrap">Sun 12</button>
+                    <!-- Tabs: OPD (public) / IPD (internal) -->
+                    <div class="flex items-center gap-2 mb-3 sm:mb-4">
+                        <button id="tab-opd" class="px-3 py-1.5 rounded-full text-xs sm:text-sm bg-orange-500 text-white">OPD</button>
+                        <button id="tab-ipd" class="px-3 py-1.5 rounded-full text-xs sm:text-sm bg-gray-100 text-gray-700">IPD</button>
                     </div>
                     
                     <!-- Table -->
                     <div class="overflow-x-auto -mx-4 sm:mx-0">
                         <div class="inline-block min-w-full align-middle">
-                            <table class="min-w-full text-xs sm:text-sm">
+                            <table class="min-w-full text-xs sm:text-sm" id="appointments-table">
                                 <thead>
                                     <tr class="border-b border-gray-200">
                                         <th class="text-left py-2 px-2 sm:px-0 text-gray-600 whitespace-nowrap">Booking ID</th>
@@ -382,78 +377,12 @@
                                         <th class="text-left py-2 px-2 sm:px-0 text-gray-600 whitespace-nowrap">Mobile No</th>
                                         <th class="text-left py-2 px-2 sm:px-0 text-gray-600 whitespace-nowrap">Time</th>
                                         <th class="text-left py-2 px-2 sm:px-0 text-gray-600 whitespace-nowrap">Date</th>
-                                        <th class="text-left py-2 px-2 sm:px-0 text-gray-600 whitespace-nowrap">Doctor</th>
+                                        <th class="text-left py-2 px-2 sm:px-0 text-gray-600 whitespace-nowrap">Doctor/Dept</th>
+                                        <th class="text-left py-2 px-2 sm:px-0 text-gray-600 whitespace-nowrap">Nurse Name</th>
                                         <th class="text-left py-2 px-2 sm:px-0 text-gray-600 whitespace-nowrap">Status</th>
                                     </tr>
                                 </thead>
-                            <tbody>
-                                <tr class="border-b border-gray-100">
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">S1</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">Malik</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">03004167890</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">9:00 AM</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">30-08-2025</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">Dr. Usman</td>
-                                    <td class="py-2 px-2 sm:px-0">
-                                        <span class="px-2 py-1 bg-blue-100 text-blue-600 rounded text-xs whitespace-nowrap">Check-up</span>
-                                    </td>
-                                </tr>
-                                <tr class="border-b border-gray-100">
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">S2</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">Omar Ali</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">12345678901</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">9:00 AM</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">30-08-2025</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">Dr. Ali</td>
-                                    <td class="py-2 px-2 sm:px-0">
-                                        <span class="px-2 py-1 bg-purple-100 text-purple-600 rounded text-xs whitespace-nowrap">X-Ray</span>
-                                    </td>
-                                </tr>
-                                <tr class="border-b border-gray-100">
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">S3</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">Omar Ali</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">12345678901</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">9:00 AM</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">30-08-2025</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">Dr. Ali</td>
-                                    <td class="py-2 px-2 sm:px-0">
-                                        <span class="px-2 py-1 bg-purple-100 text-purple-600 rounded text-xs whitespace-nowrap">X-Ray</span>
-                                    </td>
-                                </tr>
-                                <tr class="border-b border-gray-100">
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">S4</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">Omar Ali</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">12345678901</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">9:00 AM</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">30-08-2025</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">Dr. Ali</td>
-                                    <td class="py-2 px-2 sm:px-0">
-                                        <span class="px-2 py-1 bg-purple-100 text-purple-600 rounded text-xs whitespace-nowrap">X-Ray</span>
-                                    </td>
-                                </tr>
-                                <tr class="border-b border-gray-100">
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">S5</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">Omar Ali</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">12345678901</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">9:00 AM</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">30-08-2025</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">Dr. Ali</td>
-                                    <td class="py-2 px-2 sm:px-0">
-                                        <span class="px-2 py-1 bg-green-100 text-green-600 rounded text-xs whitespace-nowrap">Follow-up</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">S7</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">Omar Ali</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">Mobile No</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">9:00 AM</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">30-08-2025</td>
-                                    <td class="py-2 px-2 sm:px-0 text-gray-800">Dr. Ali</td>
-                                    <td class="py-2 px-2 sm:px-0">
-                                        <span class="px-2 py-1 bg-purple-100 text-purple-600 rounded text-xs whitespace-nowrap">X-Ray</span>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody id="appointments-dashboard-body"></tbody>
                         </table>
                         </div>
                     </div>
@@ -560,6 +489,77 @@
                 </div>
                 </section>
 
+<script>
+// Dashboard appointments OPD/IPD tabs
+(function(){
+  const bodyEl = document.getElementById('appointments-dashboard-body');
+  const tabOpd = document.getElementById('tab-opd');
+  const tabIpd = document.getElementById('tab-ipd');
+
+  function loadAll(){
+    return JSON.parse(localStorage.getItem('hm_appointments_data') || '[]');
+  }
+
+  function pill(status){
+    const map = {
+      'Requested': 'bg-purple-100 text-purple-600',
+      'Scheduled': 'bg-blue-100 text-blue-600',
+      'Completed': 'bg-green-100 text-green-600',
+      'Cancelled': 'bg-red-100 text-red-600'
+    };
+    return map[status] || 'bg-gray-100 text-gray-600';
+  }
+
+  function render(type){
+    const all = loadAll();
+    const vitals = JSON.parse(localStorage.getItem('hm_vitals_data') || '[]');
+    const filtered = type === 'OPD' ? all.filter(a => a.source === 'public')
+                                    : all.filter(a => a.source === 'internal');
+    if(filtered.length === 0){
+      bodyEl.innerHTML = '<tr><td colspan="8" class="py-4 text-center text-gray-500">No appointments</td></tr>';
+      return;
+    }
+    bodyEl.innerHTML = filtered.map((a, idx)=>{
+      const id = 'BK-'+(a.id.toString().slice(-6));
+      const docOrDept = a.doctor && a.doctor.length ? a.doctor : (a.department || '-');
+      const nurse = (function(){
+        const matched = vitals.filter(v => v.bookingId === id).sort((x,y)=> new Date(y.recordedAt)-new Date(x.recordedAt));
+        return matched[0]?.nurse || '-';
+      })();
+      return `
+        <tr class="border-b border-gray-100">
+          <td class="py-2 px-2 sm:px-0 text-gray-800">${id}</td>
+          <td class="py-2 px-2 sm:px-0 text-gray-800">${a.fullName || '-'}</td>
+          <td class="py-2 px-2 sm:px-0 text-gray-800">${a.mobileNo || '-'}</td>
+          <td class="py-2 px-2 sm:px-0 text-gray-800">${a.timeSlot || '-'}</td>
+          <td class="py-2 px-2 sm:px-0 text-gray-800">${a.visitDate || '-'}</td>
+          <td class="py-2 px-2 sm:px-0 text-gray-800">${docOrDept}</td>
+          <td class="py-2 px-2 sm:px-0 text-gray-800">${nurse}</td>
+          <td class="py-2 px-2 sm:px-0"><span class="px-2 py-1 rounded text-xs ${pill(a.status)}">${a.status || '-'}</span></td>
+        </tr>`;
+    }).join('');
+  }
+
+  function setActive(tab){
+    if(tab === 'OPD'){
+      tabOpd.className = 'px-3 py-1.5 rounded-full text-xs sm:text-sm bg-orange-500 text-white';
+      tabIpd.className = 'px-3 py-1.5 rounded-full text-xs sm:text-sm bg-gray-100 text-gray-700';
+    } else {
+      tabIpd.className = 'px-3 py-1.5 rounded-full text-xs sm:text-sm bg-orange-500 text-white';
+      tabOpd.className = 'px-3 py-1.5 rounded-full text-xs sm:text-sm bg-gray-100 text-gray-700';
+    }
+  }
+
+  if(tabOpd && tabIpd && bodyEl){
+    tabOpd.addEventListener('click', ()=>{ setActive('OPD'); render('OPD'); });
+    tabIpd.addEventListener('click', ()=>{ setActive('IPD'); render('IPD'); });
+    // Initial view: OPD (public)
+    setActive('OPD');
+    render('OPD');
+  }
+})();
+</script>
+
                 <!-- PATIENTS VIEW -->
                 <section id="view-patients" class="hidden">
                     <!-- Top bar: title and actions -->
@@ -598,13 +598,15 @@
                                 <thead class="border-b border-gray-200 text-gray-600">
                                     <tr>
                                         <th class="text-left px-3 sm:px-5 py-3 whitespace-nowrap">Name</th>
-                                        <th class="text-left px-3 sm:px-5 py-3 whitespace-nowrap">ID</th>
+                                        <th class="text-left px-3 sm:px-5 py-3 whitespace-nowrap">PatientID</th>
+                                        <th class="text-left px-3 sm:px-5 py-3 whitespace-nowrap">Booking ID</th>
                                         <th class="text-left px-3 sm:px-5 py-3 whitespace-nowrap">Age</th>
                                         <th class="text-left px-3 sm:px-5 py-3 whitespace-nowrap">Check-in</th>
                                         <th class="text-left px-3 sm:px-5 py-3 whitespace-nowrap">Treatment</th>
                                         <th class="text-left px-3 sm:px-5 py-3 whitespace-nowrap">Doctor Assigned</th>
                                         <th class="text-left px-3 sm:px-5 py-3 whitespace-nowrap">Room</th>
                                         <th class="text-left px-3 sm:px-5 py-3 whitespace-nowrap">Status</th>
+                                        <th class="text-left px-3 sm:px-5 py-3 whitespace-nowrap">Nurse Name</th>
                                     </tr>
                                 </thead>
                                 <tbody id="patients-tbody" class="divide-y divide-gray-100"></tbody>
@@ -718,7 +720,75 @@
         }
 
         function renderTable() {
-            const list = filterPatients();
+            // merge OPD/IPD: derive OPD from public appointments (room = 'OPD')
+            const appts = JSON.parse(localStorage.getItem('hm_appointments_data') || '[]');
+            const vitals = JSON.parse(localStorage.getItem('hm_vitals_data') || '[]');
+            const publicPatients = appts
+                .filter(a => a.source === 'public')
+                .map(a => ({
+                    id: a.id, // use id as patient id surrogate
+                    bookingId: 'BK-' + String(a.id).slice(-6),
+                    name: a.fullName || '-',
+                    age: '-',
+                    checkin: a.visitDate || '-',
+                    treatment: a.visitType || 'OPD',
+                    doctor: a.doctor || (a.department ? `${a.department}` : '-'),
+                    room: 'OPD',
+                    status: a.status || 'Requested',
+                    nurse: (function(){
+                        const bk = 'BK-' + String(a.id).slice(-6);
+                        const matched = vitals.filter(v => v.bookingId === bk).sort((x,y)=> new Date(y.recordedAt)-new Date(x.recordedAt));
+                        return matched[0]?.nurse || '-';
+                    })()
+                }));
+
+            const basePatients = patientsData.map(p => ({
+                ...p,
+                bookingId: p.bookingId || '-',
+                nurse: (function(){
+                    if(!p.bookingId) return (p.nurse || '-');
+                    const matched = vitals.filter(v => v.bookingId === p.bookingId).sort((x,y)=> new Date(y.recordedAt)-new Date(x.recordedAt));
+                    return matched[0]?.nurse || (p.nurse || '-');
+                })()
+            }));
+            const internalPatients = appts
+                .filter(a => a.source === 'internal')
+                .map(a => ({
+                    id: a.id,
+                    bookingId: 'BK-' + String(a.id).slice(-6),
+                    name: a.fullName || '-',
+                    age: '-',
+                    checkin: a.visitDate || '-',
+                    treatment: a.visitType || '-',
+                    doctor: a.doctor || (a.department || '-'),
+                    room: (a.visitType === 'OPD') ? 'OPD' : (a.room || '-'),
+                    status: a.status || 'Scheduled',
+                    nurse: (function(){
+                        const bk = 'BK-' + String(a.id).slice(-6);
+                        const matched = vitals.filter(v => v.bookingId === bk).sort((x,y)=> new Date(y.recordedAt)-new Date(x.recordedAt));
+                        return matched[0]?.nurse || '-';
+                    })()
+                }));
+
+            const merged = [...publicPatients, ...internalPatients, ...basePatients];
+
+            // apply search on merged list
+            const list = (function(){
+                const q = currentQuery.trim().toLowerCase();
+                if (!q) return merged;
+                return merged.filter(p =>
+                    String(p.id).includes(q) ||
+                    (p.bookingId||'').toLowerCase().includes(q) ||
+                    (p.name||'').toLowerCase().includes(q) ||
+                    String(p.age||'').includes(q) ||
+                    (p.checkin||'').toLowerCase().includes(q) ||
+                    (p.treatment||'').toLowerCase().includes(q) ||
+                    (p.doctor||'').toLowerCase().includes(q) ||
+                    (p.room||'').toLowerCase().includes(q) ||
+                    (p.status||'').toLowerCase().includes(q) ||
+                    (p.nurse||'').toLowerCase().includes(q)
+                );
+            })();
             const total = list.length;
             const totalPages = Math.max(1, Math.ceil(total / pageSize));
             currentPage = Math.min(currentPage, totalPages);
@@ -732,12 +802,14 @@
                 <tr class="hover:bg-gray-50 cursor-pointer" data-patient-id="${p.id}">
                     <td class="px-3 sm:px-5 py-3 text-gray-800 whitespace-nowrap">${p.name}</td>
                     <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">${p.id}</td>
+                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">${p.bookingId || '-'}</td>
                     <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">${p.age}</td>
                     <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">${p.checkin}</td>
                     <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">${p.treatment}</td>
                     <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">${p.doctor}</td>
                     <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">${p.room}</td>
                     <td class="px-3 sm:px-5 py-3 whitespace-nowrap"><span class="px-2.5 py-1 rounded-full ${statusChip} text-xs">${p.status}</span></td>
+                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">${p.nurse || '-'}</td>
                 </tr>`;
             }).join('');
 

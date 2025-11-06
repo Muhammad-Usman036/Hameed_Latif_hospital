@@ -324,7 +324,8 @@
                 reason: formData.get('reason'),
                 medicalHistory: formData.get('medicalHistory'),
                 status: 'Scheduled',
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                source: 'internal'
             };
             
             appointmentsData.push(appointment);

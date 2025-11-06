@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment - Public</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-xl mx-auto p-4 sm:p-6">
+        <div class="bg-white rounded-lg shadow-sm p-5 sm:p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">Book an Appointment</h1>
+                <a href="login.html" class="text-sm text-orange-600 hover:text-orange-700">Back to Login</a>
+            </div>
+
+            <form id="public-appointment-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                    <input required type="text" name="fullName" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Enter your full name" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Mobile No *</label>
+                    <input required type="tel" name="mobileNo" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" placeholder="0300-1234567" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" name="email" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" placeholder="you@email.com" />
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Date of Visit *</label>
+                        <input required type="date" name="visitDate" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Time Slot *</label>
+                        <select required name="timeSlot" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm"></select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Department *</label>
+                    <select required name="department" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm">
+                        <option value="">Select Department</option>
+                        <option>General Medicine</option>
+                        <option>Cardiology</option>
+                        <option>Neurology</option>
+                        <option>Pediatrics</option>
+                        <option>Orthopedics</option>
+                        <option>Dermatology</option>
+                        <option>Emergency Medicine</option>
+                    </select>
+                </div>
+                <div class="pt-2">
+                    <button type="submit" class="w-full px-6 py-2.5 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
+                        <i class="fas fa-calendar-plus mr-2"></i>Submit Appointment
+                    </button>
+                </div>
+                <p class="text-xs text-gray-500">Note: This is a public request. Our staff will confirm your appointment.</p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Set min date and build time slots
+        const dateInput = document.querySelector('input[name="visitDate"]');
+        const timeSelect = document.querySelector('select[name="timeSlot"]');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+
+        function formatTime(hour, minute){
+            const period = hour >= 12 ? 'PM' : 'AM';
+            const h = hour > 12 ? hour - 12 : (hour === 0 ? 12 : hour);
+            const m = minute.toString().padStart(2, '0');
+            return `${h}:${m} ${period}`;
+        }
+
+        (function buildSlots(){
+            const opts = ['<option value="">Select Time Slot</option>'];
+            for(let hour=8; hour<18; hour++){
+                for(let minute=0; minute<60; minute+=30){
+                    const start = formatTime(hour, minute);
+                    const endMin = minute+30; const endHour = endMin>=60? hour+1: hour; const endM = endMin>=60? endMin-60: endMin;
+                    if(endHour>=18) break;
+                    const end = formatTime(endHour, endM);
+                    const slot = `${start} - ${end}`;
+                    opts.push(`<option value="${slot}">${slot}</option>`);
+                }
+            }
+            timeSelect.innerHTML = opts.join('');
+        })();
+
+        // Save to localStorage as OPD (public)
+        const form = document.getElementById('public-appointment-form');
+        form.addEventListener('submit', function(e){
+            e.preventDefault();
+            const fd = new FormData(form);
+            const appointments = JSON.parse(localStorage.getItem('hm_appointments_data') || '[]');
+            const appt = {
+                id: Date.now(),
+                fullName: fd.get('fullName'),
+                mobileNo: fd.get('mobileNo'),
+                email: fd.get('email'),
+                visitDate: fd.get('visitDate'),
+                timeSlot: fd.get('timeSlot'),
+                department: fd.get('department'),
+                visitType: 'OPD',
+                doctor: '',
+                status: 'Requested',
+                source: 'public',
+                createdAt: new Date().toISOString()
+            };
+            appointments.push(appt);
+            localStorage.setItem('hm_appointments_data', JSON.stringify(appointments));
+            alert('Appointment request submitted! We will confirm soon.');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>
+
+
+

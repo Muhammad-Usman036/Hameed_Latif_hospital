@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Inventory</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+
+  <div class="bg-white shadow-lg rounded-2xl w-full max-w-7xl p-6">
+    <h1 class="text-2xl font-semibold text-gray-800 mb-4 text-center">🏥 Hospital Inventory</h1>
+
+    <div class="overflow-x-auto">
+      <table class="w-full border border-gray-200 text-sm text-left text-gray-600">
+        <thead class="bg-blue-600 text-white">
+          <tr>
+            <th class="px-4 py-3">#</th>
+            <th class="px-4 py-3">Category</th>
+            <th class="px-4 py-3">Items Included</th>
+            <th class="px-4 py-3 text-center">Quantity</th>
+            <th class="px-4 py-3 text-center">Status</th>
+            <th class="px-4 py-3 text-center">Remarks</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-200">
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">1</td>
+            <td class="px-4 py-3 font-medium text-gray-800">Pharmaceuticals & Medications</td>
+            <td class="px-4 py-3">Prescription drugs, IV solutions, tablets</td>
+            <td class="px-4 py-3 text-center">320</td>
+            <td class="px-4 py-3 text-center">
+              <span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">In Stock</span>
+            </td>
+            <td class="px-4 py-3 text-center">Regular update required</td>
+          </tr>
+
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">2</td>
+            <td class="px-4 py-3 font-medium text-gray-800">Surgical Supplies</td>
+            <td class="px-4 py-3">Scalpels, gloves, sutures, sponges</td>
+            <td class="px-4 py-3 text-center">180</td>
+            <td class="px-4 py-3 text-center">
+              <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2 py-1 rounded-full">Low Stock</span>
+            </td>
+            <td class="px-4 py-3 text-center">Need to reorder gloves</td>
+          </tr>
+
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">3</td>
+            <td class="px-4 py-3 font-medium text-gray-800">Medical Equipment</td>
+            <td class="px-4 py-3">Infusion pumps, X-ray machine, monitors</td>
+            <td class="px-4 py-3 text-center">12</td>
+            <td class="px-4 py-3 text-center">
+              <span class="bg-orange-100 text-orange-800 text-xs font-semibold px-2 py-1 rounded-full">Under Maintenance</span>
+            </td>
+            <td class="px-4 py-3 text-center">1 monitor under service</td>
+          </tr>
+
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">4</td>
+            <td class="px-4 py-3 font-medium text-gray-800">PPE</td>
+            <td class="px-4 py-3">Masks, gowns, gloves</td>
+            <td class="px-4 py-3 text-center">500</td>
+            <td class="px-4 py-3 text-center">
+              <span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">In Stock</span>
+            </td>
+            <td class="px-4 py-3 text-center">Ready for use</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

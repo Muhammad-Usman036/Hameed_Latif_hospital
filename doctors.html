@@ -313,6 +313,9 @@
             const saved = localStorage.getItem('hm_doctors_data');
             if (saved) {
                 doctorsData = JSON.parse(saved);
+            } else {
+                // Seed localStorage on first visit so doctor-detail can read it
+                localStorage.setItem('hm_doctors_data', JSON.stringify(doctorsData));
             }
         }
 
@@ -449,6 +452,8 @@
 
         // Initialize
         loadDoctors();
+        // Ensure localStorage stays in sync for detail page navigation
+        saveDoctors();
         renderTable();
     </script>
 </body>

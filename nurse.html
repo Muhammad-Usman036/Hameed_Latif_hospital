@@ -74,6 +74,11 @@
             <h2 class="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">Select Patient</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Booking ID</label>
+                    <input type="text" id="booking-id" placeholder="BK-XXXXXX" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm">
+                </div>
+                <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Patient ID / Name</label>
                     <input type="text" id="patient-search" placeholder="Search by ID or name..." 
                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm">
@@ -140,6 +145,13 @@
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm">
                 </div>
 
+                <!-- Height -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Height (cm)</label>
+                    <input type="number" id="height" placeholder="170"  min="50" max="250" step="0.1" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm">
+                </div>
+
                 <!-- Glucose -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">Glucose (mg/dL)</label>
@@ -174,6 +186,9 @@
                 <table class="min-w-full text-xs sm:text-sm">
                     <thead class="border-b border-gray-200 text-gray-600">
                         <tr>
+                            <th class="text-left px-3 sm:px-4 py-2 whitespace-nowrap">Date</th>
+                            <th class="text-left px-3 sm:px-4 py-2 whitespace-nowrap">Booking ID</th>
+                            <th class="text-left px-3 sm:px-4 py-2 whitespace-nowrap">Doctor</th>
                             <th class="text-left px-3 sm:px-4 py-2 whitespace-nowrap">Time</th>
                             <th class="text-left px-3 sm:px-4 py-2 whitespace-nowrap">BP</th>
                             <th class="text-left px-3 sm:px-4 py-2 whitespace-nowrap">HR</th>
@@ -182,15 +197,8 @@
                             <th class="text-left px-3 sm:px-4 py-2 whitespace-nowrap">Nurse</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr>
-                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-800">10:30 AM</td>
-                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-700">120/80</td>
-                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-700">72</td>
-                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-700">98.6°F</td>
-                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-700">98%</td>
-                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-700">S. Johnson</td>
-                        </tr>
+                    <tbody id="recent-vitals-body" class="divide-y divide-gray-100">
+                        <tr><td colspan="9" class="px-3 sm:px-4 py-4 text-center text-gray-500">No vitals recorded</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -221,13 +229,104 @@
                     overlay.classList.remove('active');
                 });
             }
+            // Autofill by Booking ID
+            const bookingInput = document.getElementById('booking-id');
+            const patientInput = document.getElementById('patient-search');
+            const roomInput = document.getElementById('room-number');
+
+            function findAppointmentByBookingId(bk){
+                const appts = JSON.parse(localStorage.getItem('hm_appointments_data') || '[]');
+                if(!bk) return null;
+                const key = bk.replace(/^BK-/i,'').trim();
+                return appts.find(a => String(a.id).endsWith(key));
+            }
+
+            bookingInput.addEventListener('change', function(){
+                const appt = findAppointmentByBookingId(bookingInput.value);
+                if(appt){
+                    patientInput.value = appt.fullName || '';
+                    roomInput.value = appt.source === 'public' ? 'OPD' : (appt.room || '');
+                }
+            });
         });
+
+        // Storage helpers
+        function loadVitals(){ return JSON.parse(localStorage.getItem('hm_vitals_data') || '[]'); }
+        function saveVitals(v){ localStorage.setItem('hm_vitals_data', JSON.stringify(v)); }
+
+        function getApptByBooking(bk){
+            const appts = JSON.parse(localStorage.getItem('hm_appointments_data') || '[]');
+            if(!bk) return null;
+            const key = bk.replace(/^BK-/i,'').trim();
+            return appts.find(a => String(a.id).endsWith(key));
+        }
+
+        function renderVitalsHistory(){
+            const bk = document.getElementById('booking-id').value.trim();
+            const appt = getApptByBooking(bk);
+            const tbodyHtml = (function(){
+                const all = loadVitals().filter(v => v.bookingId === bk);
+                if(all.length === 0){
+                    return '<tr><td colspan="9" class="px-3 sm:px-4 py-4 text-center text-gray-500">No vitals recorded</td></tr>';
+                }
+                return all.sort((a,b)=> new Date(b.recordedAt) - new Date(a.recordedAt)).map(v => {
+                    const time = new Date(v.recordedAt);
+                    const timeStr = time.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+                    const dateStr = v.date || (appt && appt.visitDate) || time.toISOString().split('T')[0];
+                    const doctor = v.doctor || (appt && (appt.doctor || appt.department)) || '-';
+                    return `
+                        <tr>
+                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-800">${dateStr}</td>
+                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-800">${bk || '-'}</td>
+                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-800">${doctor || '-'}</td>
+                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-700">${timeStr}</td>
+                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-700">${v.bpSys || '-'}${v.bpSys?'/':''}${v.bpDia || ''}</td>
+                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-700">${v.hr || '-'}</td>
+                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-700">${v.temp || '-'}</td>
+                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-700">${v.spo2 || '-'}</td>
+                            <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-gray-700">${v.nurse || '-'}</td>
+                        </tr>`;
+                }).join('');
+            })();
+            const table = document.querySelector('#recent-vitals-body');
+            if(table){ table.innerHTML = tbodyHtml; }
+        }
 
         // Form handling
         document.getElementById('vitals-form').addEventListener('submit', function(e) {
             e.preventDefault();
+            const bk = document.getElementById('booking-id').value.trim();
+            if(!bk){ alert('Please enter Booking ID'); return; }
+            const appt = getApptByBooking(bk);
+            const v = loadVitals();
+            const nurseName = 'Sarah Johnson';
+            const record = {
+                bookingId: bk,
+                patientName: document.getElementById('patient-search').value || (appt && appt.fullName) || '-',
+                room: document.getElementById('room-number').value || (appt && (appt.source==='public' ? 'OPD' : (appt.room||''))) || '-',
+                doctor: appt ? (appt.doctor || appt.department || '-') : '-',
+                date: appt ? appt.visitDate : undefined,
+                timeSlot: appt ? appt.timeSlot : undefined,
+                bpSys: document.getElementById('bp-systolic').value,
+                bpDia: document.getElementById('bp-diastolic').value,
+                hr: document.getElementById('heart-rate').value,
+                temp: document.getElementById('temperature').value,
+                rr: document.getElementById('respiratory-rate').value,
+                spo2: document.getElementById('spo2').value,
+                weight: document.getElementById('weight').value,
+                height: document.getElementById('height').value,
+                notes: document.getElementById('notes').value,
+                nurse: nurseName,
+                recordedAt: new Date().toISOString()
+            };
+            v.push(record);
+            saveVitals(v);
             alert('Vitals saved successfully!');
+            renderVitalsHistory();
         });
+
+        // tie history to booking id change
+        document.getElementById('booking-id').addEventListener('change', renderVitalsHistory);
     </script>
 </body>
 </html>

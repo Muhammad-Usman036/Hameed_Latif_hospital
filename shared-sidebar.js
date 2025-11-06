@@ -48,7 +48,7 @@ function createSharedSidebar(currentPage = 'dashboard') {
                 <div class="sidebar-nav-item ${currentPage === 'nurse' ? 'active' : ''}" data-page="nurse">
                     <div class="flex items-center space-x-3">
                         <i class="fas fa-user-nurse w-4"></i>
-                        <span class="text-sm">Nurse</span>
+                        <span class="text-sm">Nursing Station</span>
                     </div>
                 </div>
                 

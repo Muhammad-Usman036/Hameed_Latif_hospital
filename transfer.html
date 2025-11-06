@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Transfer - Hospital Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="shared-sidebar.js"></script>
+    <style>
+        :root {
+            --accent-50: #fff7ed;
+            --accent-100: #ffedd5;
+            --accent-200: #fed7aa;
+            --accent-300: #fdba74;
+            --accent-400: #fb923c;
+            --accent-500: #f97316;
+            --accent-600: #ea580c;
+            --accent-700: #c2410c;
+            --accent-800: #9a3412;
+            --accent-900: #7c2d12;
+        }
+        .bg-orange-50{background-color:var(--accent-50)!important}
+        .bg-orange-100{background-color:var(--accent-100)!important}
+        .bg-orange-500{background-color:var(--accent-500)!important}
+        .bg-orange-600{background-color:var(--accent-600)!important}
+        .text-orange-500{color:var(--accent-500)!important}
+        .text-orange-600{color:var(--accent-600)!important}
+        .border-orange-500{border-color:var(--accent-500)!important}
+        .hover\:bg-orange-600:hover{background-color:var(--accent-600)!important}
+        
+        /* Main Sidebar Mobile Styles */
+        @media (max-width: 1024px) {
+            #shared-sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                height: 100vh;
+                z-index: 50;
+                transition: left 0.3s ease;
+            }
+            #shared-sidebar.active {
+                left: 0;
+            }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .header-user-info {
+                display: none;
+            }
+        }
+        
+        /* Custom Select Styling */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.25rem;
+            padding-right: 2.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Shared Sidebar -->
+        <div id="shared-sidebar"></div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <header class="bg-gray-100 px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between border-b border-gray-200">
+                <div class="flex items-center space-x-2 sm:space-x-4 flex-1">
+                    <!-- Mobile Menu Button for Main Sidebar -->
+                    <button id="mobile-menu-btn" class="mobile-menu-btn lg:hidden text-gray-600 hover:text-gray-800 p-2">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    
+                    <div class="flex items-center space-x-2 sm:space-x-3">
+                        <button onclick="history.back()" class="text-gray-600 hover:text-gray-800 p-2">
+                            <i class="fas fa-arrow-left text-lg"></i>
+                        </button>
+                        <div>
+                            <h1 class="text-base sm:text-lg font-semibold text-gray-900">Patient Transfer</h1>
+                            <p class="text-xs sm:text-sm text-gray-500">Intra-hospital transfer management</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <button class="text-gray-600 hover:text-gray-800 p-2">
+                        <i class="fas fa-bell text-base sm:text-lg"></i>
+                    </button>
+                    
+                    <div class="header-user-info flex items-center space-x-2 bg-white px-2 sm:px-4 py-2 rounded-lg">
+                        <div class="w-7 h-7 sm:w-8 sm:h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                            <span class="text-white text-xs sm:text-sm font-medium">M</span>
+                        </div>
+                        <div class="hidden sm:block">
+                            <div class="text-xs sm:text-sm font-medium text-gray-800">M. Usman</div>
+                            <div class="text-xs text-gray-500">Admin</div>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400 text-xs hidden sm:block"></i>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Sidebar Overlay for Main Sidebar (Mobile) -->
+            <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
+            
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6">
+                <div class="max-w-2xl mx-auto">
+                    <!-- Patient Transfer Form Card -->
+                    <div class="bg-gray-100 rounded-lg shadow-sm p-4 sm:p-6 md:p-8">
+                        <div class="mb-4 sm:mb-6">
+                            <h2 class="text-lg sm:text-xl font-semibold text-gray-900 mb-2">Patient Transfer Form</h2>
+                            <p class="text-xs sm:text-sm text-gray-500">Transfer patient between beds or wards</p>
+                        </div>
+                        
+                        <form id="patient-transfer-form" class="space-y-4 sm:space-y-6">
+                            <!-- Patient Name -->
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                                    Patient Name <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <select 
+                                        id="patient-name" 
+                                        class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white text-xs sm:text-sm appearance-none" 
+                                        required
+                                    >
+                                        <option value="">Select patient</option>
+                                        <option value="PT-2024-001">John Doe (PT-2024-001)</option>
+                                        <option value="PT-2024-002">Sarah Johnson (PT-2024-002)</option>
+                                        <option value="PT-2024-003">Michael Chen (PT-2024-003)</option>
+                                        <option value="PT-2024-004">Emily Davis (PT-2024-004)</option>
+                                        <option value="PT-2024-005">Robert Wilson (PT-2024-005)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- New Bed -->
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                                    New Bed <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <select 
+                                        id="new-bed" 
+                                        class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white text-xs sm:text-sm appearance-none" 
+                                        required
+                                    >
+                                        <option value="">Select new bed</option>
+                                        <optgroup label="General Ward">
+                                            <option value="GW-A-101">General Ward - Bed A-101</option>
+                                            <option value="GW-A-102">General Ward - Bed A-102</option>
+                                            <option value="GW-B-201">General Ward - Bed B-201</option>
+                                            <option value="GW-B-202">General Ward - Bed B-202</option>
+                                            <option value="GW-B-204">General Ward - Bed B-204</option>
+                                        </optgroup>
+                                        <optgroup label="ICU">
+                                            <option value="ICU-1">ICU - Bed 1</option>
+                                            <option value="ICU-2">ICU - Bed 2</option>
+                                            <option value="ICU-3">ICU - Bed 3</option>
+                                        </optgroup>
+                                        <optgroup label="Private Room">
+                                            <option value="PR-101">Private Room - 101</option>
+                                            <option value="PR-102">Private Room - 102</option>
+                                            <option value="PR-103">Private Room - 103</option>
+                                        </optgroup>
+                                        <optgroup label="Semi-Private">
+                                            <option value="SP-201">Semi-Private - 201</option>
+                                            <option value="SP-202">Semi-Private - 202</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Reason for Transfer -->
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                                    Reason for Transfer <span class="text-red-500">*</span>
+                                </label>
+                                <textarea 
+                                    id="transfer-reason" 
+                                    rows="4" 
+                                    class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-y text-xs sm:text-sm" 
+                                    placeholder="Enter the reason for patient transfer..."
+                                    required
+                                ></textarea>
+                            </div>
+                            
+                            <!-- Initiate Transfer Button -->
+                            <div class="pt-2 sm:pt-4">
+                                <button 
+                                    type="submit"
+                                    class="w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm sm:text-base font-medium shadow-lg hover:shadow-xl transition-all duration-200"
+                                >
+                                    Initiate Transfer
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Theme loader
+        function loadTheme() {
+            const saved = localStorage.getItem("hm_accent_hex");
+            if (saved) {
+                document.documentElement.style.setProperty("--accent-500", saved);
+            }
+        }
+        loadTheme();
+
+        // Main sidebar toggle function
+        function toggleMainSidebar() {
+            const sidebar = document.getElementById("shared-sidebar");
+            const overlay = document.getElementById("sidebar-overlay");
+            if (sidebar && overlay) {
+                sidebar.classList.toggle("active");
+                overlay.classList.toggle("hidden");
+            }
+        }
+
+        // Handle form submission
+        document.getElementById("patient-transfer-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                patient: document.getElementById("patient-name").value,
+                newBed: document.getElementById("new-bed").value,
+                reason: document.getElementById("transfer-reason").value
+            };
+            
+            // In a real app, you would call API here
+            console.log("Transfer initiated:", formData);
+            alert(`Patient transfer initiated successfully!\n\nPatient: ${formData.patient}\nNew Bed: ${formData.newBed}\nReason: ${formData.reason}`);
+            
+            // Reset form
+            this.reset();
+        });
+
+        // Initialize
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("shared-sidebar").innerHTML = createSharedSidebar("transfer");
+            initSharedSidebar("transfer");
+
+            // Main sidebar mobile menu functionality
+            const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+            const sidebar = document.getElementById("shared-sidebar");
+            const overlay = document.getElementById("sidebar-overlay");
+
+            if (mobileMenuBtn && sidebar && overlay) {
+                mobileMenuBtn.addEventListener("click", function () {
+                    toggleMainSidebar();
+                });
+
+                overlay.addEventListener("click", function () {
+                    toggleMainSidebar();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
