@@ -39,7 +39,7 @@
     
     <div class="flex min-h-screen">
         <!-- Sidebar (static visual to match app) -->
-        <aside id="sidebar-patient" class="w-64 bg-white shadow-lg p-4 lg:static">
+        <aside id="sidebar-patient" class="w-48 bg-white shadow-lg p-4 lg:static">
             <div class="flex items-center justify-between mb-6">
                 <div class="flex items-center space-x-3">
                     <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center"><i class="fas fa-plus text-white text-sm"></i></div>
@@ -133,8 +133,8 @@
                 </div>
 
                 <!-- Panels -->
-                <section id="panel-health" class="mt-3 sm:mt-4 grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 hidden">
-                    <!-- Part 1: Existing Records -->
+                <section id="panel-health" class="mt-3 sm:mt-4 grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-3 sm:gap-4 hidden">
+                    <!-- Part 1: Existing Records (narrower column) -->
                     <div class="space-y-3 sm:space-y-4">
                         <!-- Visits -->
                         <div class="bg-white rounded-lg shadow-sm p-3 sm:p-4">
@@ -163,7 +163,7 @@
                                 </div>
                             </div>
                         </div>
-
+                
                         <!-- Medication -->
                         <div class="bg-white rounded-lg shadow-sm p-3 sm:p-4">
                             <h3 class="font-semibold text-gray-800 mb-3 text-sm sm:text-base">Medication</h3>
@@ -172,19 +172,16 @@
                                     <thead class="text-gray-500">
                                         <tr>
                                             <th class="text-left py-2 whitespace-nowrap">Medicine Name</th>
-                                            <th class="text-left py-2 whitespace-nowrap">Timing</th>
+                                            <th class="text-left py-2 whitespace-nowrap">Dose</th>
                                             <th class="text-left py-2 whitespace-nowrap">Duration</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="divide-y">
-                                        <tr><td class="py-2 whitespace-nowrap">Tab: CDR 500mg</td><td class="whitespace-nowrap">BD</td><td class="whitespace-nowrap">5 days</td></tr>
-                                        <tr><td class="py-2 whitespace-nowrap">Paracetamol 650mg</td><td class="whitespace-nowrap">TDS</td><td class="whitespace-nowrap">3 days</td></tr>
-                                        <tr><td class="py-2 whitespace-nowrap">Azy 500mg Tabs</td><td class="whitespace-nowrap">OD</td><td class="whitespace-nowrap">1 day</td></tr>
+                                    <tbody id="medication-display-tbody" class="divide-y">
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
+                
                         <!-- Additional Info -->
                         <div class="bg-white rounded-lg shadow-sm p-3 sm:p-4">
                             <h3 class="font-semibold text-gray-800 mb-3 text-sm sm:text-base">Additional Information</h3>
@@ -193,8 +190,8 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Part 2: Add Record Form -->
+                
+                    <!-- Part 2: Add Record Form (wider column) -->
                     <div class="bg-white rounded-lg shadow-sm p-3 sm:p-4">
                         <h3 class="font-semibold text-gray-800 mb-3 sm:mb-4 text-sm sm:text-base">Add New Record</h3>
                         <form id="add-record-form" class="space-y-3 sm:space-y-4">
@@ -203,7 +200,7 @@
                                 <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Visit Date & Time</label>
                                 <input type="datetime-local" name="visitDateTime" class="w-full border border-gray-300 rounded px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm" required />
                             </div>
-                    
+                
                             <!-- Doctor Selection -->
                             <div>
                                 <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Doctor</label>
@@ -233,7 +230,7 @@
                                     </select>
                                 </div>
                             </div>
-                    
+                
                             <!-- Diagnosis -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Diagnosis</label>
@@ -244,7 +241,7 @@
                                     </button>
                                 </div>
                             </div>
-                    
+                
                             <!-- Symptoms -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Symptoms</label>
@@ -255,30 +252,86 @@
                                     </button>
                                 </div>
                             </div>
-                    
-                            <!-- Medication Section -->
+                
+                            <!-- Medication/Tests/Radiology Tabs Section -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Medication</label>
-                                <div id="medication-list" class="space-y-2">
-                                    <div class="flex items-center space-x-2">
-                                        <input type="text" name="medicine[]" class="flex-1 border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Medicine name" />
-                                        <select name="timing[]" class="w-24 border border-gray-300 rounded px-3 py-2 text-sm">
-                                            <option value="">Timing</option>
-                                            <option value="Morning Before">Morning Before</option>
-                                            <option value="Morning After">Morning After</option>
-                                            <option value="Noon Before">Noon Before</option>
-                                            <option value="Noon After">Noon After</option>
-                                            <option value="Night Before">Night Before</option>
-                                            <option value="Night After">Night After</option>
-                                        </select>
-                                        <input type="text" name="duration[]" class="w-20 border border-gray-300 rounded px-3 py-2 text-sm" placeholder="3 Days" />
-                                        <button type="button" onclick="addMedicine()" class="px-3 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Medication / Tests / Radiology</label>
+                                
+                                <!-- Tabs -->
+                                <div class="flex border-b border-gray-200 mb-3">
+                                    <button type="button" class="tab-medication-btn px-4 py-2 text-sm font-medium border-b-2 border-orange-500 text-orange-500 font-semibold" data-tab="medication">
+                                        Medication
+                                    </button>
+                                    <button type="button" class="tab-tests-btn px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent" data-tab="tests">
+                                        Tests
+                                    </button>
+                                    <button type="button" class="tab-radiology-btn px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent" data-tab="radiology">
+                                        Radiology
+                                    </button>
+                                </div>
+                                
+                                <!-- Medication Tab Content -->
+                                <div id="tab-content-medication" class="tab-content">
+                                    <div id="medication-list" class="space-y-2">
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <input type="text" name="medicine[]" class="flex-1 min-w-[120px] border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Medicine name" />
+                                            <input type="number" name="morning[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Morning" min="0" />
+                                            <input type="number" name="afternoon[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Afternoon" min="0" />
+                                            <input type="number" name="night[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Night" min="0" />
+                                            <input type="text" name="duration[]" class="w-20 sm:w-20 border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Duration" />
+                                            <button type="button" onclick="addMedicine()" class="px-3 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 flex-shrink-0">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Tests Tab Content -->
+                                <div id="tab-content-tests" class="tab-content hidden">
+                                    <div id="tests-list" class="space-y-2">
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <select name="testType[]" class="flex-1 min-w-[150px] border border-gray-300 rounded px-3 py-2 text-sm">
+                                                <option value="">Select Test</option>
+                                                <option value="Blood Count Tests">Blood Count Tests</option>
+                                                <option value="Genetic Testing">Genetic Testing</option>
+                                                <option value="Kidney Tests">Kidney Tests</option>
+                                                <option value="Laboratory Tests">Laboratory Tests</option>
+                                                <option value="Prenatal Testing">Prenatal Testing</option>
+                                                <option value="Thyroid Tests">Thyroid Tests</option>
+                                                <option value="Urinalysis">Urinalysis</option>
+                                            </select>
+                                            <input type="text" name="testNotes[]" class="flex-1 min-w-[120px] border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Notes (optional)" />
+                                            <button type="button" onclick="addTest()" class="px-3 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 flex-shrink-0">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Radiology Tab Content -->
+                                <div id="tab-content-radiology" class="tab-content hidden">
+                                    <div id="radiology-list" class="space-y-2">
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <select name="radiologyType[]" class="flex-1 min-w-[150px] border border-gray-300 rounded px-3 py-2 text-sm">
+                                                <option value="">Select Radiology Test</option>
+                                                <option value="X-Ray">X-Ray</option>
+                                                <option value="CT Scan">CT Scan</option>
+                                                <option value="MRI">MRI</option>
+                                                <option value="Ultrasound">Ultrasound</option>
+                                                <option value="Mammography">Mammography</option>
+                                                <option value="Bone Scan">Bone Scan</option>
+                                                <option value="PET Scan">PET Scan</option>
+                                            </select>
+                                            <input type="text" name="radiologyBodyPart[]" class="w-28 sm:w-32 border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Body Part" />
+                                            <input type="text" name="radiologyNotes[]" class="flex-1 min-w-[120px] border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Notes (optional)" />
+                                            <button type="button" onclick="addRadiology()" class="px-3 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 flex-shrink-0">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                    
+                
                             <!-- Clinical Notes -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Clinical Notes</label>
@@ -289,7 +342,7 @@
                                     </button>
                                 </div>
                             </div>
-                    
+                
                             <!-- Form Actions -->
                             <div class="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200">
                                 <button type="button" onclick="clearForm()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
@@ -301,6 +354,7 @@
                             </div>
                         </form>
                     </div>
+                
                     <div class="bg-white rounded-lg shadow-sm p-4">
                         <h3 class="font-semibold text-gray-800 mb-3">Additional Information</h3>
                         <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
@@ -310,6 +364,7 @@
                         </ul>
                     </div>
                 </section>
+                
 
 <!-- Add Health Record Modal -->
 <div id="add-record-modal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
@@ -653,9 +708,7 @@
                                                 </p>
                                             </div>
                                         </div>
-                                        <button class="w-full sm:w-auto px-3 sm:px-4 py-1.5 sm:py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-xs sm:text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200">
-                                            <i class="fas fa-trash mr-1"></i>Delete
-                                        </button>
+                                       
                                     </div>
                                     
                                     <div class="overflow-x-auto">
@@ -663,49 +716,48 @@
                                             <thead class="bg-gray-50 text-gray-700 border-b-2 border-orange-200">
                                                 <tr>
                                                     <th class="text-left py-3 px-4 font-semibold"><input type="checkbox" class="rounded text-orange-500 focus:ring-orange-500"></th>
-                                                    <th class="text-left py-3 px-4 font-semibold flex items-center"><i class="fas fa-calculator mr-2 text-orange-500"></i>Net Amount</th>
+                                                    <th class="text-left py-3 px-4 font-semibold">Form</th>
+                                                    <th class="text-left py-3 px-4 font-semibold">Medicine Name</th>
+                                                    <th class="text-left py-3 px-4 font-semibold">Duration</th>
+                                                    <th class="text-left py-3 px-4 font-semibold">Timing</th>
+                                                    <th class="text-left py-3 px-4 font-semibold">Quantity</th>
+                                                    
+                                                    <th class="text-left py-3 px-4 font-semibold">Net Amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="divide-y divide-gray-100">
-                                                <tr class="hover:bg-orange-50 transition-colors duration-150">
-                                                    <td class="py-3 px-4"><input type="checkbox" class="rounded text-orange-500 focus:ring-orange-500"></td>
-                                                    <td class="py-3 px-4 text-gray-500">-</td>
+                                                <tr>
+                                                    <td class="py-2 px-4"><input type="checkbox" class="rounded"></td>
+                                                    <td class="py-2 px-4 text-gray-700">Tablet</td>
+                                                    <td class="py-2 px-4 text-gray-700">Ibuprofen PM</td>
+                                                    
+                                                    <td class="py-2 px-4 text-gray-700">2 Days</td>
+                                                    <td class="py-2 px-4 text-gray-700">Before Food</td>
+                                                    <td class="py-2 px-4 text-gray-700">2</td>
+                                                    
+                                                    <td class="py-2 px-4 text-gray-700">-</td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="py-2"><input type="checkbox" class="rounded"></td>
-                                                    <td class="py-2 text-gray-700">Tablet</td>
-                                                    <td class="py-2 text-gray-700">Ibuprofen PM</td>
-                                                    <td class="py-2 text-gray-700">Routine</td>
-                                                    <td class="py-2 text-gray-700">2 Days</td>
-                                                    <td class="py-2 text-gray-700">Before Food</td>
-                                                    <td class="py-2 text-gray-700">2</td>
-                                                    <td class="py-2 text-gray-700"></td>
-                                                    <td class="py-2 text-gray-700"></td>
-                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 px-4"><input type="checkbox" class="rounded"></td>
+                                                    <td class="py-2 px-4 text-gray-700">Tablet</td>
+                                                    <td class="py-2 px-4 text-gray-700">Amoxicillin</td>
+                                                    
+                                                    <td class="py-2 px-4 text-gray-700">1 Days</td>
+                                                    <td class="py-2 px-4 text-gray-700">After Food</td>
+                                                    <td class="py-2 px-4 text-gray-700">1</td>
+                                                    
+                                                    <td class="py-2 px-4 text-gray-700">-</td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="py-2"><input type="checkbox" class="rounded"></td>
-                                                    <td class="py-2 text-gray-700">Tablet</td>
-                                                    <td class="py-2 text-gray-700">Amoxicillin</td>
-                                                    <td class="py-2 text-gray-700">Routine</td>
-                                                    <td class="py-2 text-gray-700">1 Days</td>
-                                                    <td class="py-2 text-gray-700">After Food</td>
-                                                    <td class="py-2 text-gray-700">1</td>
-                                                    <td class="py-2 text-gray-700"></td>
-                                                    <td class="py-2 text-gray-700"></td>
-                                                    <td class="py-2 text-gray-700"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="py-2"><input type="checkbox" class="rounded"></td>
-                                                    <td class="py-2 text-gray-700">Tablet</td>
-                                                    <td class="py-2 text-gray-700">Augmentin</td>
-                                                    <td class="py-2 text-gray-700">Routine</td>
-                                                    <td class="py-2 text-gray-700">1 Days</td>
-                                                    <td class="py-2 text-gray-700">After Food</td>
-                                                    <td class="py-2 text-gray-700">1</td>
-                                                    <td class="py-2 text-gray-700"></td>
-                                                    <td class="py-2 text-gray-700"></td>
-                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 px-4"><input type="checkbox" class="rounded"></td>
+                                                    <td class="py-2 px-4 text-gray-700">Tablet</td>
+                                                    <td class="py-2 px-4 text-gray-700">Augmentin</td>
+                                                    
+                                                    <td class="py-2 px-4 text-gray-700">1 Days</td>
+                                                    <td class="py-2 px-4 text-gray-700">After Food</td>
+                                                    <td class="py-2 px-4 text-gray-700">1</td>
+
+                                                    <!-- <td class="py-2 px-4 text-gray-700">-</td> -->
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -730,9 +782,7 @@
                                                 </p>
                                             </div>
                                         </div>
-                                        <button class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200">
-                                            <i class="fas fa-trash mr-1"></i>Delete
-                                        </button>
+                                      
                                     </div>
                                     
                                     <div class="overflow-x-auto">
@@ -740,33 +790,35 @@
                                             <thead class="bg-gray-50 text-gray-700 border-b-2 border-orange-200">
                                                 <tr>
                                                     <th class="text-left py-3 px-4 font-semibold"><input type="checkbox" class="rounded text-orange-500 focus:ring-orange-500"></th>
-                                                    <th class="text-left py-3 px-4 font-semibold flex items-center"><i class="fas fa-calculator mr-2 text-orange-500"></i>Net Amount</th>
+                                                    <th class="text-left py-3 px-4 font-semibold">Form</th>
+                                                    <th class="text-left py-3 px-4 font-semibold">Medicine Name</th>
+                                                    <th class="text-left py-3 px-4 font-semibold">Duration</th>
+                                                    <th class="text-left py-3 px-4 font-semibold">Timing</th>
+                                                    <th class="text-left py-3 px-4 font-semibold">Quantity</th>
+                                                    
+                                                    <th class="text-left py-3 px-4 font-semibold">Net Amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="divide-y divide-gray-100">
                                                 <tr>
-                                                    <td class="py-2"><input type="checkbox" class="rounded"></td>
-                                                    <td class="py-2 text-gray-700">Tablet</td>
-                                                    <td class="py-2 text-gray-700">Paracetamol</td>
-                                                    <td class="py-2 text-gray-700">Routine</td>
-                                                    <td class="py-2 text-gray-700">3 Days</td>
-                                                    <td class="py-2 text-gray-700">After Food</td>
-                                                    <td class="py-2 text-gray-700">1</td>
-                                                    <td class="py-2 text-gray-700"></td>
-                                                    <td class="py-2 text-gray-700"></td>
-                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 px-4"><input type="checkbox" class="rounded"></td>
+                                                    <td class="py-2 px-4 text-gray-700">Tablet</td>
+                                                    <td class="py-2 px-4 text-gray-700">Paracetamol</td>
+                                                    <td class="py-2 px-4 text-gray-700">3 Days</td>
+                                                    <td class="py-2 px-4 text-gray-700">After Food</td>
+                                                    <td class="py-2 px-4 text-gray-700">1</td>
+                                                    
+                                                    <td class="py-2 px-4 text-gray-700">-</td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="py-2"><input type="checkbox" class="rounded"></td>
-                                                    <td class="py-2 text-gray-700">Tablet</td>
-                                                    <td class="py-2 text-gray-700">Tof 600 MG</td>
-                                                    <td class="py-2 text-gray-700">Routine</td>
-                                                    <td class="py-2 text-gray-700">5 Days</td>
-                                                    <td class="py-2 text-gray-700">Before Food</td>
-                                                    <td class="py-2 text-gray-700">1</td>
-                                                    <td class="py-2 text-gray-700"></td>
-                                                    <td class="py-2 text-gray-700"></td>
-                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 px-4"><input type="checkbox" class="rounded"></td>
+                                                    <td class="py-2 px-4 text-gray-700">Tablet</td>
+                                                    <td class="py-2 px-4 text-gray-700">Tof 600 MG</td>
+                                                    <td class="py-2 px-4 text-gray-700">5 Days</td>
+                                                    <td class="py-2 px-4 text-gray-700">Before Food</td>
+                                                    <td class="py-2 px-4 text-gray-700">1</td>
+                                                    
+                                                    <td class="py-2 px-4 text-gray-700">-</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -791,9 +843,7 @@
                                                 </p>
                                             </div>
                                         </div>
-                                        <button class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200">
-                                            <i class="fas fa-trash mr-1"></i>Delete
-                                        </button>
+                                       
                                     </div>
                                     
                                     <div class="overflow-x-auto">
@@ -801,21 +851,25 @@
                                             <thead class="bg-gray-50 text-gray-700 border-b-2 border-orange-200">
                                                 <tr>
                                                     <th class="text-left py-3 px-4 font-semibold"><input type="checkbox" class="rounded text-orange-500 focus:ring-orange-500"></th>
-                                                    <th class="text-left py-3 px-4 font-semibold flex items-center"><i class="fas fa-calculator mr-2 text-orange-500"></i>Net Amount</th>
+                                                    <th class="text-left py-3 px-4 font-semibold">Form</th>
+                                                    <th class="text-left py-3 px-4 font-semibold">Medicine Name</th>
+                                                    <th class="text-left py-3 px-4 font-semibold">Duration</th>
+                                                    <th class="text-left py-3 px-4 font-semibold">Timing</th>
+                                                    <th class="text-left py-3 px-4 font-semibold">Quantity</th>
+                                                   
+                                                    <th class="text-left py-3 px-4 font-semibold">Net Amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="divide-y divide-gray-100">
                                                 <tr>
-                                                    <td class="py-2"><input type="checkbox" class="rounded"></td>
-                                                    <td class="py-2 text-gray-700">Tablet</td>
-                                                    <td class="py-2 text-gray-700">Aspirin</td>
-                                                    <td class="py-2 text-gray-700">Routine</td>
-                                                    <td class="py-2 text-gray-700">7 Days</td>
-                                                    <td class="py-2 text-gray-700">After Food</td>
-                                                    <td class="py-2 text-gray-700">1</td>
-                                                    <td class="py-2 text-gray-700"></td>
-                                                    <td class="py-2 text-gray-700"></td>
-                                                    <td class="py-2 text-gray-700"></td>
+                                                    <td class="py-2 px-4"><input type="checkbox" class="rounded"></td>
+                                                    <td class="py-2 px-4 text-gray-700">Tablet</td>
+                                                    <td class="py-2 px-4 text-gray-700">Aspirin</td>
+                                                    <td class="py-2 px-4 text-gray-700">7 Days</td>
+                                                    <td class="py-2 px-4 text-gray-700">After Food</td>
+                                                    <td class="py-2 px-4 text-gray-700">1</td>
+                                                   
+                                                    <td class="py-2 px-4 text-gray-700">-</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -2395,61 +2449,278 @@
         function addMedicine() {
             const medicationList = document.getElementById('medication-list');
             
-            // Change the last row's plus button to minus button
-            const lastRow = medicationList.lastElementChild;
-            const lastButton = lastRow.querySelector('button');
-            lastButton.innerHTML = '<i class="fas fa-minus"></i>';
-            lastButton.className = 'px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600';
-            lastButton.setAttribute('onclick', 'removeMedicine(this)');
+            // Get the current first row (if it exists)
+            const currentFirstRow = medicationList.firstElementChild;
             
-            // Add new row with plus button
+            // Change the current first row's plus button to minus button (if it exists)
+            if (currentFirstRow) {
+                const firstButton = currentFirstRow.querySelector('button');
+                if (firstButton && firstButton.innerHTML.includes('fa-plus')) {
+                    firstButton.innerHTML = '<i class="fas fa-minus"></i>';
+                    firstButton.className = 'px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600';
+                    firstButton.setAttribute('onclick', 'removeMedicine(this)');
+                }
+            }
+            
+            // Create new row with plus button
             const newMedicineRow = document.createElement('div');
-            newMedicineRow.className = 'flex items-center space-x-2';
+            newMedicineRow.className = 'flex flex-wrap items-center gap-2';
             newMedicineRow.innerHTML = `
-                <input type="text" name="medicine[]" class="flex-1 border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Medicine name" />
-                <select name="timing[]" class="w-24 border border-gray-300 rounded px-3 py-2 text-sm">
-                    <option value="">Timing</option>
-                    <option value="Morning Before">Morning Before</option>
-                    <option value="Morning After">Morning After</option>
-                    <option value="Noon Before">Noon Before</option>
-                    <option value="Noon After">Noon After</option>
-                    <option value="Night Before">Night Before</option>
-                    <option value="Night After">Night After</option>
-                </select>
-                <input type="text" name="duration[]" class="w-20 border border-gray-300 rounded px-3 py-2 text-sm" placeholder="i.e 3 days" />
-                <button type="button" onclick="addMedicine()" class="px-3 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">
+                <input type="text" name="medicine[]" class="flex-1 min-w-[120px] border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Medicine name" />
+                <input type="number" name="morning[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Morning" min="0" />
+                <input type="number" name="afternoon[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Afternoon" min="0" />
+                <input type="number" name="night[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Night" min="0" />
+                <input type="text" name="duration[]" class="w-20 sm:w-20 border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Duration" />
+                <button type="button" onclick="addMedicine()" class="px-3 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 flex-shrink-0">
                     <i class="fas fa-plus"></i>
                 </button>
             `;
-            medicationList.appendChild(newMedicineRow);
+            
+            // Insert at the TOP (as first child)
+            if (medicationList.firstElementChild) {
+                medicationList.insertBefore(newMedicineRow, medicationList.firstElementChild);
+            } else {
+                medicationList.appendChild(newMedicineRow);
+            }
         }
 
         function removeMedicine(button) {
             button.parentElement.remove();
         }
 
+        // Tab switching functionality
+        function initializeTabs() {
+            const tabButtons = document.querySelectorAll('[data-tab]');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // Initialize: Set Medication as active by default
+            tabButtons.forEach(btn => {
+                const tabName = btn.getAttribute('data-tab');
+                if (tabName === 'medication') {
+                    btn.classList.add('border-b-2', 'border-orange-500', 'text-orange-500', 'font-semibold');
+                    btn.classList.remove('text-gray-500', 'border-transparent');
+                } else {
+                    btn.classList.add('text-gray-500', 'border-b-2', 'border-transparent');
+                    btn.classList.remove('border-orange-500', 'text-orange-500', 'font-semibold');
+                }
+            });
+            
+            // Hide all tab contents except medication
+            tabContents.forEach(content => {
+                if (content.id === 'tab-content-medication') {
+                    content.classList.remove('hidden');
+                } else {
+                    content.classList.add('hidden');
+                }
+            });
+            
+            // Add click handlers
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    // Remove active styles from all tabs
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('border-orange-500', 'text-orange-500', 'font-semibold');
+                        btn.classList.add('text-gray-500', 'border-transparent');
+                    });
+                    
+                    // Hide all tab contents
+                    tabContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    
+                    // Show selected tab content
+                    document.getElementById(`tab-content-${targetTab}`).classList.remove('hidden');
+                    
+                    // Add active styles to clicked tab
+                    this.classList.remove('text-gray-500', 'border-transparent');
+                    this.classList.add('border-b-2', 'border-orange-500', 'text-orange-500', 'font-semibold');
+                });
+            });
+        }
+        
+        // Initialize tabs on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeTabs);
+        } else {
+            // DOM is already ready
+            initializeTabs();
+        }
+        
+        // Also try to initialize immediately (in case script runs after DOM)
+        setTimeout(initializeTabs, 100);
+
+        // Tests functionality
+        function addTest() {
+            const testsList = document.getElementById('tests-list');
+            const currentFirstRow = testsList.firstElementChild;
+            
+            if (currentFirstRow) {
+                const firstButton = currentFirstRow.querySelector('button');
+                if (firstButton && firstButton.innerHTML.includes('fa-plus')) {
+                    firstButton.innerHTML = '<i class="fas fa-minus"></i>';
+                    firstButton.className = 'px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600';
+                    firstButton.setAttribute('onclick', 'removeTest(this)');
+                }
+            }
+            
+            const newTestRow = document.createElement('div');
+            newTestRow.className = 'flex flex-wrap items-center gap-2';
+            newTestRow.innerHTML = `
+                <select name="testType[]" class="flex-1 min-w-[150px] border border-gray-300 rounded px-3 py-2 text-sm">
+                    <option value="">Select Test</option>
+                    <option value="Blood Count Tests">Blood Count Tests</option>
+                    <option value="Genetic Testing">Genetic Testing</option>
+                    <option value="Kidney Tests">Kidney Tests</option>
+                    <option value="Laboratory Tests">Laboratory Tests</option>
+                    <option value="Prenatal Testing">Prenatal Testing</option>
+                    <option value="Thyroid Tests">Thyroid Tests</option>
+                    <option value="Urinalysis">Urinalysis</option>
+                </select>
+                <input type="text" name="testNotes[]" class="flex-1 min-w-[120px] border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Notes (optional)" />
+                <button type="button" onclick="addTest()" class="px-3 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 flex-shrink-0">
+                    <i class="fas fa-plus"></i>
+                </button>
+            `;
+            
+            if (testsList.firstElementChild) {
+                testsList.insertBefore(newTestRow, testsList.firstElementChild);
+            } else {
+                testsList.appendChild(newTestRow);
+            }
+        }
+
+        function removeTest(button) {
+            button.parentElement.remove();
+        }
+
+        // Radiology functionality
+        function addRadiology() {
+            const radiologyList = document.getElementById('radiology-list');
+            const currentFirstRow = radiologyList.firstElementChild;
+            
+            if (currentFirstRow) {
+                const firstButton = currentFirstRow.querySelector('button');
+                if (firstButton && firstButton.innerHTML.includes('fa-plus')) {
+                    firstButton.innerHTML = '<i class="fas fa-minus"></i>';
+                    firstButton.className = 'px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600';
+                    firstButton.setAttribute('onclick', 'removeRadiology(this)');
+                }
+            }
+            
+            const newRadiologyRow = document.createElement('div');
+            newRadiologyRow.className = 'flex flex-wrap items-center gap-2';
+            newRadiologyRow.innerHTML = `
+                <select name="radiologyType[]" class="flex-1 min-w-[150px] border border-gray-300 rounded px-3 py-2 text-sm">
+                    <option value="">Select Radiology Test</option>
+                    <option value="X-Ray">X-Ray</option>
+                    <option value="CT Scan">CT Scan</option>
+                    <option value="MRI">MRI</option>
+                    <option value="Ultrasound">Ultrasound</option>
+                    <option value="Mammography">Mammography</option>
+                    <option value="Bone Scan">Bone Scan</option>
+                    <option value="PET Scan">PET Scan</option>
+                </select>
+                <input type="text" name="radiologyBodyPart[]" class="w-28 sm:w-32 border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Body Part" />
+                <input type="text" name="radiologyNotes[]" class="flex-1 min-w-[120px] border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Notes (optional)" />
+                <button type="button" onclick="addRadiology()" class="px-3 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 flex-shrink-0">
+                    <i class="fas fa-plus"></i>
+                </button>
+            `;
+            
+            if (radiologyList.firstElementChild) {
+                radiologyList.insertBefore(newRadiologyRow, radiologyList.firstElementChild);
+            } else {
+                radiologyList.appendChild(newRadiologyRow);
+            }
+        }
+
+        function removeRadiology(button) {
+            button.parentElement.remove();
+        }
+
         function clearForm() {
             document.getElementById('add-record-form').reset();
+            
             // Reset medication list to single row
             const medicationList = document.getElementById('medication-list');
             medicationList.innerHTML = `
-                <div class="flex items-center space-x-2">
-                    <input type="text" name="medicine[]" class="flex-1 border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Medicine name" />
-                    <select name="timing[]" class="w-24 border border-gray-300 rounded px-3 py-2 text-sm">
-                        <option value="">Timing</option>
-                        <option value="Morning Before">Morning Before</option>
-                        <option value="Morning After">Morning After</option>
-                        <option value="Noon Before">Noon Before</option>
-                        <option value="Noon After">Noon After</option>
-                        <option value="Night Before">Night Before</option>
-                        <option value="Night After">Night After</option>
-                    </select>
-                    <input type="text" name="duration[]" class="w-20 border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Duration" />
-                    <button type="button" onclick="addMedicine()" class="px-3 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">
+                <div class="flex flex-wrap items-center gap-2">
+                    <input type="text" name="medicine[]" class="flex-1 min-w-[120px] border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Medicine name" />
+                    <input type="number" name="morning[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Morning" min="0" />
+                    <input type="number" name="afternoon[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Afternoon" min="0" />
+                    <input type="number" name="night[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Night" min="0" />
+                    <input type="text" name="duration[]" class="w-20 sm:w-20 border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Duration" />
+                    <button type="button" onclick="addMedicine()" class="px-3 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 flex-shrink-0">
                         <i class="fas fa-plus"></i>
                     </button>
                 </div>
             `;
+            
+            // Reset tests list to single row
+            const testsList = document.getElementById('tests-list');
+            testsList.innerHTML = `
+                <div class="flex flex-wrap items-center gap-2">
+                    <select name="testType[]" class="flex-1 min-w-[150px] border border-gray-300 rounded px-3 py-2 text-sm">
+                        <option value="">Select Test</option>
+                        <option value="Blood Count Tests">Blood Count Tests</option>
+                        <option value="Genetic Testing">Genetic Testing</option>
+                        <option value="Kidney Tests">Kidney Tests</option>
+                        <option value="Laboratory Tests">Laboratory Tests</option>
+                        <option value="Prenatal Testing">Prenatal Testing</option>
+                        <option value="Thyroid Tests">Thyroid Tests</option>
+                        <option value="Urinalysis">Urinalysis</option>
+                    </select>
+                    <input type="text" name="testNotes[]" class="flex-1 min-w-[120px] border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Notes (optional)" />
+                    <button type="button" onclick="addTest()" class="px-3 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 flex-shrink-0">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            `;
+            
+            // Reset radiology list to single row
+            const radiologyList = document.getElementById('radiology-list');
+            radiologyList.innerHTML = `
+                <div class="flex flex-wrap items-center gap-2">
+                    <select name="radiologyType[]" class="flex-1 min-w-[150px] border border-gray-300 rounded px-3 py-2 text-sm">
+                        <option value="">Select Radiology Test</option>
+                        <option value="X-Ray">X-Ray</option>
+                        <option value="CT Scan">CT Scan</option>
+                        <option value="MRI">MRI</option>
+                        <option value="Ultrasound">Ultrasound</option>
+                        <option value="Mammography">Mammography</option>
+                        <option value="Bone Scan">Bone Scan</option>
+                        <option value="PET Scan">PET Scan</option>
+                    </select>
+                    <input type="text" name="radiologyBodyPart[]" class="w-28 sm:w-32 border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Body Part" />
+                    <input type="text" name="radiologyNotes[]" class="flex-1 min-w-[120px] border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Notes (optional)" />
+                    <button type="button" onclick="addRadiology()" class="px-3 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 flex-shrink-0">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            `;
+            
+            // Reset to medication tab
+            const tabButtons = document.querySelectorAll('[data-tab]');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabButtons.forEach(btn => {
+                const tabName = btn.getAttribute('data-tab');
+                if (tabName === 'medication') {
+                    btn.classList.remove('text-gray-500', 'border-transparent');
+                    btn.classList.add('border-b-2', 'border-orange-500', 'text-orange-500', 'font-semibold');
+                } else {
+                    btn.classList.remove('border-orange-500', 'text-orange-500', 'font-semibold');
+                    btn.classList.add('text-gray-500', 'border-b-2', 'border-transparent');
+                }
+            });
+            tabContents.forEach(content => {
+                if (content.id === 'tab-content-medication') {
+                    content.classList.remove('hidden');
+                } else {
+                    content.classList.add('hidden');
+                }
+            });
         }
 
         // Form submission
@@ -2460,15 +2731,49 @@
             // Collect medication data
             const medicines = [];
             const medicineNames = formData.getAll('medicine[]');
-            const timings = formData.getAll('timing[]');
+            const mornings = formData.getAll('morning[]');
+            const afternoons = formData.getAll('afternoon[]');
+            const nights = formData.getAll('night[]');
             const durations = formData.getAll('duration[]');
             
             for (let i = 0; i < medicineNames.length; i++) {
                 if (medicineNames[i].trim()) {
                     medicines.push({
                         name: medicineNames[i],
-                        timing: timings[i] || '',
+                        morning: mornings[i] || '',
+                        afternoon: afternoons[i] || '',
+                        night: nights[i] || '',
                         duration: durations[i] || ''
+                    });
+                }
+            }
+            
+            // Collect tests data
+            const tests = [];
+            const testTypes = formData.getAll('testType[]');
+            const testNotes = formData.getAll('testNotes[]');
+            
+            for (let i = 0; i < testTypes.length; i++) {
+                if (testTypes[i].trim()) {
+                    tests.push({
+                        type: testTypes[i],
+                        notes: testNotes[i] || ''
+                    });
+                }
+            }
+            
+            // Collect radiology data
+            const radiology = [];
+            const radiologyTypes = formData.getAll('radiologyType[]');
+            const radiologyBodyParts = formData.getAll('radiologyBodyPart[]');
+            const radiologyNotes = formData.getAll('radiologyNotes[]');
+            
+            for (let i = 0; i < radiologyTypes.length; i++) {
+                if (radiologyTypes[i].trim()) {
+                    radiology.push({
+                        type: radiologyTypes[i],
+                        bodyPart: radiologyBodyParts[i] || '',
+                        notes: radiologyNotes[i] || ''
                     });
                 }
             }
@@ -2480,6 +2785,8 @@
                 diagnosis: formData.get('diagnosis'),
                 symptoms: formData.get('symptoms'),
                 medicines: medicines,
+                tests: tests,
+                radiology: radiology,
                 notes: formData.get('notes'),
                 createdAt: new Date().toISOString()
             };
@@ -2489,9 +2796,46 @@
             records.push(record);
             localStorage.setItem('patient_records', JSON.stringify(records));
             
+            // Update medication display table
+            updateMedicationDisplay(medicines);
+            
             alert('Record added successfully!');
             clearForm();
         });
+
+        // Function to update medication display table
+        function updateMedicationDisplay(medicines) {
+            const tbody = document.getElementById('medication-display-tbody');
+            if (!tbody) {
+                console.error('medication-display-tbody not found');
+                return;
+            }
+            
+            if (!medicines || medicines.length === 0) {
+                console.log('No medicines to display');
+                return;
+            }
+            
+            // Append new rows for each medicine
+            medicines.forEach(medicine => {
+                if (medicine.name && medicine.name.trim()) {
+                    // Format dose as "morning+afternoon+night"
+                    const morning = medicine.morning || '0';
+                    const afternoon = medicine.afternoon || '0';
+                    const night = medicine.night || '0';
+                    const dose = `${morning}+${afternoon}+${night}`;
+                    const duration = medicine.duration || '-';
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="py-2 whitespace-nowrap">${medicine.name}</td>
+                        <td class="whitespace-nowrap">${dose}</td>
+                        <td class="whitespace-nowrap">${duration}</td>
+                    `;
+                    tbody.appendChild(row);
+                }
+            });
+        }
 
         // Configure Case Sheet functionality
         function openConfigureCaseSheet() {
@@ -2616,7 +2960,10 @@
             
             // Create input field container
             const inputContainer = document.createElement('div');
-            inputContainer.className = 'flex items-center space-x-1 bg-white px-2 py-1 rounded border border-gray-300';
+            // inputContainer.className = 'flex items-center space-x-1 bg-white px-2 py-1 rounded border border-gray-300';
+            inputContainer.className = 'flex items-center space-x-1 px-2 py-1 bg-gray-200 rounded-full';
+inputContainer.style.border = 'none';
+
             
             // Create input field with auto width
             const inputField = document.createElement('input');
@@ -2633,13 +2980,13 @@
             // Create save button
             const saveBtn = document.createElement('button');
             saveBtn.innerHTML = '<i class="fas fa-check text-green-500 text-xs"></i>';
-            saveBtn.className = 'hover:bg-green-50 rounded p-1';
+            saveBtn.className = ' rounded p-1';
             saveBtn.onclick = () => saveContentToSection(sectionKey, inputField.value, inputContainer);
             
             // Create cancel button
             const cancelBtn = document.createElement('button');
             cancelBtn.innerHTML = '<i class="fas fa-times text-red-500 text-xs"></i>';
-            cancelBtn.className = 'hover:bg-red-50 rounded p-1';
+            cancelBtn.className = ' rounded p-1';
             cancelBtn.onclick = () => inputContainer.remove();
             
             // Add elements to container
