@@ -234,6 +234,105 @@
                         </table>
                     </div>
                 </div>
+
+                <!-- Inventory Request Section -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mt-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                            <i class="fas fa-boxes text-orange-500 mr-2"></i>
+                            Inventory Requests
+                        </h3>
+                    </div>
+                    
+                    <!-- Inventory Request Form -->
+                    <div class="mb-8 pb-6 border-b border-gray-200">
+                        <h4 class="text-md font-medium text-gray-700 mb-4">Request Supplies</h4>
+                        <form id="inventory-request-form" class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <!-- Item Category -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Select Category *</label>
+                                    <select id="item-category" name="itemCategory" required class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                        <option value="">Select Category</option>
+                                        <option value="Pharmaceuticals and medications">Pharmaceuticals and medications</option>
+                                        <option value="Surgical supplies">Surgical supplies</option>
+                                        <option value="Patient care items">Patient care items</option>
+                                        <option value="Medical equipment">Medical equipment</option>
+                                        <option value="Office and administrative supplies">Office and administrative supplies</option>
+                                        <option value="Janitorial and maintenance supplies">Janitorial and maintenance supplies</option>
+                                        <option value="Linen and uniforms">Linen and uniforms</option>
+                                        <option value="Catering items">Catering items</option>
+                                        <option value="Personal Protective Equipment (PPE)">Personal Protective Equipment (PPE)</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Item Name -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Specific Item Name *</label>
+                                    <input type="text" id="item-name" name="itemName" required class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter item name" />
+                                </div>
+                                
+                                <!-- Quantity -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Quantity *</label>
+                                    <input type="number" id="item-quantity" name="itemQuantity" required min="1" value="1" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" />
+                                </div>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <div class="flex justify-end">
+                                <button type="submit" class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium flex items-center space-x-2">
+                                    <i class="fas fa-paper-plane"></i>
+                                    <span>Submit Request</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Request History Table -->
+                    <div>
+                        <h4 class="text-md font-medium text-gray-700 mb-4">Request History</h4>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full text-sm">
+                                <thead class="border-b border-gray-200 text-gray-600">
+                                    <tr>
+                                        <th class="text-left px-5 py-3">Item Name</th>
+                                        <th class="text-left px-5 py-3">Category</th>
+                                        <th class="text-left px-5 py-3">Quantity</th>
+                                        <th class="text-left px-5 py-3">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="request-history-tbody" class="divide-y divide-gray-100">
+                                    <!-- Sample data rows -->
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-5 py-3 text-gray-800">Surgical Gloves</td>
+                                        <td class="px-5 py-3 text-gray-700">Surgical supplies</td>
+                                        <td class="px-5 py-3 text-gray-700">50</td>
+                                        <td class="px-5 py-3">
+                                            <span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">Pending</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-5 py-3 text-gray-800">Face Masks</td>
+                                        <td class="px-5 py-3 text-gray-700">Personal Protective Equipment (PPE)</td>
+                                        <td class="px-5 py-3 text-gray-700">100</td>
+                                        <td class="px-5 py-3">
+                                            <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">Approved</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-5 py-3 text-gray-800">Bandages</td>
+                                        <td class="px-5 py-3 text-gray-700">Patient care items</td>
+                                        <td class="px-5 py-3 text-gray-700">25</td>
+                                        <td class="px-5 py-3">
+                                            <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">Delivered</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
     </div>
@@ -306,6 +405,9 @@
                     } else {
                         statusBadge.className = 'px-3 py-1 bg-red-500 text-white rounded-full text-sm font-medium';
                     }
+                    
+                    // Load request history for this doctor
+                    loadRequestHistory(doctorId);
                 } else {
                     // Doctor not found, redirect to doctors page
                     alert('Doctor not found!');
@@ -316,6 +418,51 @@
                 alert('No doctor ID provided!');
                 window.location.href = 'doctors.html';
             }
+        }
+
+        // Load request history for the doctor
+        function loadRequestHistory(doctorId) {
+            const tbody = document.getElementById('request-history-tbody');
+            const allRequests = JSON.parse(localStorage.getItem('hm_inventory_requests') || '[]');
+            
+            // Filter requests for this doctor
+            const doctorRequests = allRequests.filter(req => req.doctorId === doctorId);
+            
+            if (doctorRequests.length === 0) {
+                // Keep sample data if no requests exist
+                return;
+            }
+            
+            // Clear existing rows (except sample data if no real data)
+            tbody.innerHTML = '';
+            
+            // Sort by date (most recent first)
+            doctorRequests.sort((a, b) => new Date(b.dateRequested) - new Date(a.dateRequested));
+            
+            // Display requests
+            doctorRequests.forEach(request => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                
+                let statusBadge = '';
+                if (request.status === 'Pending') {
+                    statusBadge = '<span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">Pending</span>';
+                } else if (request.status === 'Approved') {
+                    statusBadge = '<span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">Approved</span>';
+                } else if (request.status === 'Rejected') {
+                    statusBadge = '<span class="px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium">Rejected</span>';
+                } else {
+                    statusBadge = '<span class="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">Delivered</span>';
+                }
+                
+                row.innerHTML = `
+                    <td class="px-5 py-3 text-gray-800">${request.itemName}</td>
+                    <td class="px-5 py-3 text-gray-700">${request.category}</td>
+                    <td class="px-5 py-3 text-gray-700">${request.quantity}</td>
+                    <td class="px-5 py-3">${statusBadge}</td>
+                `;
+                tbody.appendChild(row);
+            });
         }
 
         // Modal functions
@@ -363,6 +510,82 @@
             tbody.appendChild(newRow);
             
             closeAddServiceModal();
+        });
+
+        // Inventory Request Form Submission
+        document.getElementById('inventory-request-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const itemCategory = formData.get('itemCategory');
+            const itemName = formData.get('itemName');
+            const itemQuantity = formData.get('itemQuantity');
+            
+            // Validate form
+            if (!itemCategory || !itemName || !itemQuantity) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Get doctor information
+            const doctorName = document.getElementById('doctor-name').textContent;
+            const doctorId = document.getElementById('doctor-id').textContent.replace('ID: ', '');
+            
+            // Create request object
+            const request = {
+                id: 'req_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                doctorName: doctorName,
+                doctorId: doctorId,
+                itemName: itemName,
+                category: itemCategory,
+                quantity: itemQuantity,
+                status: 'Pending',
+                dateRequested: new Date().toISOString()
+            };
+            
+            // Save to localStorage
+            const allRequests = JSON.parse(localStorage.getItem('hm_inventory_requests') || '[]');
+            allRequests.push(request);
+            localStorage.setItem('hm_inventory_requests', JSON.stringify(allRequests));
+            
+            // Add new row to the request history table
+            const tbody = document.getElementById('request-history-tbody');
+            const newRow = document.createElement('tr');
+            newRow.className = 'hover:bg-gray-50';
+            
+            // Create status badge (default to Pending)
+            const statusBadge = '<span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">Pending</span>';
+            
+            newRow.innerHTML = `
+                <td class="px-5 py-3 text-gray-800">${itemName}</td>
+                <td class="px-5 py-3 text-gray-700">${itemCategory}</td>
+                <td class="px-5 py-3 text-gray-700">${itemQuantity}</td>
+                <td class="px-5 py-3">${statusBadge}</td>
+            `;
+            
+            // Insert at the beginning of the table (most recent first)
+            tbody.insertBefore(newRow, tbody.firstChild);
+            
+            // Reset form
+            this.reset();
+            document.getElementById('item-quantity').value = '1';
+            
+            // Show success message
+            alert('Inventory request submitted successfully!');
+            
+            // Trigger storage event for other tabs/pages
+            window.dispatchEvent(new Event('storage'));
+        });
+
+        // Listen for request status updates from inventory page
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'hm_inventory_requests') {
+                const urlParams = new URLSearchParams(window.location.search);
+                const doctorId = urlParams.get('id');
+                if (doctorId) {
+                    loadRequestHistory(doctorId);
+                }
+            }
         });
     </script>
 </body>

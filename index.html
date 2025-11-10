@@ -170,7 +170,7 @@
                 <!-- Metric Cards -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-4 sm:mb-6">
                     <!-- Total Invoice Card -->
-                    <div class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6">
+                    <a href="payments.html" class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6 hover:shadow-md transition-shadow cursor-pointer block">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-xs sm:text-sm text-gray-600">Total Invoice</p>
@@ -181,10 +181,10 @@
                                 +2.31%
                             </div>
                         </div>
-                    </div>
+                    </a>
                     
                     <!-- Total Patients Card -->
-                    <div class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6">
+                    <a href="javascript:void(0)" onclick="showView('patients'); return false;" class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6 hover:shadow-md transition-shadow cursor-pointer block">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-xs sm:text-sm text-gray-600">Total Patients</p>
@@ -195,10 +195,10 @@
                                 +2.78%
                             </div>
                         </div>
-                    </div>
+                    </a>
                     
                     <!-- Appointments Card -->
-                    <div class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6">
+                    <a href="appointments.html" class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6 hover:shadow-md transition-shadow cursor-pointer block">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-xs sm:text-sm text-gray-600">Appointments</p>
@@ -209,10 +209,10 @@
                                 -1.85%
                             </div>
                         </div>
-                    </div>
+                    </a>
                     
                     <!-- Bedrooms Card -->
-                    <div class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6">
+                    <a href="bed-board.html" class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6 hover:shadow-md transition-shadow cursor-pointer block">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-xs sm:text-sm text-gray-600">Bedrooms</p>
@@ -223,7 +223,7 @@
                                 -2.74%
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 
                 <!-- Charts Row -->
@@ -657,15 +657,28 @@
             if (name === 'dashboard') {
                 dashboardView.classList.remove('hidden');
                 patientsView.classList.add('hidden');
+                // Update URL hash
+                window.location.hash = '';
                 // Update sidebar active state
                 updateSidebarActiveState('dashboard');
             } else if (name === 'patients') {
                 patientsView.classList.remove('hidden');
                 dashboardView.classList.add('hidden');
+                // Update URL hash
+                window.location.hash = '#patients';
                 // Update sidebar active state
                 updateSidebarActiveState('patients');
             }
         }
+
+        // Listen for hash changes (back/forward buttons)
+        window.addEventListener('hashchange', function() {
+            if (window.location.hash === '#patients') {
+                showView('patients');
+            } else {
+                showView('dashboard');
+            }
+        });
 
         function updateSidebarActiveState(activePage) {
             document.querySelectorAll('.sidebar-nav-item').forEach(item => {

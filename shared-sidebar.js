@@ -125,7 +125,7 @@ function createSharedSidebar(currentPage = 'dashboard') {
                 <div class="sidebar-nav-item ${currentPage === 'tender' ? 'active' : ''}" data-page="tender">
                     <div class="flex items-center space-x-3">
                         <i class="fas fa-gavel w-4"></i>
-                        <span class="text-sm">Tender Console</span>
+                        <span class="text-sm">Roaster Console</span>
                     </div>
                 </div>
                 
