@@ -208,7 +208,13 @@
     <script>
         // Go back to bills page
         function goBack() {
-            window.location.href = 'patient-detail.html#bills';
+            const urlParams = new URLSearchParams(window.location.search);
+            const patientId = urlParams.get('patientId') || urlParams.get('id');
+            if (patientId) {
+                window.location.href = `patient-detail.html?id=${patientId}#bills`;
+            } else {
+                window.location.href = 'patient-detail.html#bills';
+            }
         }
 
         // Set current date as default billing date
@@ -353,51 +359,94 @@
         document.getElementById('billForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            // Get patient info from URL or default values
+            const urlParams = new URLSearchParams(window.location.search);
+            const patientId = urlParams.get('patientId') || urlParams.get('id') || 'PAT-' + Date.now().toString().slice(-6);
+            const patientName = urlParams.get('patientName') || 'Patient';
+            
+            // Validate that at least one line item exists
+            const lineItems = document.querySelectorAll('#lineItemsTable tr');
+            if (lineItems.length === 0) {
+                alert('Please add at least one line item before creating the bill.');
+                return;
+            }
+            
+            // Validate bill status
+            const billStatus = document.getElementById('billStatus').value;
+            if (!billStatus) {
+                alert('Please select a bill status.');
+                return;
+            }
+            
             // Get form data
             const billData = {
-                patientId: document.getElementById('patientId').value,
-                patientName: document.getElementById('patientName').value,
+                id: 'BILL-' + Date.now().toString().slice(-8),
+                patientId: patientId,
+                patientName: patientName,
                 billingDate: document.getElementById('billingDate').value,
                 dueDate: document.getElementById('dueDate').value,
-                billStatus: document.getElementById('billStatus').value,
+                billStatus: billStatus,
+                currency: CurrencyHelper.getCurrencyCode() || 'INR',
                 lineItems: [],
-                subtotal: document.getElementById('subtotal').textContent,
-                discountAmount: document.getElementById('discountAmount').textContent,
-                taxAmount: document.getElementById('taxAmount').textContent,
-                grandTotal: document.getElementById('grandTotal').textContent,
+                subtotal: parseFloat(document.getElementById('subtotal').getAttribute('data-amount') || 0),
+                discountPercent: parseFloat(document.getElementById('discountPercent').value) || 0,
+                discountAmount: parseFloat(document.getElementById('discountAmount').getAttribute('data-amount') || 0),
+                taxPercent: parseFloat(document.getElementById('taxPercent').value) || 0,
+                taxAmount: parseFloat(document.getElementById('taxAmount').getAttribute('data-amount') || 0),
+                grandTotal: parseFloat(document.getElementById('grandTotal').getAttribute('data-amount') || 0),
+                subtotalFormatted: document.getElementById('subtotal').textContent,
+                discountAmountFormatted: document.getElementById('discountAmount').textContent,
+                taxAmountFormatted: document.getElementById('taxAmount').textContent,
+                grandTotalFormatted: document.getElementById('grandTotal').textContent,
+                createdAt: new Date().toISOString(),
                 timestamp: new Date().toLocaleString()
             };
 
             // Collect line items
-            const lineItems = document.querySelectorAll('#lineItemsTable tr');
             lineItems.forEach(row => {
-                const description = row.querySelector('input[type="text"]').value;
-                const date = row.querySelector('.date-input').value;
-                const quantity = row.querySelector('.quantity-input').value;
-                const price = row.querySelector('.price-input').value;
-                const total = row.querySelector('.total-amount').textContent;
+                const descriptionInput = row.querySelector('input[type="text"]');
+                const dateInput = row.querySelector('.date-input');
+                const quantityInput = row.querySelector('.quantity-input');
+                const priceInput = row.querySelector('.price-input');
+                const totalAmount = row.querySelector('.total-amount');
+                
+                if (descriptionInput && dateInput && quantityInput && priceInput && totalAmount) {
+                    const description = descriptionInput.value.trim();
+                    const date = dateInput.value;
+                    const quantity = parseFloat(quantityInput.value) || 0;
+                    const price = parseFloat(priceInput.value) || 0;
+                    const total = parseFloat(totalAmount.getAttribute('data-amount') || 0);
 
-                if (description && quantity && price) {
-                    billData.lineItems.push({
-                        description,
-                        date,
-                        quantity: parseFloat(quantity),
-                        price: parseFloat(price),
-                        total: total
-                    });
+                    if (description && quantity > 0 && price > 0) {
+                        billData.lineItems.push({
+                            description,
+                            date,
+                            quantity: quantity,
+                            price: price,
+                            total: total,
+                            totalFormatted: totalAmount.textContent
+                        });
+                    }
                 }
             });
+            
+            // Validate that we have at least one valid line item
+            if (billData.lineItems.length === 0) {
+                alert('Please add at least one valid line item with description, quantity, and price.');
+                return;
+            }
 
-            // Store in localStorage for demonstration
-            let bills = JSON.parse(localStorage.getItem('bills') || '[]');
+            // Store in localStorage
+            let bills = JSON.parse(localStorage.getItem('hm_bills_data') || '[]');
             bills.push(billData);
-            localStorage.setItem('bills', JSON.stringify(bills));
+            localStorage.setItem('hm_bills_data', JSON.stringify(bills));
 
             // Show success message
             alert('Bill created successfully!');
             
-            // Redirect back to patient detail page
-            window.location.href = 'patient-detail.html#bills';
+            // Redirect back to patient detail page with patient ID
+            const redirectUrl = patientId ? `patient-detail.html?id=${patientId}#bills` : 'patient-detail.html#bills';
+            window.location.href = redirectUrl;
         });
 
         // Add some visual feedback

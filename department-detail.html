@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department Detail - Hospital Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="shared-sidebar.js"></script>
+    <style>
+        :root {
+            --accent-50: #fff7ed;
+            --accent-100: #ffedd5;
+            --accent-200: #fed7aa;
+            --accent-300: #fdba74;
+            --accent-400: #fb923c;
+            --accent-500: #f97316;
+            --accent-600: #ea580c;
+            --accent-700: #c2410c;
+            --accent-800: #9a3412;
+            --accent-900: #7c2d12;
+        }
+        .bg-orange-50{background-color:var(--accent-50)!important}
+        .bg-orange-100{background-color:var(--accent-100)!important}
+        .bg-orange-500{background-color:var(--accent-500)!important}
+        .bg-orange-600{background-color:var(--accent-600)!important}
+        .text-orange-500{color:var(--accent-500)!important}
+        .text-orange-600{color:var(--accent-600)!important}
+        .border-orange-500{border-color:var(--accent-500)!important}
+        .hover\:bg-orange-600:hover{background-color:var(--accent-600)!important}
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Shared Sidebar -->
+        <div id="shared-sidebar"></div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <header class="bg-white px-4 sm:px-6 py-4 flex items-center justify-between border-b border-gray-200 shadow-sm">
+                <div class="flex items-center space-x-4">
+                    <a href="departments.html" class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-arrow-left text-lg"></i>
+                    </a>
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-bold text-gray-800" id="dept-name">Department</h1>
+                        <p class="text-sm text-gray-500 hidden sm:inline">Department Information</p>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Department Detail Content -->
+            <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+                <div class="max-w-6xl mx-auto">
+                    <!-- Hero Section -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-6">
+                        <div class="h-64 sm:h-80 bg-gradient-to-r from-orange-500 to-orange-600 relative">
+                            <img id="dept-hero-image" src="" alt="Department" class="w-full h-full object-cover opacity-90">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
+                                <h2 id="dept-title" class="text-3xl sm:text-4xl font-bold text-white mb-2">Department Name</h2>
+                                <p id="dept-subtitle" class="text-lg text-white/90">Comprehensive healthcare services</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Content Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Left Column - Main Info -->
+                        <div class="lg:col-span-2 space-y-6">
+                            <!-- About Section -->
+                            <div class="bg-white rounded-xl shadow-md p-6">
+                                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                                    <i class="fas fa-info-circle text-orange-500 mr-2"></i>
+                                    About
+                                </h3>
+                                <p id="dept-description" class="text-gray-600 leading-relaxed">
+                                    Loading department information...
+                                </p>
+                            </div>
+
+                            <!-- Services Section -->
+                            <div class="bg-white rounded-xl shadow-md p-6">
+                                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                                    <i class="fas fa-stethoscope text-orange-500 mr-2"></i>
+                                    Services
+                                </h3>
+                                <div id="dept-services" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <!-- Services will be populated dynamically -->
+                                </div>
+                            </div>
+
+                            <!-- Doctors Section -->
+                            <div class="bg-white rounded-xl shadow-md p-6">
+                                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                                    <i class="fas fa-user-md text-orange-500 mr-2"></i>
+                                    Our Doctors
+                                </h3>
+                                <div id="dept-doctors" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                                    <!-- Doctors will be populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column - Sidebar Info -->
+                        <div class="space-y-6">
+                            <!-- Contact Info -->
+                            <div class="bg-white rounded-xl shadow-md p-6">
+                                <h3 class="text-lg font-bold text-gray-800 mb-4">Contact Information</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-start space-x-3">
+                                        <i class="fas fa-map-marker-alt text-orange-500 mt-1"></i>
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-700">Location</p>
+                                            <p id="dept-location" class="text-sm text-gray-600">-</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start space-x-3">
+                                        <i class="fas fa-phone text-orange-500 mt-1"></i>
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-700">Phone</p>
+                                            <a id="dept-phone" href="tel:" class="text-sm text-orange-600 hover:text-orange-700">-</a>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start space-x-3">
+                                        <i class="fas fa-envelope text-orange-500 mt-1"></i>
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-700">Email</p>
+                                            <a id="dept-email" href="mailto:" class="text-sm text-orange-600 hover:text-orange-700">-</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Stats -->
+                            <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-md p-6 text-white">
+                                <h3 class="text-lg font-bold mb-4">Quick Stats</h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-orange-100">Total Doctors</span>
+                                        <span id="dept-doctor-count" class="text-2xl font-bold">0</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-orange-100">Services</span>
+                                        <span id="dept-service-count" class="text-2xl font-bold">0</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="space-y-3">
+                                <button class="w-full bg-orange-500 text-white py-3 rounded-lg font-medium hover:bg-orange-600 transition shadow-md hover:shadow-lg">
+                                    <i class="fas fa-calendar-check mr-2"></i>
+                                    Book Appointment
+                                </button>
+                                <button class="w-full bg-white border-2 border-orange-500 text-orange-600 py-3 rounded-lg font-medium hover:bg-orange-50 transition">
+                                    <i class="fas fa-phone mr-2"></i>
+                                    Contact Department
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Department data (same as in departments.html)
+        const departmentsData = {
+            'General Medicine': {
+                name: 'General Medicine',
+                description: 'Provides comprehensive healthcare services, including routine check-ups, preventive care, and treatment of common illnesses and chronic conditions.',
+                fullDescription: 'General Medicine is the foundation of healthcare, providing comprehensive medical care for adults. Our department offers routine check-ups, preventive care, diagnosis, and treatment of a wide range of common illnesses and chronic conditions. Our experienced physicians are dedicated to maintaining your overall health and well-being.',
+                image: 'https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=800&h=400&fit=crop',
+                doctors: ['Dr. Smith', 'Dr. Jones', 'Dr. Lee', 'Dr. Kim', 'Dr. Patel', 'Dr. Chen', 'Dr. Williams'],
+                services: ['Routine Check-ups', 'Preventive Care', 'Chronic Disease Management', 'Health Screenings', 'Vaccinations'],
+                location: 'Building A, Floor 2',
+                phone: '+1 (555) 123-4567',
+                email: 'general.medicine@hospital.com'
+            },
+            'Cardiology': {
+                name: 'Cardiology',
+                description: 'Specializes in the diagnosis and treatment of heart, circulatory, and cardiovascular diagnosis and heart interventions.',
+                fullDescription: 'Our Cardiology department provides comprehensive cardiac care with state-of-the-art diagnostic and treatment facilities. We specialize in the prevention, diagnosis, and treatment of heart diseases, including coronary artery disease, heart failure, arrhythmias, and congenital heart defects.',
+                image: 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800&h=400&fit=crop',
+                doctors: ['Dr. Wilson', 'Dr. Brown', 'Dr. Davis', 'Dr. Taylor'],
+                services: ['Echocardiography', 'Cardiac Catheterization', 'Stress Testing', 'Pacemaker Implantation', 'Cardiac Rehabilitation'],
+                location: 'Building B, Floor 3',
+                phone: '+1 (555) 123-4568',
+                email: 'cardiology@hospital.com'
+            },
+            'Pediatrics': {
+                name: 'Pediatrics',
+                description: 'Dedicated to the health and well-being of children, providing specialized care for infants, children, and adolescents.',
+                fullDescription: 'Our Pediatrics department is dedicated to providing comprehensive healthcare for children from birth through adolescence. We offer preventive care, diagnosis, and treatment of childhood illnesses, developmental assessments, and specialized care for complex pediatric conditions.',
+                image: 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=800&h=400&fit=crop',
+                doctors: ['Dr. Martin', 'Dr. Garcia', 'Dr. White', 'Dr. Hall'],
+                services: ['Well-Child Visits', 'Immunizations', 'Developmental Screening', 'Pediatric Emergency Care', 'Chronic Disease Management'],
+                location: 'Building C, Floor 1',
+                phone: '+1 (555) 123-4569',
+                email: 'pediatrics@hospital.com'
+            },
+            'Dermatology': {
+                name: 'Dermatology',
+                description: 'Focuses on skin-related treatments include, diagnostic and managing services to improve skin conditions.',
+                fullDescription: 'Our Dermatology department specializes in the diagnosis and treatment of skin, hair, and nail conditions. We provide comprehensive care for acne, eczema, psoriasis, skin cancer, and cosmetic dermatology services.',
+                image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&h=400&fit=crop',
+                doctors: ['Dr. Adams', 'Dr. Clark', 'Dr. Lewis', 'Dr. Young', 'Dr. King', 'Dr. Wright', 'Dr. Lopez'],
+                services: ['Skin Cancer Screening', 'Acne Treatment', 'Cosmetic Procedures', 'Hair Loss Treatment', 'Dermatologic Surgery'],
+                location: 'Building A, Floor 1',
+                phone: '+1 (555) 123-4570',
+                email: 'dermatology@hospital.com'
+            },
+            'Internal Medicine': {
+                name: 'Internal Medicine',
+                description: 'Provides a wide range of adult. focusing entire prevention, diagnosis, and treatment of adult diseases.',
+                fullDescription: 'Internal Medicine focuses on the prevention, diagnosis, and treatment of adult diseases. Our internists are experts in managing complex medical conditions and coordinating care across multiple specialties.',
+                image: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=800&h=400&fit=crop',
+                doctors: ['Dr. Walker', 'Dr. Hill', 'Dr. Scott', 'Dr. Green', 'Dr. Adams', 'Dr. Baker', 'Dr. Carter', 'Dr. Davis', 'Dr. Evans', 'Dr. Foster', 'Dr. Gray', 'Dr. Harris', 'Dr. Irwin', 'Dr. Johnson', 'Dr. Kelly', 'Dr. Long', 'Dr. Moore', 'Dr. Nelson', 'Dr. Owens', 'Dr. Price', 'Dr. Quinn', 'Dr. Reed', 'Dr. Stone', 'Dr. Turner', 'Dr. Underwood', 'Dr. Vance', 'Dr. Ward', 'Dr. Xavier', 'Dr. Young', 'Dr. Zane', 'Dr. Allen', 'Dr. Brown', 'Dr. Cooper', 'Dr. Dixon', 'Dr. Ellis', 'Dr. Ford', 'Dr. Grant', 'Dr. Hayes', 'Dr. Ingram', 'Dr. Jenkins', 'Dr. Knight', 'Dr. Lawson', 'Dr. Mason', 'Dr. Norton', 'Dr. Oliver', 'Dr. Parker', 'Dr. Quinn', 'Dr. Ross', 'Dr. Stewart', 'Dr. Tucker', 'Dr. Vaughn'],
+                services: ['Primary Care', 'Chronic Disease Management', 'Preventive Medicine', 'Health Maintenance', 'Complex Case Management'],
+                location: 'Building A, Floor 3',
+                phone: '+1 (555) 123-4571',
+                email: 'internal.medicine@hospital.com'
+            },
+            'Orthopedics': {
+                name: 'Orthopedics',
+                description: 'Specializes in the treatment of musculoskeletal system, including including conditions, including bones, joints, muscles, and ligaments.',
+                fullDescription: 'Our Orthopedics department specializes in the diagnosis and treatment of musculoskeletal conditions affecting bones, joints, muscles, ligaments, and tendons. We provide both surgical and non-surgical treatments for sports injuries, arthritis, fractures, and degenerative conditions.',
+                image: 'https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=800&h=400&fit=crop',
+                doctors: ['Dr. Baker', 'Dr. Nelson', 'Dr. Carter', 'Dr. Mitchell'],
+                services: ['Joint Replacement', 'Sports Medicine', 'Fracture Care', 'Arthroscopy', 'Physical Therapy'],
+                location: 'Building B, Floor 2',
+                phone: '+1 (555) 123-4572',
+                email: 'orthopedics@hospital.com'
+            },
+            'Neurology': {
+                name: 'Neurology',
+                description: 'Specializes in/disorders of the nervous system, providing care for headaches, seizures, and more.',
+                fullDescription: 'Our Neurology department provides comprehensive care for disorders of the nervous system, including the brain, spinal cord, and peripheral nerves. We treat conditions such as epilepsy, stroke, Parkinson\'s disease, multiple sclerosis, and headaches.',
+                image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&h=400&fit=crop',
+                doctors: ['Dr. Roberts', 'Dr. Turner', 'Dr. Phillips', 'Dr. Campbell', 'Dr. Parker', 'Dr. Evans', 'Dr. Edwards'],
+                services: ['EEG Testing', 'EMG/NCS', 'Stroke Care', 'Epilepsy Management', 'Movement Disorder Treatment'],
+                location: 'Building B, Floor 4',
+                phone: '+1 (555) 123-4573',
+                email: 'neurology@hospital.com'
+            },
+            'Oncology': {
+                name: 'Oncology',
+                description: 'Specializes in the diagnosis and treatment of cancer, provide compassionate car and support services.',
+                fullDescription: 'Our Oncology department provides comprehensive cancer care with a multidisciplinary approach. We offer diagnosis, treatment, and support services for all types of cancer, including chemotherapy, radiation therapy, and surgical oncology.',
+                image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&h=400&fit=crop',
+                doctors: ['Dr. Parker', 'Dr. Evans', 'Dr. Edwards', 'Dr. Foster', 'Dr. Gray', 'Dr. Harris', 'Dr. Irwin', 'Dr. Johnson', 'Dr. Kelly', 'Dr. Long', 'Dr. Moore', 'Dr. Nelson', 'Dr. Owens', 'Dr. Price', 'Dr. Quinn', 'Dr. Reed', 'Dr. Stone', 'Dr. Turner', 'Dr. Underwood', 'Dr. Vance', 'Dr. Ward', 'Dr. Xavier', 'Dr. Young', 'Dr. Zane', 'Dr. Allen', 'Dr. Brown', 'Dr. Cooper', 'Dr. Dixon', 'Dr. Ellis', 'Dr. Ford', 'Dr. Grant', 'Dr. Hayes', 'Dr. Ingram', 'Dr. Jenkins', 'Dr. Knight', 'Dr. Lawson', 'Dr. Mason', 'Dr. Norton', 'Dr. Oliver', 'Dr. Parker', 'Dr. Quinn', 'Dr. Ross', 'Dr. Stewart', 'Dr. Tucker', 'Dr. Vaughn', 'Dr. Walker', 'Dr. Hill', 'Dr. Scott', 'Dr. Green', 'Dr. Adams'],
+                services: ['Chemotherapy', 'Radiation Therapy', 'Surgical Oncology', 'Immunotherapy', 'Cancer Screening', 'Supportive Care'],
+                location: 'Building C, Floor 3',
+                phone: '+1 (555) 123-4574',
+                email: 'oncology@hospital.com'
+            },
+            'Obstetrics and Gynecology (OB/GYN)': {
+                name: 'Obstetrics and Gynecology (OB/GYN)',
+                description: 'Provide services for women\'s health, addressing pregnancy, childbirth, and reproductive health.',
+                fullDescription: 'Our OB/GYN department provides comprehensive women\'s healthcare services, including prenatal care, childbirth, gynecological exams, and treatment of reproductive health issues. We support women through all stages of life.',
+                image: 'https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=800&h=400&fit=crop',
+                doctors: ['Dr. Collins', 'Dr. Stewart', 'Dr. Morris', 'Dr. Rogers'],
+                services: ['Prenatal Care', 'Labor & Delivery', 'Gynecological Exams', 'Family Planning', 'Menopause Management'],
+                location: 'Building C, Floor 2',
+                phone: '+1 (555) 123-4575',
+                email: 'obgyn@hospital.com'
+            },
+            'Radiology': {
+                name: 'Radiology',
+                description: 'Medical imaging services including X-rays, CT scans, MRI, and ultrasound for accurate diagnosis.',
+                fullDescription: 'Our Radiology department provides advanced medical imaging services using state-of-the-art technology. We offer X-rays, CT scans, MRI, ultrasound, and nuclear medicine imaging to aid in accurate diagnosis and treatment planning.',
+                image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&h=400&fit=crop',
+                doctors: ['Dr. Reed', 'Dr. Cook', 'Dr. Morgan', 'Dr. Bell', 'Dr. Murphy', 'Dr. Bailey', 'Dr. Rivera', 'Dr. Cooper'],
+                services: ['X-Ray', 'CT Scan', 'MRI', 'Ultrasound', 'Mammography', 'Nuclear Medicine'],
+                location: 'Building A, Floor 1',
+                phone: '+1 (555) 123-4576',
+                email: 'radiology@hospital.com'
+            },
+            'Emergency Medicine': {
+                name: 'Emergency Medicine',
+                description: '24/7 emergency care for acute illnesses and injuries, providing immediate medical attention.',
+                fullDescription: 'Our Emergency Medicine department provides 24/7 emergency care for acute illnesses and injuries. Our experienced emergency physicians and staff are trained to handle all types of medical emergencies with speed and expertise.',
+                image: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=800&h=400&fit=crop',
+                doctors: ['Dr. Bell', 'Dr. Murphy', 'Dr. Bailey', 'Dr. Rivera', 'Dr. Cooper', 'Dr. Richardson', 'Dr. Cox', 'Dr. Howard', 'Dr. Ward', 'Dr. Torres', 'Dr. Peterson', 'Dr. Gray'],
+                services: ['Trauma Care', 'Cardiac Emergency', 'Stroke Care', 'Pediatric Emergency', 'Toxicology'],
+                location: 'Building A, Ground Floor',
+                phone: '+1 (555) 911-0000',
+                email: 'emergency@hospital.com'
+            },
+            'Surgery': {
+                name: 'Surgery',
+                description: 'Advanced surgical procedures with state-of-the-art operating rooms and experienced surgical teams.',
+                fullDescription: 'Our Surgery department provides advanced surgical procedures across multiple specialties. We have state-of-the-art operating rooms and experienced surgical teams performing general surgery, minimally invasive procedures, and complex surgeries.',
+                image: 'https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=800&h=400&fit=crop',
+                doctors: ['Dr. Cooper', 'Dr. Richardson', 'Dr. Cox', 'Dr. Howard', 'Dr. Ward', 'Dr. Torres', 'Dr. Peterson', 'Dr. Gray', 'Dr. Ramirez', 'Dr. James'],
+                services: ['General Surgery', 'Minimally Invasive Surgery', 'Laparoscopic Surgery', 'Robotic Surgery', 'Surgical Consultation'],
+                location: 'Building B, Floor 1',
+                phone: '+1 (555) 123-4577',
+                email: 'surgery@hospital.com'
+            }
+        };
+
+        // Load department data
+        function loadDepartmentDetail() {
+            const params = new URLSearchParams(window.location.search);
+            const departmentName = params.get('name');
+            
+            if (!departmentName || !departmentsData[departmentName]) {
+                document.getElementById('dept-name').textContent = 'Department Not Found';
+                return;
+            }
+            
+            const dept = departmentsData[departmentName];
+            
+            // Update page title
+            document.title = `${dept.name} - Hospital Management`;
+            
+            // Update header
+            document.getElementById('dept-name').textContent = dept.name;
+            document.getElementById('dept-title').textContent = dept.name;
+            document.getElementById('dept-subtitle').textContent = dept.description;
+            
+            // Update hero image
+            document.getElementById('dept-hero-image').src = dept.image;
+            document.getElementById('dept-hero-image').alt = dept.name;
+            
+            // Update description
+            document.getElementById('dept-description').textContent = dept.fullDescription;
+            
+            // Update services
+            const servicesContainer = document.getElementById('dept-services');
+            servicesContainer.innerHTML = dept.services.map(service => `
+                <div class="flex items-center space-x-2 p-3 bg-orange-50 rounded-lg border border-orange-100">
+                    <i class="fas fa-check-circle text-orange-500"></i>
+                    <span class="text-sm font-medium text-gray-700">${service}</span>
+                </div>
+            `).join('');
+            
+            // Update doctors
+            const doctorsContainer = document.getElementById('dept-doctors');
+            doctorsContainer.innerHTML = dept.doctors.map(doctor => `
+                <div class="text-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-orange-300 transition">
+                    <div class="w-16 h-16 mx-auto mb-2 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        ${doctor.split(' ')[1] ? doctor.split(' ')[1][0] : doctor[0]}
+                    </div>
+                    <p class="text-sm font-medium text-gray-800">${doctor}</p>
+                </div>
+            `).join('');
+            
+            // Update contact info
+            document.getElementById('dept-location').textContent = dept.location;
+            document.getElementById('dept-phone').textContent = dept.phone;
+            document.getElementById('dept-phone').href = `tel:${dept.phone}`;
+            document.getElementById('dept-email').textContent = dept.email;
+            document.getElementById('dept-email').href = `mailto:${dept.email}`;
+            
+            // Update stats
+            document.getElementById('dept-doctor-count').textContent = dept.doctors.length;
+            document.getElementById('dept-service-count').textContent = dept.services.length;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('shared-sidebar').innerHTML = createSharedSidebar('departments');
+            initSharedSidebar('departments');
+            loadDepartmentDetail();
+        });
+    </script>
+</body>
+</html>
+
+

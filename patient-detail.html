@@ -68,6 +68,24 @@
                 <a href="index.html" class="inline-flex items-center text-xs sm:text-sm text-gray-500 hover:text-gray-700"><i class="fas fa-arrow-left mr-2"></i>Back to Patients List</a>
                 <h1 class="mt-2 text-lg sm:text-xl font-semibold text-orange-600">Patient Detail</h1>
 
+                <!-- Doctor and Bed Info -->
+                <div class="mt-2 sm:mt-3">
+                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-2 sm:p-3">
+                        <div class="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-user-md text-orange-600"></i>
+                                <span class="text-gray-500">Doctor:</span>
+                                <span class="font-medium text-gray-800" id="pd-doctor">-</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-bed text-orange-600"></i>
+                                <span class="text-gray-500">Bed:</span>
+                                <span class="font-medium text-gray-800" id="pd-bed">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Header card with Name and Vitals -->
                 <div class="mt-3 sm:mt-4">
                     <div class="bg-white rounded-lg shadow-sm p-3 sm:p-4">
@@ -189,6 +207,14 @@
                                 <p>Patient shows good response to current medication. Regular follow-up recommended.</p>
                             </div>
                         </div>
+                        <div class="bg-white rounded-lg shadow-sm p-4">
+                            <h3 class="font-semibold text-gray-800 mb-3">Additional Information</h3>
+                            <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                <li>Allergic: Avocado</li>
+                                <li>Non-smoker</li>
+                                <li>Occasional fever symptoms</li>
+                            </ul>
+                        </div>
                     </div>
                 
                     <!-- Part 2: Add Record Form (wider column) -->
@@ -274,7 +300,32 @@
                                 <div id="tab-content-medication" class="tab-content">
                                     <div id="medication-list" class="space-y-2">
                                         <div class="flex flex-wrap items-center gap-2">
-                                            <input type="text" name="medicine[]" class="flex-1 min-w-[120px] border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Medicine name" />
+                                            <div class="flex-1 min-w-[120px] relative">
+                                                <input type="text" name="medicine[]" list="medicine-list-options" class="w-full border border-gray-300 rounded px-3 py-2 text-sm pr-8" placeholder="Search medicine..." autocomplete="off" />
+                                                <datalist id="medicine-list-options">
+                                                    <option value="Paracetamol 500mg">Paracetamol 500mg</option>
+                                                    <option value="Ibuprofen 400mg">Ibuprofen 400mg</option>
+                                                    <option value="Amoxicillin 500mg">Amoxicillin 500mg</option>
+                                                    <option value="Azithromycin 500mg">Azithromycin 500mg</option>
+                                                    <option value="Ciprofloxacin 500mg">Ciprofloxacin 500mg</option>
+                                                    <option value="Metformin 500mg">Metformin 500mg</option>
+                                                    <option value="Amlodipine 5mg">Amlodipine 5mg</option>
+                                                    <option value="Atorvastatin 20mg">Atorvastatin 20mg</option>
+                                                    <option value="Omeprazole 20mg">Omeprazole 20mg</option>
+                                                    <option value="Cetirizine 10mg">Cetirizine 10mg</option>
+                                                    <option value="Aspirin 75mg">Aspirin 75mg</option>
+                                                    <option value="Levothyroxine 50mcg">Levothyroxine 50mcg</option>
+                                                    <option value="Metronidazole 400mg">Metronidazole 400mg</option>
+                                                    <option value="Doxycycline 100mg">Doxycycline 100mg</option>
+                                                    <option value="Cefixime 200mg">Cefixime 200mg</option>
+                                                    <option value="Augmentin 625mg">Augmentin 625mg</option>
+                                                    <option value="Pantoprazole 40mg">Pantoprazole 40mg</option>
+                                                    <option value="Losartan 50mg">Losartan 50mg</option>
+                                                    <option value="Atenolol 50mg">Atenolol 50mg</option>
+                                                    <option value="Furosemide 40mg">Furosemide 40mg</option>
+                                                </datalist>
+                                                <i class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                                            </div>
                                             <input type="number" name="morning[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Morning" min="0" />
                                             <input type="number" name="afternoon[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Afternoon" min="0" />
                                             <input type="number" name="night[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Night" min="0" />
@@ -355,14 +406,7 @@
                         </form>
                     </div>
                 
-                    <div class="bg-white rounded-lg shadow-sm p-4">
-                        <h3 class="font-semibold text-gray-800 mb-3">Additional Information</h3>
-                        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
-                            <li>Allergic: Avocado</li>
-                            <li>Non-smoker</li>
-                            <li>Occasional fever symptoms</li>
-                        </ul>
-                    </div>
+                    
                 </section>
                 
 
@@ -482,6 +526,26 @@
         </div>
         <div class="h-80">
             <canvas id="historyChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Bill Details Modal -->
+<div id="bill-details-modal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl p-6 m-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">Bill Details</h3>
+            <button data-close="bill-details-modal" class="text-gray-500 hover:text-gray-700"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="bill-details-content" class="space-y-4">
+            <!-- Bill details will be populated here -->
+        </div>
+        <div class="mt-6 flex items-center justify-end space-x-2">
+            <button onclick="printBill()" class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 flex items-center space-x-2">
+                <i class="fas fa-print"></i>
+                <span>Print</span>
+            </button>
+            <button data-close="bill-details-modal" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">Close</button>
         </div>
     </div>
 </div>
@@ -1828,85 +1892,17 @@
                                 <table class="min-w-full divide-y divide-gray-200">
                                     <thead class="bg-orange-50">
                                         <tr>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bill #</th>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mobile #</th>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Paid</th>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                            <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bill #</th>
+                                            <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Billing Date</th>
+                                            <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
+                                            <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Services</th>
+                                            <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                            <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                            <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">1</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Thilagan</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RH24000279</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dec 15, 2024</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">8754458333</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">300.00</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">PAID</span>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <div class="flex space-x-2">
-                                                    <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-file-invoice"></i></button>
-                                                    <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-share"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Thilagan</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RH24000278</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dec 14, 2024</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">8754458333</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">1,500.00</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">PAID</span>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <div class="flex space-x-2">
-                                                    <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-file-invoice"></i></button>
-                                                    <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-share"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">3</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Thilagan</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RH24000248</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dec 13, 2024</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">8754458333</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">7,000.00</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">PAID</span>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <div class="flex space-x-2">
-                                                    <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-file-invoice"></i></button>
-                                                    <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-share"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">4</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Thilagan</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RH24000197</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dec 12, 2024</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">8754458333</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">599.00</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">PAID</span>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <div class="flex space-x-2">
-                                                    <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-file-invoice"></i></button>
-                                                    <button class="text-orange-600 hover:text-orange-900"><i class="fas fa-share"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tbody id="bills-table-body" class="bg-white divide-y divide-gray-200">
+                                        <!-- Bills will be loaded dynamically -->
                                     </tbody>
                                 </table>
                             </div>
@@ -2138,6 +2134,124 @@
             document.getElementById('pd-name').textContent = `Patient #${id}  John Smith `;
         }
 
+        // Load doctor and bed information for the current patient
+        function loadPatientDoctorAndBed() {
+            const params = new URLSearchParams(window.location.search);
+            const patientId = params.get('id') || params.get('patientId');
+            
+            if (!patientId) {
+                return;
+            }
+
+            let doctorName = '-';
+            let bedInfo = '-';
+
+            // Convert patient ID to number if it's numeric (for matching with patientsData)
+            const patientIdNum = parseInt(patientId);
+            const isNumericId = !isNaN(patientIdNum);
+
+            // Get appointments data
+            const appointments = JSON.parse(localStorage.getItem('hm_appointments_data') || '[]');
+            
+            // Get patients data from localStorage (if stored)
+            const patientsData = JSON.parse(localStorage.getItem('hm_patients_data') || '[]');
+            
+            // Also check hardcoded patients data structure (same as index.html)
+            // This matches the structure used in the dashboard
+            const hardcodedPatients = [
+                { id: 301, name: 'Careen G. Simpson', age: 35, checkin: '20 July 2028', treatment: 'Routine Check-Up', doctor: 'Dr. Petra Winsbury', room: 'Single—303', status: 'Active' },
+                { id: 302, name: 'Edgar Warlow', age: 28, checkin: '20 July 2028', treatment: 'Cardiovascular Consultation', doctor: 'Dr. Olivia Martinez', room: 'Single—407', status: 'Active' },
+                { id: 303, name: 'Ocean Jane Lupre', age: 20, checkin: '20 July 2028', treatment: 'Pediatric Check-Up', doctor: 'Dr. Damian Sanchez', room: 'Double—303', status: 'New Patient' },
+                { id: 304, name: 'Shane Riddick', age: 50, checkin: '20 July 2028', treatment: 'Skin Allergy', doctor: 'Dr. Chloe Harrington', room: 'Single—305', status: 'Inactive' },
+                { id: 305, name: 'Queen Lawiston', age: 60, checkin: '22 July 2028', treatment: 'Follow-Up Visit', doctor: 'Dr. Petra Winsbury', room: 'Single—305', status: 'Active' },
+                { id: 306, name: 'Alice Mitchell', age: 28, checkin: '20 July 2028', treatment: 'Routine Check-Up', doctor: 'Dr. Emily Smith', room: 'Single—305', status: 'Active' },
+                { id: 307, name: 'Mikhail Morozov', age: 55, checkin: '22 July 2028', treatment: 'Cardiovascular Consultation', doctor: 'Dr. Samuel Thompson', room: 'Single—409', status: 'Active' },
+                { id: 308, name: 'Par Desai', age: 40, checkin: '20 July 2028', treatment: 'Skin Allergy', doctor: 'Dr. Luke Hansson', room: 'Single—310', status: 'Inactive' },
+                { id: 309, name: 'Omar Ali', age: 70, checkin: '20 July 2028', treatment: 'Follow-Up Visit', doctor: 'Dr. Andrew Peterson', room: 'Single—310', status: 'Active' },
+                { id: 310, name: 'Camila Alvarez', age: 30, checkin: '20 July 2028', treatment: 'Cardiovascular Check-Up', doctor: 'Dr. Olivia Martinez', room: 'Single—312', status: 'Active' },
+                { id: 311, name: 'Thabo van Rooyen', age: 15, checkin: '20 July 2028', treatment: 'Pediatric Check-Up', doctor: 'Dr. William Carter', room: 'Double—312', status: 'New Patient' },
+                { id: 313, name: 'John Doe', age: 31, checkin: '21 July 2028', treatment: 'General Consultation', doctor: 'Dr. Steven Blake', room: 'Single—111', status: 'Active' },
+                { id: 314, name: 'John Doe', age: 31, checkin: '21 July 2028', treatment: 'General Consultation', doctor: 'Dr. Steven Blake', room: 'Single—111', status: 'Active' },
+                { id: 315, name: 'John Doe', age: 31, checkin: '21 July 2028', treatment: 'General Consultation', doctor: 'Dr. Steven Blake', room: 'Single—111', status: 'Active' }
+            ];
+
+            // Combine all patient sources
+            const allPatients = [...hardcodedPatients, ...patientsData];
+
+            // Try to find patient by ID (numeric match)
+            let foundPatient = null;
+            if (isNumericId) {
+                foundPatient = allPatients.find(p => p && (p.id === patientIdNum || p.id === patientId || String(p.id) === String(patientId)));
+            }
+            
+            // If not found by ID, try to find by patientId field
+            if (!foundPatient) {
+                foundPatient = allPatients.find(p => {
+                    if (!p) return false;
+                    const pId = String(p.patientId || p.id || '').toUpperCase();
+                    const searchId = String(patientId).toUpperCase();
+                    return pId === searchId || 
+                           pId === 'PAT-' + searchId ||
+                           'PAT-' + pId === searchId ||
+                           pId.replace('PAT-', '') === searchId.replace('PAT-', '');
+                });
+            }
+
+            // If patient found in patients data, get doctor and bed
+            if (foundPatient) {
+                if (foundPatient.doctor && foundPatient.doctor.trim()) {
+                    doctorName = foundPatient.doctor;
+                }
+                if (foundPatient.room && foundPatient.room.trim()) {
+                    bedInfo = foundPatient.room;
+                } else if (foundPatient.bedNumber && foundPatient.bedNumber.trim()) {
+                    bedInfo = foundPatient.bedNumber;
+                } else if (foundPatient.bed && foundPatient.bed.trim()) {
+                    bedInfo = foundPatient.bed;
+                }
+            }
+
+            // Also check appointments for this patient
+            // Match by patient ID or by patient name
+            let patientAppointment = null;
+            
+            if (foundPatient && foundPatient.name) {
+                // Try to find appointment by patient name
+                patientAppointment = appointments.find(apt => 
+                    apt && apt.fullName && apt.fullName.toLowerCase() === foundPatient.name.toLowerCase()
+                );
+            }
+            
+            // Also try to match by ID
+            if (!patientAppointment && isNumericId) {
+                patientAppointment = appointments.find(apt => 
+                    apt && (apt.id === patientIdNum || apt.patientId === patientIdNum || String(apt.id) === String(patientId))
+                );
+            }
+
+            // If appointment found and we don't have doctor/bed yet, use appointment data
+            if (patientAppointment) {
+                if (doctorName === '-' && patientAppointment.doctor && patientAppointment.doctor.trim()) {
+                    doctorName = patientAppointment.doctor;
+                } else if (doctorName === '-' && patientAppointment.department && patientAppointment.department.trim()) {
+                    doctorName = patientAppointment.department;
+                }
+                
+                if (bedInfo === '-' && patientAppointment.room && patientAppointment.room.trim() && patientAppointment.room !== 'OPD') {
+                    bedInfo = patientAppointment.room;
+                } else if (bedInfo === '-' && (patientAppointment.visitType === 'OPD' || patientAppointment.source === 'public')) {
+                    bedInfo = 'OPD';
+                }
+            }
+
+            // Update the display
+            document.getElementById('pd-doctor').textContent = doctorName;
+            document.getElementById('pd-bed').textContent = bedInfo;
+        }
+
+        // Load doctor and bed info on page load
+        loadPatientDoctorAndBed();
+
         // Initialize currency selector function (define before use)
         function initCurrencySelector() {
             const container = document.getElementById('currency-selector-bills-container');
@@ -2167,11 +2281,19 @@
             Object.values(panels).forEach(p => p.classList.add('hidden'));
             panels[btn.dataset.tab].classList.remove('hidden');
             
-            // Initialize currency selector when bills panel is shown
+            // Initialize currency selector and load bills when bills panel is shown
             if (btn.dataset.tab === 'bills') {
                 setTimeout(() => {
                     initCurrencySelector();
+                    loadBills();
                 }, 150);
+            }
+            
+            // Initialize medication/tests/radiology tabs when health panel is shown
+            if (btn.dataset.tab === 'health') {
+                setTimeout(() => {
+                    initializeTabs();
+                }, 100);
             }
         }));
 
@@ -2223,6 +2345,20 @@
                         // Show target panel
                         Object.values(panels).forEach(p => p.classList.add('hidden'));
                         panels[hash].classList.remove('hidden');
+                        
+                        // Initialize medication/tests/radiology tabs when health panel is shown
+                        if (hash === 'health') {
+                            setTimeout(() => {
+                                initializeTabs();
+                            }, 100);
+                        }
+                        
+                        // Load bills when bills panel is shown
+                        if (hash === 'bills') {
+                            setTimeout(() => {
+                                loadBills();
+                            }, 100);
+                        }
                     }
                 }
                 // Check if it's a sub-tab
@@ -2249,6 +2385,593 @@
         
         // Check for hash changes
         window.addEventListener('hashchange', handleHashNavigation);
+
+        // Load and render bills for the current patient
+        function loadBills() {
+            const params = new URLSearchParams(window.location.search);
+            const patientId = params.get('id') || params.get('patientId');
+            
+            if (!patientId) {
+                document.getElementById('bills-table-body').innerHTML = 
+                    '<tr><td colspan="7" class="px-6 py-4 text-center text-gray-500">No patient ID found</td></tr>';
+                return;
+            }
+
+            // Get all bills from localStorage
+            const allBills = JSON.parse(localStorage.getItem('hm_bills_data') || '[]');
+            
+            // Filter bills for this specific patient
+            // Handle different patient ID formats (with/without PAT- prefix, string/number)
+            const patientBills = allBills.filter(bill => {
+                if (!bill.patientId) return false;
+                
+                const billPatientId = bill.patientId.toString().toUpperCase();
+                const currentPatientId = patientId.toString().toUpperCase();
+                
+                // Match exact ID, with PAT- prefix, or without prefix
+                return billPatientId === currentPatientId ||
+                       billPatientId === 'PAT-' + currentPatientId ||
+                       billPatientId === currentPatientId.replace('PAT-', '') ||
+                       'PAT-' + billPatientId === currentPatientId ||
+                       billPatientId.replace('PAT-', '') === currentPatientId.replace('PAT-', '');
+            });
+
+            const tbody = document.getElementById('bills-table-body');
+            
+            if (patientBills.length === 0) {
+                tbody.innerHTML = 
+                    '<tr><td colspan="7" class="px-6 py-4 text-center text-gray-500">No bills found for this patient</td></tr>';
+                return;
+            }
+
+            // Sort bills by billing date (newest first)
+            patientBills.sort((a, b) => new Date(b.billingDate) - new Date(a.billingDate));
+
+            // Render bills
+            tbody.innerHTML = patientBills.map((bill, index) => {
+                // Format dates
+                const billingDate = bill.billingDate ? new Date(bill.billingDate).toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                }) : '-';
+                
+                const dueDate = bill.dueDate ? new Date(bill.dueDate).toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                }) : '-';
+
+                // Format services/line items
+                let servicesHtml = '';
+                if (bill.lineItems && bill.lineItems.length > 0) {
+                    servicesHtml = bill.lineItems.map(item => {
+                        const itemDate = item.date ? new Date(item.date).toLocaleDateString('en-US', { 
+                            month: 'short', 
+                            day: 'numeric' 
+                        }) : '';
+                        return `<div class="text-xs mb-1">
+                            <span class="font-medium">${item.description || 'Service'}</span>
+                            ${itemDate ? `<span class="text-gray-500 ml-1">(${itemDate})</span>` : ''}
+                            <span class="text-gray-500 ml-1">Qty: ${item.quantity || 0}</span>
+                            <span class="text-gray-500 ml-1">@ ${item.priceFormatted || item.price || 0}</span>
+                        </div>`;
+                    }).join('');
+                } else {
+                    servicesHtml = '<span class="text-gray-400 text-xs">No services</span>';
+                }
+
+                // Status styling
+                let statusClass = '';
+                let statusText = bill.billStatus || 'Pending';
+                if (statusText.toLowerCase() === 'paid') {
+                    statusClass = 'bg-green-100 text-green-700';
+                } else if (statusText.toLowerCase() === 'pending' || statusText.toLowerCase() === 'unpaid') {
+                    statusClass = 'bg-yellow-100 text-yellow-700';
+                } else if (statusText.toLowerCase() === 'overdue') {
+                    statusClass = 'bg-red-100 text-red-700';
+                } else {
+                    statusClass = 'bg-gray-100 text-gray-700';
+                }
+
+                return `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-3 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${bill.id || 'N/A'}</td>
+                        <td class="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-700">${billingDate}</td>
+                        <td class="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-700">${dueDate}</td>
+                        <td class="px-3 sm:px-6 py-4 text-sm text-gray-700">
+                            <div class="max-w-xs">${servicesHtml}</div>
+                        </td>
+                        <td class="px-3 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            ${bill.grandTotalFormatted || bill.grandTotal || '0.00'}
+                        </td>
+                        <td class="px-3 sm:px-6 py-4 whitespace-nowrap text-sm">
+                            <span class="px-2 py-1 rounded-full text-xs font-medium ${statusClass}">
+                                ${statusText.toUpperCase()}
+                            </span>
+                        </td>
+                        <td class="px-3 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button onclick="showBillDetails('${bill.id}')" class="px-3 py-1 bg-orange-500 text-white rounded hover:bg-orange-600 text-xs font-medium">
+                                View
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Show bill details in popup
+        function showBillDetails(billId) {
+            const allBills = JSON.parse(localStorage.getItem('hm_bills_data') || '[]');
+            const bill = allBills.find(b => b.id === billId);
+            
+            if (!bill) {
+                alert('Bill not found');
+                return;
+            }
+
+            // Format dates
+            const billingDate = bill.billingDate ? new Date(bill.billingDate).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            }) : '-';
+            
+            const dueDate = bill.dueDate ? new Date(bill.dueDate).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            }) : '-';
+
+            // Status styling
+            let statusClass = '';
+            let statusText = bill.billStatus || 'Pending';
+            if (statusText.toLowerCase() === 'paid') {
+                statusClass = 'bg-green-100 text-green-700';
+            } else if (statusText.toLowerCase() === 'pending' || statusText.toLowerCase() === 'unpaid') {
+                statusClass = 'bg-yellow-100 text-yellow-700';
+            } else if (statusText.toLowerCase() === 'overdue') {
+                statusClass = 'bg-red-100 text-red-700';
+            } else {
+                statusClass = 'bg-gray-100 text-gray-700';
+            }
+
+            // Build line items HTML
+            let lineItemsHtml = '';
+            if (bill.lineItems && bill.lineItems.length > 0) {
+                lineItemsHtml = bill.lineItems.map((item, index) => {
+                    const itemDate = item.date ? new Date(item.date).toLocaleDateString('en-US', { 
+                        month: 'short', 
+                        day: 'numeric',
+                        year: 'numeric'
+                    }) : '-';
+                    return `
+                        <tr class="border-b">
+                            <td class="px-4 py-3 text-sm">${index + 1}</td>
+                            <td class="px-4 py-3 text-sm">${item.description || '-'}</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">${itemDate}</td>
+                            <td class="px-4 py-3 text-sm text-center">${item.quantity || 0}</td>
+                            <td class="px-4 py-3 text-sm text-right">${item.priceFormatted || item.price || '0.00'}</td>
+                            <td class="px-4 py-3 text-sm text-right font-medium">${item.totalFormatted || item.total || '0.00'}</td>
+                        </tr>
+                    `;
+                }).join('');
+            } else {
+                lineItemsHtml = '<tr><td colspan="6" class="px-4 py-3 text-center text-gray-500">No line items</td></tr>';
+            }
+
+            // Build bill details HTML
+            const billDetailsHtml = `
+                <!-- Bill Header -->
+                <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Bill Number</p>
+                            <p class="text-lg font-semibold text-gray-800">${bill.id || 'N/A'}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Patient Name</p>
+                            <p class="text-lg font-semibold text-gray-800">${bill.patientName || 'N/A'}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bill Information -->
+                <div class="bg-white border rounded-lg p-4 mb-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">Bill Information</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <p class="text-gray-500 mb-1">Billing Date</p>
+                            <p class="text-gray-800 font-medium">${billingDate}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 mb-1">Due Date</p>
+                            <p class="text-gray-800 font-medium">${dueDate}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 mb-1">Status</p>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium ${statusClass} inline-block">
+                                ${statusText.toUpperCase()}
+                            </span>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 mb-1">Currency</p>
+                            <p class="text-gray-800 font-medium">${bill.currency || 'INR'}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Line Items -->
+                <div class="bg-white border rounded-lg p-4 mb-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">Services & Items</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">#</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Service Description</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                                    <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">Quantity</th>
+                                    <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Price</th>
+                                    <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                ${lineItemsHtml}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Bill Summary -->
+                <div class="bg-white border rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">Bill Summary</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Subtotal:</span>
+                            <span class="text-gray-800 font-medium">${bill.subtotalFormatted || bill.subtotal || '0.00'}</span>
+                        </div>
+                        ${bill.discountPercent > 0 ? `
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Discount (${bill.discountPercent}%):</span>
+                            <span class="text-gray-800 font-medium">-${bill.discountAmountFormatted || bill.discountAmount || '0.00'}</span>
+                        </div>
+                        ` : ''}
+                        ${bill.taxPercent > 0 ? `
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Tax (${bill.taxPercent}%):</span>
+                            <span class="text-gray-800 font-medium">+${bill.taxAmountFormatted || bill.taxAmount || '0.00'}</span>
+                        </div>
+                        ` : ''}
+                        <div class="flex justify-between pt-2 border-t border-gray-200">
+                            <span class="text-lg font-semibold text-gray-800">Grand Total:</span>
+                            <span class="text-lg font-semibold text-orange-600">${bill.grandTotalFormatted || bill.grandTotal || '0.00'}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Populate modal content
+            document.getElementById('bill-details-content').innerHTML = billDetailsHtml;
+            
+            // Store bill data for printing
+            window.currentBillForPrint = bill;
+            
+            // Open modal
+            openModal('bill-details-modal');
+        }
+
+        // Print bill function
+        function printBill() {
+            const bill = window.currentBillForPrint;
+            if (!bill) {
+                alert('No bill data available for printing');
+                return;
+            }
+
+            // Format dates
+            const billingDate = bill.billingDate ? new Date(bill.billingDate).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            }) : '-';
+            
+            const dueDate = bill.dueDate ? new Date(bill.dueDate).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            }) : '-';
+
+            // Build line items HTML for print
+            let lineItemsHtml = '';
+            if (bill.lineItems && bill.lineItems.length > 0) {
+                lineItemsHtml = bill.lineItems.map((item, index) => {
+                    const itemDate = item.date ? new Date(item.date).toLocaleDateString('en-US', { 
+                        month: 'short', 
+                        day: 'numeric',
+                        year: 'numeric'
+                    }) : '-';
+                    return `
+                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="padding: 12px; text-align: left;">${index + 1}</td>
+                            <td style="padding: 12px; text-align: left;">${item.description || '-'}</td>
+                            <td style="padding: 12px; text-align: left; color: #4b5563;">${itemDate}</td>
+                            <td style="padding: 12px; text-align: center;">${item.quantity || 0}</td>
+                            <td style="padding: 12px; text-align: right;">${item.priceFormatted || item.price || '0.00'}</td>
+                            <td style="padding: 12px; text-align: right; font-weight: 500;">${item.totalFormatted || item.total || '0.00'}</td>
+                        </tr>
+                    `;
+                }).join('');
+            } else {
+                lineItemsHtml = '<tr><td colspan="6" style="padding: 12px; text-align: center; color: #6b7280;">No line items</td></tr>';
+            }
+
+            // Create print-friendly HTML
+            const printContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Bill - ${bill.id || 'N/A'}</title>
+                    <style>
+                        @media print {
+                            @page {
+                                margin: 20mm;
+                            }
+                            body {
+                                margin: 0;
+                                padding: 0;
+                            }
+                        }
+                        body {
+                            font-family: Arial, sans-serif;
+                            color: #1f2937;
+                            max-width: 800px;
+                            margin: 0 auto;
+                            padding: 20px;
+                        }
+                        .header {
+                            background-color: #fff7ed;
+                            border: 1px solid #fed7aa;
+                            border-radius: 8px;
+                            padding: 20px;
+                            margin-bottom: 20px;
+                        }
+                        .header-row {
+                            display: flex;
+                            justify-content: space-between;
+                            margin-bottom: 10px;
+                        }
+                        .header-label {
+                            font-size: 12px;
+                            color: #6b7280;
+                            margin-bottom: 4px;
+                        }
+                        .header-value {
+                            font-size: 18px;
+                            font-weight: 600;
+                            color: #1f2937;
+                        }
+                        .section {
+                            background-color: #ffffff;
+                            border: 1px solid #e5e7eb;
+                            border-radius: 8px;
+                            padding: 20px;
+                            margin-bottom: 20px;
+                        }
+                        .section-title {
+                            font-weight: 600;
+                            color: #1f2937;
+                            margin-bottom: 15px;
+                            font-size: 16px;
+                        }
+                        .info-grid {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 20px;
+                            font-size: 14px;
+                        }
+                        .info-label {
+                            color: #6b7280;
+                            margin-bottom: 4px;
+                        }
+                        .info-value {
+                            color: #1f2937;
+                            font-weight: 500;
+                        }
+                        .status-badge {
+                            display: inline-block;
+                            padding: 4px 12px;
+                            border-radius: 9999px;
+                            font-size: 12px;
+                            font-weight: 500;
+                            text-transform: uppercase;
+                        }
+                        .status-paid { background-color: #d1fae5; color: #065f46; }
+                        .status-pending { background-color: #fef3c7; color: #92400e; }
+                        .status-overdue { background-color: #fee2e2; color: #991b1b; }
+                        .status-default { background-color: #f3f4f6; color: #374151; }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-top: 10px;
+                        }
+                        th {
+                            background-color: #f9fafb;
+                            padding: 12px;
+                            text-align: left;
+                            font-size: 12px;
+                            font-weight: 500;
+                            color: #6b7280;
+                            text-transform: uppercase;
+                            border-bottom: 1px solid #e5e7eb;
+                        }
+                        th.text-center { text-align: center; }
+                        th.text-right { text-align: right; }
+                        td {
+                            padding: 12px;
+                        }
+                        .summary {
+                            margin-top: 20px;
+                        }
+                        .summary-row {
+                            display: flex;
+                            justify-content: space-between;
+                            margin-bottom: 8px;
+                            font-size: 14px;
+                        }
+                        .summary-label {
+                            color: #4b5563;
+                        }
+                        .summary-value {
+                            color: #1f2937;
+                            font-weight: 500;
+                        }
+                        .summary-total {
+                            padding-top: 12px;
+                            border-top: 1px solid #e5e7eb;
+                            margin-top: 12px;
+                        }
+                        .summary-total-label {
+                            font-size: 18px;
+                            font-weight: 600;
+                            color: #1f2937;
+                        }
+                        .summary-total-value {
+                            font-size: 18px;
+                            font-weight: 600;
+                            color: #ea580c;
+                        }
+                        .print-date {
+                            text-align: right;
+                            color: #6b7280;
+                            font-size: 12px;
+                            margin-bottom: 20px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="print-date">Printed on: ${new Date().toLocaleString()}</div>
+                    
+                    <div class="header">
+                        <div class="header-row">
+                            <div>
+                                <div class="header-label">Bill Number</div>
+                                <div class="header-value">${bill.id || 'N/A'}</div>
+                            </div>
+                            <div>
+                                <div class="header-label">Patient Name</div>
+                                <div class="header-value">${bill.patientName || 'N/A'}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">Bill Information</div>
+                        <div class="info-grid">
+                            <div>
+                                <div class="info-label">Billing Date</div>
+                                <div class="info-value">${billingDate}</div>
+                            </div>
+                            <div>
+                                <div class="info-label">Due Date</div>
+                                <div class="info-value">${dueDate}</div>
+                            </div>
+                            <div>
+                                <div class="info-label">Status</div>
+                                <div>
+                                    <span class="status-badge status-${(bill.billStatus || 'pending').toLowerCase()}">
+                                        ${(bill.billStatus || 'Pending').toUpperCase()}
+                                    </span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="info-label">Currency</div>
+                                <div class="info-value">${bill.currency || 'INR'}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">Services & Items</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Service Description</th>
+                                    <th>Date</th>
+                                    <th class="text-center">Quantity</th>
+                                    <th class="text-right">Price</th>
+                                    <th class="text-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${lineItemsHtml}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">Bill Summary</div>
+                        <div class="summary">
+                            <div class="summary-row">
+                                <span class="summary-label">Subtotal:</span>
+                                <span class="summary-value">${bill.subtotalFormatted || bill.subtotal || '0.00'}</span>
+                            </div>
+                            ${bill.discountPercent > 0 ? `
+                            <div class="summary-row">
+                                <span class="summary-label">Discount (${bill.discountPercent}%):</span>
+                                <span class="summary-value">-${bill.discountAmountFormatted || bill.discountAmount || '0.00'}</span>
+                            </div>
+                            ` : ''}
+                            ${bill.taxPercent > 0 ? `
+                            <div class="summary-row">
+                                <span class="summary-label">Tax (${bill.taxPercent}%):</span>
+                                <span class="summary-value">+${bill.taxAmountFormatted || bill.taxAmount || '0.00'}</span>
+                            </div>
+                            ` : ''}
+                            <div class="summary-row summary-total">
+                                <span class="summary-total-label">Grand Total:</span>
+                                <span class="summary-total-value">${bill.grandTotalFormatted || bill.grandTotal || '0.00'}</span>
+                            </div>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            // Open print window
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+            
+            // Wait for content to load, then print
+            printWindow.onload = function() {
+                setTimeout(() => {
+                    printWindow.print();
+                }, 250);
+            };
+        }
+
+        // Load bills when bills panel is shown
+        function handleBillsPanelShow() {
+            const billsPanel = document.getElementById('panel-bills');
+            if (billsPanel && !billsPanel.classList.contains('hidden')) {
+                loadBills();
+            }
+        }
+
+        // Call loadBills when bills tab is clicked
+        const billsTab = document.querySelector('[data-tab="bills"]');
+        if (billsTab) {
+            billsTab.addEventListener('click', () => {
+                setTimeout(loadBills, 100);
+            });
+        }
+
+        // Also load bills on page load if hash is #bills
+        if (window.location.hash === '#bills') {
+            setTimeout(loadBills, 300);
+        }
 
         // Lab Reports Sub-tabs functionality
         const labSubtabs = document.querySelectorAll('.lab-subtab-btn');
@@ -2466,7 +3189,10 @@
             const newMedicineRow = document.createElement('div');
             newMedicineRow.className = 'flex flex-wrap items-center gap-2';
             newMedicineRow.innerHTML = `
-                <input type="text" name="medicine[]" class="flex-1 min-w-[120px] border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Medicine name" />
+                <div class="flex-1 min-w-[120px] relative">
+                    <input type="text" name="medicine[]" list="medicine-list-options" class="w-full border border-gray-300 rounded px-3 py-2 text-sm pr-8" placeholder="Search medicine..." autocomplete="off" />
+                    <i class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                </div>
                 <input type="number" name="morning[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Morning" min="0" />
                 <input type="number" name="afternoon[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Afternoon" min="0" />
                 <input type="number" name="night[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Night" min="0" />
@@ -2489,67 +3215,103 @@
         }
 
         // Tab switching functionality
+        let tabsInitialized = false;
         function initializeTabs() {
-            const tabButtons = document.querySelectorAll('[data-tab]');
+            // Only initialize if health panel is visible
+            const healthPanel = document.getElementById('panel-health');
+            if (healthPanel && healthPanel.classList.contains('hidden')) {
+                return; // Health panel is hidden, don't initialize
+            }
+            
+            const tabButtons = document.querySelectorAll('[data-tab="medication"], [data-tab="tests"], [data-tab="radiology"]');
             const tabContents = document.querySelectorAll('.tab-content');
             
-            // Initialize: Set Medication as active by default
-            tabButtons.forEach(btn => {
-                const tabName = btn.getAttribute('data-tab');
-                if (tabName === 'medication') {
-                    btn.classList.add('border-b-2', 'border-orange-500', 'text-orange-500', 'font-semibold');
-                    btn.classList.remove('text-gray-500', 'border-transparent');
-                } else {
-                    btn.classList.add('text-gray-500', 'border-b-2', 'border-transparent');
-                    btn.classList.remove('border-orange-500', 'text-orange-500', 'font-semibold');
-                }
-            });
+            if (tabButtons.length === 0 || tabContents.length === 0) {
+                return; // Elements not found yet
+            }
             
-            // Hide all tab contents except medication
-            tabContents.forEach(content => {
-                if (content.id === 'tab-content-medication') {
-                    content.classList.remove('hidden');
-                } else {
-                    content.classList.add('hidden');
-                }
-            });
+            // Initialize: Set Medication as active by default - be very explicit
+            const medicationBtn = document.querySelector('[data-tab="medication"]');
+            const testsBtn = document.querySelector('[data-tab="tests"]');
+            const radiologyBtn = document.querySelector('[data-tab="radiology"]');
             
-            // Add click handlers
-            tabButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const targetTab = this.getAttribute('data-tab');
-                    
-                    // Remove active styles from all tabs
-                    tabButtons.forEach(btn => {
-                        btn.classList.remove('border-orange-500', 'text-orange-500', 'font-semibold');
-                        btn.classList.add('text-gray-500', 'border-transparent');
+            if (medicationBtn) {
+                medicationBtn.classList.add('border-b-2', 'border-orange-500', 'text-orange-500', 'font-semibold');
+                medicationBtn.classList.remove('text-gray-500', 'border-transparent');
+            }
+            if (testsBtn) {
+                testsBtn.classList.add('text-gray-500', 'border-b-2', 'border-transparent');
+                testsBtn.classList.remove('border-orange-500', 'text-orange-500', 'font-semibold');
+            }
+            if (radiologyBtn) {
+                radiologyBtn.classList.add('text-gray-500', 'border-b-2', 'border-transparent');
+                radiologyBtn.classList.remove('border-orange-500', 'text-orange-500', 'font-semibold');
+            }
+            
+            // Hide all tab contents except medication - be very explicit
+            const medicationContent = document.getElementById('tab-content-medication');
+            const testsContent = document.getElementById('tab-content-tests');
+            const radiologyContent = document.getElementById('tab-content-radiology');
+            
+            if (medicationContent) {
+                medicationContent.classList.remove('hidden');
+            }
+            if (testsContent) {
+                testsContent.classList.add('hidden');
+            }
+            if (radiologyContent) {
+                radiologyContent.classList.add('hidden');
+            }
+            
+            // Add click handlers only once
+            if (!tabsInitialized) {
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const targetTab = this.getAttribute('data-tab');
+                        
+                        // Remove active styles from all tabs
+                        tabButtons.forEach(btn => {
+                            btn.classList.remove('border-orange-500', 'text-orange-500', 'font-semibold');
+                            btn.classList.add('text-gray-500', 'border-transparent');
+                        });
+                        
+                        // Hide all tab contents
+                        tabContents.forEach(content => {
+                            content.classList.add('hidden');
+                        });
+                        
+                        // Show selected tab content
+                        const targetContent = document.getElementById(`tab-content-${targetTab}`);
+                        if (targetContent) {
+                            targetContent.classList.remove('hidden');
+                        }
+                        
+                        // Add active styles to clicked tab
+                        this.classList.remove('text-gray-500', 'border-transparent');
+                        this.classList.add('border-b-2', 'border-orange-500', 'text-orange-500', 'font-semibold');
                     });
-                    
-                    // Hide all tab contents
-                    tabContents.forEach(content => {
-                        content.classList.add('hidden');
-                    });
-                    
-                    // Show selected tab content
-                    document.getElementById(`tab-content-${targetTab}`).classList.remove('hidden');
-                    
-                    // Add active styles to clicked tab
-                    this.classList.remove('text-gray-500', 'border-transparent');
-                    this.classList.add('border-b-2', 'border-orange-500', 'text-orange-500', 'font-semibold');
                 });
-            });
+                tabsInitialized = true;
+            }
         }
         
-        // Initialize tabs on page load
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeTabs);
-        } else {
-            // DOM is already ready
+        // Initialize tabs on page load - multiple attempts to ensure it runs
+        function runTabInitialization() {
             initializeTabs();
         }
         
-        // Also try to initialize immediately (in case script runs after DOM)
-        setTimeout(initializeTabs, 100);
+        // Try multiple times to ensure it works
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', runTabInitialization);
+        } else {
+            runTabInitialization();
+        }
+        
+        // Additional fallbacks
+        window.addEventListener('load', runTabInitialization);
+        setTimeout(runTabInitialization, 100);
+        setTimeout(runTabInitialization, 300);
+        setTimeout(runTabInitialization, 500);
 
         // Tests functionality
         function addTest() {
@@ -2647,7 +3409,10 @@
             const medicationList = document.getElementById('medication-list');
             medicationList.innerHTML = `
                 <div class="flex flex-wrap items-center gap-2">
-                    <input type="text" name="medicine[]" class="flex-1 min-w-[120px] border border-gray-300 rounded px-3 py-2 text-sm" placeholder="Medicine name" />
+                    <div class="flex-1 min-w-[120px] relative">
+                        <input type="text" name="medicine[]" list="medicine-list-options" class="w-full border border-gray-300 rounded px-3 py-2 text-sm pr-8" placeholder="Search medicine..." autocomplete="off" />
+                        <i class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                    </div>
                     <input type="number" name="morning[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Morning" min="0" />
                     <input type="number" name="afternoon[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Afternoon" min="0" />
                     <input type="number" name="night[]" class="w-16 sm:w-16 border border-gray-300 rounded px-2 py-2 text-sm" placeholder="Night" min="0" />

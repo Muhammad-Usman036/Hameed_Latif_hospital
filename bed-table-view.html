@@ -147,6 +147,9 @@
                         <p class="text-sm sm:text-base text-gray-600">Complete overview of all beds and patient assignments</p>
                     </div>
                     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+                        <a href="bed-management.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-lg font-medium text-sm sm:text-base text-center">
+                            <i class="fas fa-cog mr-2"></i>Manage Beds
+                        </a>
                         <a href="bed-board.html" class="bg-orange-500 hover:bg-orange-600 text-white px-4 sm:px-6 py-2 rounded-lg font-medium text-sm sm:text-base text-center">
                             <i class="fas fa-th-large mr-2"></i>Grid View
                         </a>
@@ -161,21 +164,19 @@
                     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
                         <div class="flex items-center space-x-2">
                             <label class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Ward:</label>
-                            <select class="border border-gray-300 rounded-lg px-2 sm:px-3 py-1 text-xs sm:text-sm flex-1 sm:flex-initial">
-                                <option>All Wards</option>
-                                <option>General Medicine</option>
-                                <option>ICU Ward</option>
-                                <option>Emergency Ward</option>
+                            <select id="ward-filter" class="border border-gray-300 rounded-lg px-2 sm:px-3 py-1 text-xs sm:text-sm flex-1 sm:flex-initial">
+                                <option value="">All Wards</option>
                             </select>
                         </div>
                         <div class="flex items-center space-x-2">
                             <label class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Status:</label>
-                            <select class="border border-gray-300 rounded-lg px-2 sm:px-3 py-1 text-xs sm:text-sm flex-1 sm:flex-initial">
-                                <option>All Status</option>
-                                <option>Available</option>
-                                <option>Occupied</option>
-                                <option>Cleaning</option>
-                                <option>Blocked</option>
+                            <select id="status-filter" class="border border-gray-300 rounded-lg px-2 sm:px-3 py-1 text-xs sm:text-sm flex-1 sm:flex-initial">
+                                <option value="">All Status</option>
+                                <option value="Available">Available</option>
+                                <option value="Occupied">Occupied</option>
+                                <option value="Cleaning">Cleaning</option>
+                                <option value="Blocked">Blocked</option>
+                                <option value="Reserved">Reserved</option>
                             </select>
                         </div>
                     </div>
@@ -249,118 +250,16 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-100">
-                                <!-- Sample Data Rows -->
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-3 sm:px-5 py-3 whitespace-nowrap">
-                                        <a href="patient-detail.html?id=12345" class="text-blue-600 hover:text-blue-800 font-medium">W2-B01</a>
-                                    </td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">General Medicine</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">MRN-12345</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-800 whitespace-nowrap">John Smith</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">Dr. Ali Aslam</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">20-Oct-2025</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">Skin Allergy</td>
-                                    <td class="px-3 sm:px-5 py-3 whitespace-nowrap">
-                                        <span class="px-2 py-1 bg-orange-500 text-white rounded-full text-xs">Occupied</span>
-                                    </td>
-                                </tr>
-                                
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-3 sm:px-5 py-3 whitespace-nowrap">
-                                        <a href="patient-detail.html?id=12346" class="text-blue-600 hover:text-blue-800 font-medium">W2-B02</a>
-                                    </td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">General Medicine</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">-</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-800 whitespace-nowrap">-</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">-</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">-</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">-</td>
-                                    <td class="px-3 sm:px-5 py-3 whitespace-nowrap">
-                                        <span class="px-2 py-1 bg-green-500 text-white rounded-full text-xs">Available</span>
-                                    </td>
-                                </tr>
-                                
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-3 sm:px-5 py-3 whitespace-nowrap">
-                                        <a href="patient-detail.html?id=12347" class="text-blue-600 hover:text-blue-800 font-medium">W2-B03</a>
-                                    </td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">General Medicine</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">MRN-12346</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-800 whitespace-nowrap">Sarah Johnson</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">Dr. Emily Smith</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">21-Oct-2025</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">Routine Check-up</td>
-                                    <td class="px-3 sm:px-5 py-3 whitespace-nowrap">
-                                        <span class="px-2 py-1 bg-orange-500 text-white rounded-full text-xs">Occupied</span>
-                                    </td>
-                                </tr>
-                                
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-3 sm:px-5 py-3 whitespace-nowrap">
-                                        <a href="patient-detail.html?id=12348" class="text-blue-600 hover:text-blue-800 font-medium">W2-B04</a>
-                                    </td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">General Medicine</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">-</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-800 whitespace-nowrap">-</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">-</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">-</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">-</td>
-                                    <td class="px-3 sm:px-5 py-3 whitespace-nowrap">
-                                        <span class="px-2 py-1 bg-yellow-500 text-white rounded-full text-xs">Cleaning</span>
-                                    </td>
-                                </tr>
-                                
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-3 sm:px-5 py-3 whitespace-nowrap">
-                                        <a href="patient-detail.html?id=12349" class="text-blue-600 hover:text-blue-800 font-medium">ICU-101</a>
-                                    </td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">ICU Ward</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">MRN-12350</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-800 whitespace-nowrap">Michael Brown</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">Dr. John Wilson</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">19-Oct-2025</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">Critical Care</td>
-                                    <td class="px-3 sm:px-5 py-3 whitespace-nowrap">
-                                        <span class="px-2 py-1 bg-orange-500 text-white rounded-full text-xs">Occupied</span>
-                                    </td>
-                                </tr>
-                                
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-3 sm:px-5 py-3 whitespace-nowrap">
-                                        <a href="patient-detail.html?id=12351" class="text-blue-600 hover:text-blue-800 font-medium">ICU-102</a>
-                                    </td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">ICU Ward</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">-</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-800 whitespace-nowrap">-</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">-</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">-</td>
-                                    <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">-</td>
-                                    <td class="px-3 sm:px-5 py-3 whitespace-nowrap">
-                                        <span class="px-2 py-1 bg-green-500 text-white rounded-full text-xs">Available</span>
-                                    </td>
-                                </tr>
+                            <tbody id="beds-tbody" class="divide-y divide-gray-100">
+                                <!-- Beds will be loaded dynamically here -->
                             </tbody>
                         </table>
                         </div>
                     </div>
 
                     <!-- Pagination -->
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-3 sm:px-5 py-3 text-xs text-gray-500 border-t border-gray-100 gap-2">
-                        <span>Showing 6 of 63 beds</span>
-                        <div class="flex items-center justify-center sm:justify-start flex-wrap gap-1">
-                            <button class="w-7 h-7 rounded bg-white border border-gray-200 text-gray-600 flex items-center justify-center">
-                                <i class="fas fa-chevron-left text-xs"></i>
-                            </button>
-                            <button class="w-7 h-7 rounded bg-orange-500 text-white">1</button>
-                            <button class="w-7 h-7 rounded bg-white border border-gray-200 text-gray-600">2</button>
-                            <button class="w-7 h-7 rounded bg-white border border-gray-200 text-gray-600">3</button>
-                            <span class="px-2">...</span>
-                            <button class="w-7 h-7 rounded bg-white border border-gray-200 text-gray-600">11</button>
-                            <button class="w-7 h-7 rounded bg-white border border-gray-200 text-gray-600 flex items-center justify-center">
-                                <i class="fas fa-chevron-right text-xs"></i>
-                            </button>
-                        </div>
+                    <div id="pagination-container" class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-3 sm:px-5 py-3 text-xs text-gray-500 border-t border-gray-100 gap-2">
+                        <span id="bed-count">Showing 0 beds</span>
                     </div>
                 </div>
             </main>
@@ -371,6 +270,96 @@
         // Theme loader
         function loadTheme(){ const saved = localStorage.getItem('hm_accent_hex'); if(saved){ const root=document.documentElement; root.style.setProperty('--accent-500', saved);} }
         loadTheme();
+
+        // Load beds from localStorage
+        function loadBeds() {
+            const saved = localStorage.getItem('hm_beds_data');
+            let bedsData = [];
+            if (saved) {
+                bedsData = JSON.parse(saved);
+            }
+            return bedsData;
+        }
+
+        // Get patient info
+        function getPatientInfo(bed) {
+            if (!bed.patientId && !bed.patientName) return null;
+            const patients = JSON.parse(localStorage.getItem('hm_patients_data') || '[]');
+            let patient = null;
+            if (bed.patientId) {
+                patient = patients.find(p => p.id === bed.patientId || String(p.id) === String(bed.patientId));
+            }
+            if (!patient && bed.patientName) {
+                patient = patients.find(p => p.name === bed.patientName);
+            }
+            return patient;
+        }
+
+        // Render beds table
+        function renderBeds() {
+            const beds = loadBeds();
+            const tbody = document.getElementById('beds-tbody');
+            const wardFilter = document.getElementById('ward-filter').value;
+            const statusFilter = document.getElementById('status-filter').value;
+
+            let filteredBeds = beds.filter(bed => {
+                const matchesWard = !wardFilter || bed.ward === wardFilter;
+                const matchesStatus = !statusFilter || bed.status === statusFilter;
+                return matchesWard && matchesStatus;
+            });
+
+            if (filteredBeds.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="px-3 sm:px-5 py-8 text-center text-gray-500">No beds found. <a href="bed-management.html" class="text-orange-500 hover:underline">Add beds</a> to get started.</td></tr>';
+                document.getElementById('bed-count').textContent = 'Showing 0 beds';
+                return;
+            }
+
+            const statusColors = {
+                'Available': 'bg-green-500',
+                'Occupied': 'bg-orange-500',
+                'Cleaning': 'bg-yellow-500',
+                'Blocked': 'bg-blue-800',
+                'Reserved': 'bg-purple-500'
+            };
+
+            tbody.innerHTML = filteredBeds.map(bed => {
+                const patient = getPatientInfo(bed);
+                const statusClass = statusColors[bed.status] || 'bg-gray-500';
+                const patientLink = bed.patientId ? `patient-detail.html?id=${bed.patientId}` : '#';
+                
+                return `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-3 sm:px-5 py-3 whitespace-nowrap">
+                            <a href="${patientLink}" class="text-blue-600 hover:text-blue-800 font-medium">${bed.bedId}</a>
+                        </td>
+                        <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">${bed.ward}</td>
+                        <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">${bed.patientId || '-'}</td>
+                        <td class="px-3 sm:px-5 py-3 text-gray-800 whitespace-nowrap">${bed.patientName || '-'}</td>
+                        <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">${patient && patient.doctor ? patient.doctor : '-'}</td>
+                        <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">-</td>
+                        <td class="px-3 sm:px-5 py-3 text-gray-700 whitespace-nowrap">-</td>
+                        <td class="px-3 sm:px-5 py-3 whitespace-nowrap">
+                            <span class="px-2 py-1 ${statusClass} text-white rounded-full text-xs">${bed.status}</span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.getElementById('bed-count').textContent = `Showing ${filteredBeds.length} of ${beds.length} beds`;
+        }
+
+        // Populate ward filter
+        function populateWardFilter() {
+            const beds = loadBeds();
+            const wardFilter = document.getElementById('ward-filter');
+            const wards = [...new Set(beds.map(bed => bed.ward))].sort();
+            const currentValue = wardFilter.value;
+            wardFilter.innerHTML = '<option value="">All Wards</option>' + 
+                wards.map(ward => `<option value="${ward}">${ward}</option>`).join('');
+            if (currentValue) {
+                wardFilter.value = currentValue;
+            }
+        }
 
         // Initialize shared sidebar
         document.addEventListener('DOMContentLoaded', function() {
@@ -394,6 +383,14 @@
                     overlay.classList.remove('active');
                 });
             }
+
+            // Load and render beds
+            populateWardFilter();
+            renderBeds();
+
+            // Filter event listeners
+            document.getElementById('ward-filter').addEventListener('change', renderBeds);
+            document.getElementById('status-filter').addEventListener('change', renderBeds);
         });
     </script>
 </body>

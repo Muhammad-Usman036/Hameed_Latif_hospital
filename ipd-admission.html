@@ -195,26 +195,26 @@
                         Patient & Admission Details
                     </h2>
                     
-                    <form class="space-y-4 sm:space-y-6">
+                    <form id="admission-form" class="space-y-4 sm:space-y-6">
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                             <!-- Patient Information -->
                             <div class="space-y-4">
                                 <h3 class="text-md font-medium text-gray-700 border-b pb-2">Patient Information</h3>
                                 
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Patient Name</label>
-                                    <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter patient name">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Patient Name *</label>
+                                    <input type="text" id="patient-name" name="patientName" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter patient name">
                                 </div>
                                 
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Patient Id</label>
-                                    <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter patient ID">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Patient Id *</label>
+                                    <input type="text" id="patient-id" name="patientId" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter patient ID">
                                 </div>
                                 
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-                                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
-                                        <option>Select Gender</option>
+                                    <select id="gender" name="gender" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                        <option value="">Select Gender</option>
                                         <option>Male</option>
                                         <option>Female</option>
                                         <option>Other</option>
@@ -227,13 +227,18 @@
                                 <h3 class="text-md font-medium text-gray-700 border-b pb-2">Admission Details</h3>
                                 
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Admission Date</label>
-                                    <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" id="admission-date">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Admission Date *</label>
+                                    <input type="date" id="admission-date" name="admissionDate" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Doctor *</label>
+                                    <input type="text" id="doctor" name="doctor" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter doctor name">
                                 </div>
                                 
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Source</label>
-                                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                    <select id="source" name="source" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
                                         <option>Emergency</option>
                                         <option>OPD</option>
                                         <option>Direct</option>
@@ -242,18 +247,8 @@
                                 </div>
                                 
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Priority</label>
-                                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
-                                        <option>Emergency</option>
-                                        <option>High</option>
-                                        <option>Medium</option>
-                                        <option>Low</option>
-                                    </select>
-                                </div>
-                                
-                                <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
-                                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                    <select id="department" name="department" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
                                         <option>ICU</option>
                                         <option>General Medicine</option>
                                         <option>Cardiology</option>
@@ -264,11 +259,8 @@
                                 
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Ward</label>
-                                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
-                                        <option>ICU Ward 1</option>
-                                        <option>General Ward 2</option>
-                                        <option>Emergency Ward</option>
-                                        <option>Cardiology Ward</option>
+                                    <select id="ward" name="ward" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                        <option value="">Select Ward</option>
                                     </select>
                                 </div>
                             </div>
@@ -277,17 +269,14 @@
                         <!-- Additional Fields -->
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Reason for Admission</label>
-                                <textarea rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter reason for admission">Emergency</textarea>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Reason for Admission / Treatment *</label>
+                                <textarea id="treatment" name="treatment" rows="3" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter reason for admission">Emergency</textarea>
                             </div>
                             
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Bed</label>
-                                <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
-                                    <option>W2-802-(Available)</option>
-                                    <option>W2-801-(Available)</option>
-                                    <option>W2-803-(Available)</option>
-                                    <option>W2-804-(Available)</option>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Bed *</label>
+                                <select id="bed-select" name="bedId" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                    <option value="">Select Bed</option>
                                 </select>
                             </div>
                         </div>
@@ -295,18 +284,13 @@
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Mobile No</label>
-                                <input type="tel" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm" placeholder="Enter mobile number">
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Reason for Admission</label>
-                                <textarea rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm" placeholder="Enter detailed reason for admission">Emergency</textarea>
+                                <input type="tel" id="mobile" name="mobile" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm" placeholder="Enter mobile number">
                             </div>
                         </div>
                         
                         <!-- Action Buttons -->
                         <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-4 pt-4 sm:pt-6 border-t">
-                            <button type="button" class="bg-orange-500 hover:bg-orange-600 text-white px-4 sm:px-6 py-2 rounded-lg font-medium flex items-center justify-center space-x-2 text-sm sm:text-base">
+                            <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-4 sm:px-6 py-2 rounded-lg font-medium flex items-center justify-center space-x-2 text-sm sm:text-base">
                                 <i class="fas fa-user-plus"></i>
                                 <span>Admit Patient</span>
                             </button>
@@ -316,7 +300,7 @@
                                 <span>Print AdmissionSlip</span>
                             </button>
                             
-                            <button type="button" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-4 sm:px-6 py-2 rounded-lg font-medium text-sm sm:text-base">
+                            <button type="button" onclick="window.location.href='bed-board.html'" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-4 sm:px-6 py-2 rounded-lg font-medium text-sm sm:text-base">
                                 Cancel
                             </button>
                         </div>
@@ -331,6 +315,144 @@
         function loadTheme(){ const saved = localStorage.getItem('hm_accent_hex'); if(saved){ const root=document.documentElement; root.style.setProperty('--accent-500', saved);} }
         loadTheme();
 
+        // Load available beds
+        function loadAvailableBeds() {
+            const saved = localStorage.getItem('hm_beds_data');
+            let beds = [];
+            if (saved) {
+                beds = JSON.parse(saved);
+            }
+            return beds.filter(bed => bed.status === 'Available');
+        }
+
+        // Load all beds (for ward dropdown)
+        function loadAllBeds() {
+            const saved = localStorage.getItem('hm_beds_data');
+            let beds = [];
+            if (saved) {
+                beds = JSON.parse(saved);
+            }
+            return beds;
+        }
+
+        // Populate bed dropdown
+        function populateBeds() {
+            const availableBeds = loadAvailableBeds();
+            const allBeds = loadAllBeds();
+            const bedSelect = document.getElementById('bed-select');
+            const wardSelect = document.getElementById('ward');
+            
+            // Get unique wards from ALL beds (not just available ones)
+            const wards = [...new Set(allBeds.map(bed => bed.ward))].sort();
+            wardSelect.innerHTML = '<option value="">Select Ward</option>' + 
+                wards.map(ward => `<option value="${ward}">${ward}</option>`).join('');
+            
+            // Populate beds with all available beds initially
+            bedSelect.innerHTML = '<option value="">Select Bed</option>';
+            if (availableBeds.length === 0) {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'No available beds';
+                option.disabled = true;
+                bedSelect.appendChild(option);
+            } else {
+                availableBeds.forEach(bed => {
+                    const option = document.createElement('option');
+                    option.value = bed.bedId;
+                    option.textContent = `${bed.bedId} - ${bed.ward}${bed.room ? ' (' + bed.room + ')' : ''} (${bed.status})`;
+                    bedSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Filter beds by ward
+        function filterBedsByWard() {
+            const wardSelect = document.getElementById('ward');
+            const bedSelect = document.getElementById('bed-select');
+            const selectedWard = wardSelect.value;
+            const availableBeds = loadAvailableBeds();
+            
+            bedSelect.innerHTML = '<option value="">Select Bed</option>';
+            
+            // Filter by ward if selected
+            const filteredBeds = selectedWard ? 
+                availableBeds.filter(bed => bed.ward === selectedWard) : 
+                availableBeds;
+            
+            if (filteredBeds.length === 0) {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = selectedWard ? 
+                    `No available beds in ${selectedWard}` : 
+                    'No available beds';
+                option.disabled = true;
+                bedSelect.appendChild(option);
+            } else {
+                filteredBeds.forEach(bed => {
+                    const option = document.createElement('option');
+                    option.value = bed.bedId;
+                    option.textContent = `${bed.bedId} - ${bed.ward}${bed.room ? ' (' + bed.room + ')' : ''} (${bed.status})`;
+                    bedSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('admission-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            
+            const patientName = formData.get('patientName');
+            const patientId = formData.get('patientId');
+            const bedId = formData.get('bedId');
+            const doctor = formData.get('doctor');
+            const admissionDate = formData.get('admissionDate');
+            const treatment = formData.get('treatment');
+            const ward = formData.get('ward');
+            
+            if (!bedId) {
+                alert('Please select a bed');
+                return;
+            }
+            
+            // Load beds
+            const saved = localStorage.getItem('hm_beds_data');
+            let beds = [];
+            if (saved) {
+                beds = JSON.parse(saved);
+            }
+            
+            // Find and update the bed
+            const bedIndex = beds.findIndex(b => b.bedId === bedId);
+            if (bedIndex === -1) {
+                alert('Selected bed not found');
+                return;
+            }
+            
+            const bed = beds[bedIndex];
+            if (bed.status !== 'Available') {
+                alert('Selected bed is not available');
+                return;
+            }
+            
+            // Update bed with patient information
+            beds[bedIndex] = {
+                ...bed,
+                status: 'Occupied',
+                patientId: patientId,
+                patientName: patientName,
+                doctor: doctor,
+                admissionDate: admissionDate,
+                treatment: treatment || 'Emergency'
+            };
+            
+            // Save beds
+            localStorage.setItem('hm_beds_data', JSON.stringify(beds));
+            
+            alert('Patient admitted successfully!');
+            window.location.href = 'bed-board.html';
+        });
+
         // Initialize shared sidebar
         document.addEventListener('DOMContentLoaded', function() {
             // Load shared sidebar
@@ -343,6 +465,12 @@
                 const today = new Date().toISOString().split('T')[0];
                 admissionDateInput.value = today;
             }
+            
+            // Populate beds
+            populateBeds();
+            
+            // Ward change handler
+            document.getElementById('ward').addEventListener('change', filterBedsByWard);
             
             // Mobile menu functionality
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');

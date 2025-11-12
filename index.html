@@ -393,54 +393,16 @@
                     <!-- OPD Schedule -->
                     <div class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6">
                         <h3 class="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">OPD Schedule</h3>
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between gap-2">
-                                <div class="min-w-0">
-                                    <p class="text-xs sm:text-sm font-medium text-gray-800">Dr. Jhon</p>
-                                    <p class="text-xs text-gray-500">General Medicine</p>
-                                </div>
-                                <div class="text-right flex-shrink-0">
-                                    <span class="px-2 py-1 bg-blue-100 text-blue-600 rounded text-xs whitespace-nowrap">Available</span>
-                                    <p class="text-xs text-gray-500 mt-1">10:00 AM - 12:00 PM</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between gap-2">
-                                <div class="min-w-0">
-                                    <p class="text-xs sm:text-sm font-medium text-gray-800">Dr. Smith</p>
-                                    <p class="text-xs text-gray-500">Cardiology</p>
-                                </div>
-                                <div class="text-right flex-shrink-0">
-                                    <span class="px-2 py-1 bg-red-100 text-red-600 rounded text-xs whitespace-nowrap">Unavailable</span>
-                                    <p class="text-xs text-gray-500 mt-1">2:00 PM - 4:00 PM</p>
-                                </div>
-                            </div>
+                        <div id="opd-schedule-list" class="space-y-3">
+                            <!-- OPD schedules will be loaded dynamically -->
                         </div>
                     </div>
                     
                     <!-- IPD Schedule -->
                     <div class="bg-white rounded-lg shadow-sm p-4 sm:p-5 lg:p-6">
                         <h3 class="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">IPD Schedule</h3>
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between gap-2">
-                                <div class="min-w-0">
-                                    <p class="text-xs sm:text-sm font-medium text-gray-800">Dr. Jhon</p>
-                                    <p class="text-xs text-gray-500">General Medicine</p>
-                                </div>
-                                <div class="text-right flex-shrink-0">
-                                    <span class="px-2 py-1 bg-red-100 text-red-600 rounded text-xs whitespace-nowrap">Unavailable</span>
-                                    <p class="text-xs text-gray-500 mt-1">9:00 AM - 12:00 PM</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between gap-2">
-                                <div class="min-w-0">
-                                    <p class="text-xs sm:text-sm font-medium text-gray-800">Dr. Wilson</p>
-                                    <p class="text-xs text-gray-500">Neurology</p>
-                                </div>
-                                <div class="text-right flex-shrink-0">
-                                    <span class="px-2 py-1 bg-blue-100 text-blue-600 rounded text-xs whitespace-nowrap">Available</span>
-                                    <p class="text-xs text-gray-500 mt-1">1:00 PM - 3:00 PM</p>
-                                </div>
-                            </div>
+                        <div id="ipd-schedule-list" class="space-y-3">
+                            <!-- IPD schedules will be loaded dynamically -->
                         </div>
                     </div>
                     
@@ -625,6 +587,153 @@
     </div>
 
     <script>
+        // Load and render OPD and IPD schedules
+        function loadSchedules() {
+            const events = JSON.parse(localStorage.getItem('hm_doctor_events') || '[]');
+            const today = new Date();
+            const todayStr = today.toISOString().split('T')[0]; // YYYY-MM-DD format
+            
+            // Get current time for availability check
+            const now = new Date();
+            const currentTime = now.getHours() * 60 + now.getMinutes(); // minutes since midnight
+            
+            // Filter events for today and future dates
+            const upcomingEvents = events.filter(e => {
+                if (!e.date) return false;
+                const eventDate = new Date(e.date);
+                return eventDate >= new Date(todayStr);
+            });
+            
+            // Separate OPD and IPD schedules
+            // For backward compatibility: if scheduleType is not set, check location for "OPD" or default to OPD
+            const opdSchedules = upcomingEvents.filter(e => {
+                const scheduleType = (e.scheduleType || '').toUpperCase();
+                if (scheduleType === 'OPD') return true;
+                if (scheduleType === 'IPD') return false;
+                // Backward compatibility: check location for OPD keyword
+                const location = (e.location || '').toUpperCase();
+                return location.includes('OPD') || scheduleType === '';
+            });
+            
+            const ipdSchedules = upcomingEvents.filter(e => {
+                const scheduleType = (e.scheduleType || '').toUpperCase();
+                return scheduleType === 'IPD';
+            });
+            
+            // Sort by date and time
+            const sortSchedules = (schedules) => {
+                return schedules.sort((a, b) => {
+                    const dateCompare = a.date.localeCompare(b.date);
+                    if (dateCompare !== 0) return dateCompare;
+                    return (a.start || '').localeCompare(b.start || '');
+                });
+            };
+            
+            // Render OPD schedules
+            renderScheduleList('opd-schedule-list', sortSchedules([...opdSchedules]), currentTime, todayStr);
+            
+            // Render IPD schedules
+            renderScheduleList('ipd-schedule-list', sortSchedules([...ipdSchedules]), currentTime, todayStr);
+        }
+        
+        function renderScheduleList(containerId, schedules, currentTime, todayStr) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            if (schedules.length === 0) {
+                container.innerHTML = '<p class="text-xs text-gray-500 text-center py-2">No schedules available</p>';
+                return;
+            }
+            
+            // Show up to 5 upcoming schedules
+            const displaySchedules = schedules.slice(0, 5);
+            
+            container.innerHTML = displaySchedules.map(schedule => {
+                const scheduleDate = new Date(schedule.date);
+                const isToday = schedule.date === todayStr;
+                
+                // Determine availability
+                let availability = 'Unavailable';
+                let availabilityClass = 'bg-red-100 text-red-600';
+                
+                if (isToday && schedule.start && schedule.end) {
+                    const startTime = parseTime(schedule.start);
+                    const endTime = parseTime(schedule.end);
+                    
+                    if (currentTime >= startTime && currentTime <= endTime) {
+                        availability = 'Available';
+                        availabilityClass = 'bg-blue-100 text-blue-600';
+                    } else if (currentTime < startTime) {
+                        availability = 'Upcoming';
+                        availabilityClass = 'bg-yellow-100 text-yellow-600';
+                    }
+                } else if (scheduleDate > new Date(todayStr)) {
+                    availability = 'Upcoming';
+                    availabilityClass = 'bg-yellow-100 text-yellow-600';
+                }
+                
+                // Format time display
+                const timeDisplay = schedule.start && schedule.end 
+                    ? `${formatTime(schedule.start)} - ${formatTime(schedule.end)}`
+                    : schedule.start || 'Time TBD';
+                
+                // Format date display
+                let dateDisplay = '';
+                if (isToday) {
+                    dateDisplay = 'Today';
+                } else {
+                    dateDisplay = scheduleDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                }
+                
+                return `
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs sm:text-sm font-medium text-gray-800">${schedule.doctor || 'Dr. Unknown'}</p>
+                            <p class="text-xs text-gray-500">${schedule.department || 'General Medicine'}</p>
+                            ${dateDisplay && !isToday ? `<p class="text-xs text-gray-400 mt-0.5">${dateDisplay}</p>` : ''}
+                        </div>
+                        <div class="text-right flex-shrink-0">
+                            <span class="px-2 py-1 ${availabilityClass} rounded text-xs whitespace-nowrap">${availability}</span>
+                            <p class="text-xs text-gray-500 mt-1">${timeDisplay}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function parseTime(timeStr) {
+            // Convert "HH:MM" or "HH:MM AM/PM" to minutes since midnight
+            if (!timeStr) return 0;
+            
+            // Handle 24-hour format (HH:MM)
+            if (timeStr.includes(':')) {
+                const parts = timeStr.split(':');
+                const hours = parseInt(parts[0]) || 0;
+                const minutes = parseInt(parts[1]) || 0;
+                return hours * 60 + minutes;
+            }
+            
+            return 0;
+        }
+        
+        function formatTime(timeStr) {
+            // Format time for display (convert 24-hour to 12-hour if needed)
+            if (!timeStr) return '';
+            
+            if (timeStr.includes(':')) {
+                const parts = timeStr.split(':');
+                const hours = parseInt(parts[0]) || 0;
+                const minutes = parts[1] || '00';
+                
+                if (hours === 0) return `12:${minutes} AM`;
+                if (hours < 12) return `${hours}:${minutes} AM`;
+                if (hours === 12) return `12:${minutes} PM`;
+                return `${hours - 12}:${minutes} PM`;
+            }
+            
+            return timeStr;
+        }
+
         // Initialize shared sidebar
         document.addEventListener('DOMContentLoaded', function() {
             // Load shared sidebar
@@ -647,6 +756,9 @@
                     overlay.classList.remove('active');
                 });
             }
+            
+            // Load schedules on page load
+            loadSchedules();
         });
 
         // Simple view router: toggles Dashboard and Patients views

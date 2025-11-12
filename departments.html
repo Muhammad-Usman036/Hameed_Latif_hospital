@@ -66,17 +66,21 @@
         <!-- Main Content -->
         <div class="flex-1 flex flex-col">
             <!-- Header -->
-            <header class="bg-gray-100 px-6 py-4 flex items-center justify-between border-b border-gray-200">
+            <header class="bg-white px-4 sm:px-6 py-4 flex items-center justify-between border-b border-gray-200 shadow-sm">
                 <div class="flex items-center space-x-4">
-                    <h1 class="text-xl font-semibold text-gray-800">Departments</h1>
+                    <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Departments</h1>
+                    <span class="hidden sm:inline-block text-sm text-gray-500">Explore our medical specialties</span>
                 </div>
                 
-                <div class="flex items-center space-x-4">
-                    <button class="text-gray-600 hover:text-gray-800">
+                <div class="flex items-center space-x-3 sm:space-x-4">
+                    <button class="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition">
+                        <i class="fas fa-search text-lg"></i>
+                    </button>
+                    <button class="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition">
                         <i class="fas fa-cog text-lg"></i>
                     </button>
                     
-                    <div class="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg">
+                    <div class="hidden sm:flex items-center space-x-2 bg-gray-50 px-3 py-2 rounded-lg border border-gray-200">
                         <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
                             <span class="text-white text-sm font-medium">A</span>
                         </div>
@@ -88,12 +92,30 @@
             </header>
             
             <!-- Departments Content -->
-            <main class="flex-1 overflow-y-auto p-8">
+            <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-gray-50">
                 <div class="max-w-7xl mx-auto">
+                    <!-- Search and Filter Bar -->
+                    <div class="mb-6 bg-white rounded-lg shadow-sm p-4">
+                        <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                            <div class="flex-1 w-full sm:w-auto">
+                                <div class="relative">
+                                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                    <input type="text" id="department-search" placeholder="Search departments..." 
+                                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm text-gray-600">Total:</span>
+                                <span class="text-sm font-semibold text-orange-600" id="department-count">12</span>
+                                <span class="text-sm text-gray-600">departments</span>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <!-- Departments Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6" id="departments-grid">
                         <!-- General Medicine -->
-                        <div class="department-card bg-white rounded-lg shadow-sm overflow-hidden border border-orange-100">
+                        <div class="department-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:border-orange-300" data-department="General Medicine">
                             <img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=400&h=180&fit=crop" 
                                  alt="General Medicine" 
                                  class="department-image w-full">
@@ -110,15 +132,15 @@
                                         <img src="https://ui-avatars.com/api/?name=Dr+Kim&background=8b5cf6&color=fff" class="avatar" alt="Doctor">
                                         <span class="ml-2 text-xs text-gray-500">+3 others</span>
                                     </div>
-                                    <button class="px-4 py-1.5 border border-orange-500 text-orange-600 rounded text-sm hover:bg-orange-50 transition">
-                                        See Detail
+                                    <button onclick="viewDepartmentDetail('General Medicine')" class="px-4 py-1.5 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition shadow-sm hover:shadow">
+                                        View Details
                                     </button>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Cardiology -->
-                        <div class="department-card bg-white rounded-lg shadow-sm overflow-hidden border border-orange-100">
+                        <div class="department-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:border-orange-300" data-department="Cardiology">
                             <img src="https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=400&h=180&fit=crop" 
                                  alt="Cardiology" 
                                  class="department-image w-full">
@@ -134,8 +156,8 @@
                                         <img src="https://ui-avatars.com/api/?name=Dr+Davis&background=06b6d4&color=fff" class="avatar" alt="Doctor">
                                         <img src="https://ui-avatars.com/api/?name=Dr+Taylor&background=ec4899&color=fff" class="avatar" alt="Doctor">
                                     </div>
-                                    <button class="px-4 py-1.5 border border-orange-500 text-orange-600 rounded text-sm hover:bg-orange-50 transition">
-                                        See Detail
+                                    <button onclick="viewDepartmentDetail('Cardiology')" class="px-4 py-1.5 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition shadow-sm hover:shadow">
+                                        View Details
                                     </button>
                                 </div>
                             </div>
@@ -158,8 +180,8 @@
                                         <img src="https://ui-avatars.com/api/?name=Dr+White&background=6366f1&color=fff" class="avatar" alt="Doctor">
                                         <img src="https://ui-avatars.com/api/?name=Dr+Hall&background=14b8a6&color=fff" class="avatar" alt="Doctor">
                                     </div>
-                                    <button class="px-4 py-1.5 border border-orange-500 text-orange-600 rounded text-sm hover:bg-orange-50 transition">
-                                        See Detail
+                                    <button onclick="viewDepartmentDetail('General Medicine')" class="px-4 py-1.5 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition shadow-sm hover:shadow">
+                                        View Details
                                     </button>
                                 </div>
                             </div>
@@ -183,8 +205,8 @@
                                         <img src="https://ui-avatars.com/api/?name=Dr+Young&background=0ea5e9&color=fff" class="avatar" alt="Doctor">
                                         <span class="ml-2 text-xs text-gray-500">+3 others</span>
                                     </div>
-                                    <button class="px-4 py-1.5 border border-orange-500 text-orange-600 rounded text-sm hover:bg-orange-50 transition">
-                                        See Detail
+                                    <button onclick="viewDepartmentDetail('General Medicine')" class="px-4 py-1.5 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition shadow-sm hover:shadow">
+                                        View Details
                                     </button>
                                 </div>
                             </div>
@@ -208,8 +230,8 @@
                                         <img src="https://ui-avatars.com/api/?name=Dr+Green&background=8b5cf6&color=fff" class="avatar" alt="Doctor">
                                         <span class="ml-2 text-xs text-gray-500">+50</span>
                                     </div>
-                                    <button class="px-4 py-1.5 border border-orange-500 text-orange-600 rounded text-sm hover:bg-orange-50 transition">
-                                        See Detail
+                                    <button onclick="viewDepartmentDetail('General Medicine')" class="px-4 py-1.5 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition shadow-sm hover:shadow">
+                                        View Details
                                     </button>
                                 </div>
                             </div>
@@ -232,8 +254,8 @@
                                         <img src="https://ui-avatars.com/api/?name=Dr+Carter&background=06b6d4&color=fff" class="avatar" alt="Doctor">
                                         <img src="https://ui-avatars.com/api/?name=Dr+Mitchell&background=84cc16&color=fff" class="avatar" alt="Doctor">
                                     </div>
-                                    <button class="px-4 py-1.5 border border-orange-500 text-orange-600 rounded text-sm hover:bg-orange-50 transition">
-                                        See Detail
+                                    <button onclick="viewDepartmentDetail('General Medicine')" class="px-4 py-1.5 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition shadow-sm hover:shadow">
+                                        View Details
                                     </button>
                                 </div>
                             </div>
@@ -257,8 +279,8 @@
                                         <img src="https://ui-avatars.com/api/?name=Dr+Campbell&background=14b8a6&color=fff" class="avatar" alt="Doctor">
                                         <span class="ml-2 text-xs text-gray-500">+3 others</span>
                                     </div>
-                                    <button class="px-4 py-1.5 border border-orange-500 text-orange-600 rounded text-sm hover:bg-orange-50 transition">
-                                        See Detail
+                                    <button onclick="viewDepartmentDetail('General Medicine')" class="px-4 py-1.5 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition shadow-sm hover:shadow">
+                                        View Details
                                     </button>
                                 </div>
                             </div>
@@ -281,8 +303,8 @@
                                         <img src="https://ui-avatars.com/api/?name=Dr+Edwards&background=10b981&color=fff" class="avatar" alt="Doctor">
                                         <span class="ml-2 text-xs text-gray-500">+50</span>
                                     </div>
-                                    <button class="px-4 py-1.5 border border-orange-500 text-orange-600 rounded text-sm hover:bg-orange-50 transition">
-                                        See Detail
+                                    <button onclick="viewDepartmentDetail('General Medicine')" class="px-4 py-1.5 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition shadow-sm hover:shadow">
+                                        View Details
                                     </button>
                                 </div>
                             </div>
@@ -305,8 +327,8 @@
                                         <img src="https://ui-avatars.com/api/?name=Dr+Morris&background=3b82f6&color=fff" class="avatar" alt="Doctor">
                                         <img src="https://ui-avatars.com/api/?name=Dr+Rogers&background=8b5cf6&color=fff" class="avatar" alt="Doctor">
                                     </div>
-                                    <button class="px-4 py-1.5 border border-orange-500 text-orange-600 rounded text-sm hover:bg-orange-50 transition">
-                                        See Detail
+                                    <button onclick="viewDepartmentDetail('General Medicine')" class="px-4 py-1.5 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition shadow-sm hover:shadow">
+                                        View Details
                                     </button>
                                 </div>
                             </div>
@@ -329,8 +351,8 @@
                                         <img src="https://ui-avatars.com/api/?name=Dr+Morgan&background=84cc16&color=fff" class="avatar" alt="Doctor">
                                         <span class="ml-2 text-xs text-gray-500">+5 others</span>
                                     </div>
-                                    <button class="px-4 py-1.5 border border-orange-500 text-orange-600 rounded text-sm hover:bg-orange-50 transition">
-                                        See Detail
+                                    <button onclick="viewDepartmentDetail('General Medicine')" class="px-4 py-1.5 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition shadow-sm hover:shadow">
+                                        View Details
                                     </button>
                                 </div>
                             </div>
@@ -354,8 +376,8 @@
                                         <img src="https://ui-avatars.com/api/?name=Dr+Rivera&background=a855f7&color=fff" class="avatar" alt="Doctor">
                                         <span class="ml-2 text-xs text-gray-500">+8 others</span>
                                     </div>
-                                    <button class="px-4 py-1.5 border border-orange-500 text-orange-600 rounded text-sm hover:bg-orange-50 transition">
-                                        See Detail
+                                    <button onclick="viewDepartmentDetail('General Medicine')" class="px-4 py-1.5 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition shadow-sm hover:shadow">
+                                        View Details
                                     </button>
                                 </div>
                             </div>
@@ -379,8 +401,8 @@
                                         <img src="https://ui-avatars.com/api/?name=Dr+Howard&background=ec4899&color=fff" class="avatar" alt="Doctor">
                                         <span class="ml-2 text-xs text-gray-500">+6 others</span>
                                     </div>
-                                    <button class="px-4 py-1.5 border border-orange-500 text-orange-600 rounded text-sm hover:bg-orange-50 transition">
-                                        See Detail
+                                    <button onclick="viewDepartmentDetail('General Medicine')" class="px-4 py-1.5 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition shadow-sm hover:shadow">
+                                        View Details
                                     </button>
                                 </div>
                             </div>
@@ -451,10 +473,61 @@
         }
         loadTheme();
 
+        // View department detail
+        function viewDepartmentDetail(departmentName) {
+            const encodedName = encodeURIComponent(departmentName);
+            window.location.href = `department-detail.html?name=${encodedName}`;
+        }
+
+        // Fix all department buttons to use correct department names
+        function fixDepartmentButtons() {
+            const cards = document.querySelectorAll('.department-card');
+            cards.forEach(card => {
+                const h3 = card.querySelector('h3');
+                if (h3) {
+                    const deptName = h3.textContent.trim();
+                    const button = card.querySelector('button[onclick*="viewDepartmentDetail"]');
+                    if (button && deptName) {
+                        button.setAttribute('onclick', `viewDepartmentDetail('${deptName}')`);
+                    }
+                    // Also set data-department attribute if not set
+                    if (!card.hasAttribute('data-department')) {
+                        card.setAttribute('data-department', deptName);
+                        // Update card styling
+                        card.className = 'department-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:border-orange-300';
+                    }
+                }
+            });
+        }
+
         // Initialize shared sidebar
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('shared-sidebar').innerHTML = createSharedSidebar('departments');
             initSharedSidebar('departments');
+            
+            // Fix all department buttons
+            fixDepartmentButtons();
+            
+            const searchInput = document.getElementById('department-search');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const cards = document.querySelectorAll('[data-department]');
+                    let visibleCount = 0;
+                    
+                    cards.forEach(card => {
+                        const deptName = card.getAttribute('data-department').toLowerCase();
+                        if (deptName.includes(searchTerm)) {
+                            card.style.display = '';
+                            visibleCount++;
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                    
+                    document.getElementById('department-count').textContent = visibleCount;
+                });
+            }
         });
     </script>
 </body>
