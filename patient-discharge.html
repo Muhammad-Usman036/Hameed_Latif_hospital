@@ -167,6 +167,209 @@
                         </div>
                         
                         <form id="discharge-summary-form" class="space-y-4 sm:space-y-6">
+                            <!-- Patient Information Section -->
+                            <div class="border-b border-gray-200 pb-4 sm:pb-6">
+                                <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Patient Information</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Patient Name <span class="text-red-500">*</span></label>
+                                        <input type="text" id="patient-name" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" placeholder="Enter patient name" required />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Husband/Father Name</label>
+                                        <input type="text" id="patient-relative-name" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" placeholder="Enter relative name" />
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Present Address</label>
+                                        <textarea id="patient-address" rows="2" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-y text-xs sm:text-sm" placeholder="Enter patient address"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">CNIC Number</label>
+                                        <input type="text" id="patient-cnic" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" placeholder="42201-1234567-1" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Phone Number</label>
+                                        <input type="text" id="patient-phone" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" placeholder="03001234567" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Age (Years)</label>
+                                        <input type="number" id="patient-age-years" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" placeholder="60" min="0" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Age (Months)</label>
+                                        <input type="number" id="patient-age-months" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" placeholder="0" min="0" max="11" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Blood Group</label>
+                                        <select id="patient-blood-group" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm">
+                                            <option value="">Select Blood Group</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Date of Birth</label>
+                                        <input type="date" id="patient-dob" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Marital Status</label>
+                                        <select id="patient-marital-status" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm">
+                                            <option value="">Select Status</option>
+                                            <option value="SINGLE">SINGLE</option>
+                                            <option value="MARRIED">MARRIED</option>
+                                            <option value="DIVORCED">DIVORCED</option>
+                                            <option value="WIDOWED">WIDOWED</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Sex</label>
+                                        <select id="patient-sex" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm">
+                                            <option value="">Select</option>
+                                            <option value="MALE">MALE</option>
+                                            <option value="FEMALE">FEMALE</option>
+                                            <option value="OTHER">OTHER</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Department</label>
+                                        <select id="patient-department" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm">
+                                            <option value="">Select Department</option>
+                                            <option value="Cardiology">Cardiology</option>
+                                            <option value="Neurology">Neurology</option>
+                                            <option value="General Medicine">General Medicine</option>
+                                            <option value="Emergency Medicine">Emergency Medicine</option>
+                                            <option value="Internal Medicine">Internal Medicine</option>
+                                            <option value="Pediatrics">Pediatrics</option>
+                                            <option value="Surgery">Surgery</option>
+                                            <option value="Surgical">Surgical</option>
+                                            <option value="Orthopedics">Orthopedics</option>
+                                            <option value="Dermatology">Dermatology</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Ward/Room</label>
+                                        <input type="text" id="patient-ward-room" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" placeholder="e.g., Pre Op, General Ward" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Bed</label>
+                                        <input type="text" id="patient-bed" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" placeholder="e.g., Bed N" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Consultant Section -->
+                            <div class="border-b border-gray-200 pb-4 sm:pb-6">
+                                <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Consultant Information</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Consultant Name</label>
+                                        <input type="text" id="consultant-name" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" placeholder="e.g., Prof Surgeon Asim Malik" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Designation</label>
+                                        <input type="text" id="consultant-designation" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" placeholder="e.g., Chief of Surgery (IMC)" />
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Additional Consultants</label>
+                                        <input type="text" id="additional-consultants" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" placeholder="e.g., Lady Surgeon Dr Irum Naseem" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Medical Details Section -->
+                            <div class="border-b border-gray-200 pb-4 sm:pb-6">
+                                <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Medical Details</h3>
+                                
+                                <!-- History of Current Hospitalization -->
+                                <div class="mb-4">
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">History of Current Hospitalization</label>
+                                    <textarea id="hospitalization-history" rows="3" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-y text-xs sm:text-sm" placeholder="Describe the history of current hospitalization..."></textarea>
+                                </div>
+
+                                <!-- Procedure/Operation Table -->
+                                <div class="mb-4">
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Procedure/Operation</label>
+                                    <div class="overflow-x-auto">
+                                        <table class="min-w-full divide-y divide-gray-200 border border-gray-300 rounded-lg">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Sr. #</th>
+                                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Procedure Name</th>
+                                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Procedure Notes</th>
+                                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Procedure Date</th>
+                                                    <th class="px-3 py-2 text-center text-xs font-medium text-gray-500 uppercase">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="procedures-list" class="bg-white divide-y divide-gray-200">
+                                                <tr>
+                                                    <td class="px-3 py-2 text-xs text-gray-900">1</td>
+                                                    <td class="px-3 py-2"><input type="text" name="procedure-name[]" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" placeholder="Procedure name" /></td>
+                                                    <td class="px-3 py-2"><input type="text" name="procedure-notes[]" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" placeholder="Notes" /></td>
+                                                    <td class="px-3 py-2"><input type="date" name="procedure-date[]" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" /></td>
+                                                    <td class="px-3 py-2 text-center"><button type="button" onclick="removeProcedureRow(this)" class="text-red-500 hover:text-red-700 text-xs"><i class="fas fa-trash"></i></button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <button type="button" onclick="addProcedureRow()" class="mt-2 px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs sm:text-sm">
+                                        <i class="fas fa-plus mr-1"></i>Add Procedure
+                                    </button>
+                                </div>
+
+                                <!-- Treatment given in Hospital -->
+                                <div class="mb-4">
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Treatment given in the Hospital</label>
+                                    <textarea id="treatment-given" rows="3" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-y text-xs sm:text-sm" placeholder="Describe treatment given in hospital..."></textarea>
+                                </div>
+
+                                <!-- Investigation Reports Table -->
+                                <div class="mb-4">
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Investigation Reports Attached</label>
+                                    <div class="overflow-x-auto">
+                                        <table class="min-w-full divide-y divide-gray-200 border border-gray-300 rounded-lg">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Test Name</th>
+                                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Test Date</th>
+                                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Result</th>
+                                                    <th class="px-3 py-2 text-center text-xs font-medium text-gray-500 uppercase">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="investigations-list" class="bg-white divide-y divide-gray-200">
+                                                <tr>
+                                                    <td class="px-3 py-2"><input type="text" name="test-name[]" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" placeholder="Test name" /></td>
+                                                    <td class="px-3 py-2"><input type="date" name="test-date[]" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" /></td>
+                                                    <td class="px-3 py-2"><input type="text" name="test-result[]" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" placeholder="Result" /></td>
+                                                    <td class="px-3 py-2 text-center"><button type="button" onclick="removeInvestigationRow(this)" class="text-red-500 hover:text-red-700 text-xs"><i class="fas fa-trash"></i></button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <button type="button" onclick="addInvestigationRow()" class="mt-2 px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs sm:text-sm">
+                                        <i class="fas fa-plus mr-1"></i>Add Investigation
+                                    </button>
+                                </div>
+
+                                <!-- Condition at Discharge -->
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Condition at the time of Discharge</label>
+                                    <select id="discharge-condition" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm">
+                                        <option value="">Select Condition</option>
+                                        <option value="STABLE">STABLE</option>
+                                        <option value="IMPROVED">IMPROVED</option>
+                                        <option value="CRITICAL">CRITICAL</option>
+                                        <option value="SATISFACTORY">SATISFACTORY</option>
+                                        <option value="UNSTABLE">UNSTABLE</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <!-- Primary Diagnosis -->
                             <div>
                                 <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
@@ -192,26 +395,127 @@
                                 ></textarea>
                             </div>
                             
-                            <!-- Discharge Medications -->
-                            <div>
-                                <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Discharge Medications</label>
-                                <textarea 
-                                    id="discharge-medications" 
-                                    rows="4" 
-                                    class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-y text-xs sm:text-sm" 
-                                    placeholder="List medications with dosage and frequency..."
-                                ></textarea>
+                            <!-- Discharge Medications - Structured Table -->
+                            <div class="border-b border-gray-200 pb-4 sm:pb-6">
+                                <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">MEDICINES TO BE TAKEN TILL FOLLOW-UP VISIT</h3>
+                                <div class="mb-4">
+                                    <div class="overflow-x-auto">
+                                        <table class="min-w-full divide-y divide-gray-200 border border-gray-300 rounded-lg">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Medicine Name</th>
+                                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Dose</th>
+                                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">How To Take</th>
+                                                    <th class="px-3 py-2 text-center text-xs font-medium text-gray-500 uppercase">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="medicines-list" class="bg-white divide-y divide-gray-200">
+                                                <tr>
+                                                    <td class="px-3 py-2">
+                                                        <input type="text" name="medicine-name[]" list="medicine-options" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" placeholder="Search medicine..." />
+                                                        <datalist id="medicine-options">
+                                                            <option value="TAB TAVANIC">TAB TAVANIC</option>
+                                                            <option value="TAB ITCAN">TAB ITCAN</option>
+                                                            <option value="SYP ZINBER">SYP ZINBER</option>
+                                                            <option value="TAB PANTOSTAL">TAB PANTOSTAL</option>
+                                                            <option value="TAB SIUSTA">TAB SIUSTA</option>
+                                                            <option value="CALENDULA DROPS + SITZ BATH">CALENDULA DROPS + SITZ BATH</option>
+                                                            <option value="AGIOLAX GRANULES">AGIOLAX GRANULES</option>
+                                                            <option value="XYLOCAINE GEL 2%">XYLOCAINE GEL 2%</option>
+                                                            <option value="Paracetamol 500mg">Paracetamol 500mg</option>
+                                                            <option value="Ibuprofen 400mg">Ibuprofen 400mg</option>
+                                                            <option value="Amoxicillin 500mg">Amoxicillin 500mg</option>
+                                                        </datalist>
+                                                    </td>
+                                                    <td class="px-3 py-2">
+                                                        <input type="text" name="medicine-dose[]" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" placeholder="e.g., 250mg" />
+                                                    </td>
+                                                    <td class="px-3 py-2">
+                                                        <textarea name="medicine-instructions[]" rows="2" class="w-full px-2 py-1 border border-gray-300 rounded text-xs resize-y" placeholder="e.g., 1+1 for 7 days"></textarea>
+                                                    </td>
+                                                    <td class="px-3 py-2 text-center">
+                                                        <button type="button" onclick="removeMedicineRow(this)" class="text-red-500 hover:text-red-700 text-xs">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <button type="button" onclick="addMedicineRow()" class="mt-2 px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded text-xs sm:text-sm">
+                                        <i class="fas fa-plus mr-1"></i>Add Medicine
+                                    </button>
+                                </div>
+                                <!-- Keep old textarea as fallback (hidden by default) -->
+                                <div class="mt-4">
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Discharge Medications (Alternative - Text Format)</label>
+                                    <textarea 
+                                        id="discharge-medications" 
+                                        rows="4" 
+                                        class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-y text-xs sm:text-sm" 
+                                        placeholder="List medications with dosage and frequency (alternative format)..."
+                                    ></textarea>
+                                </div>
                             </div>
                             
-                            <!-- Follow-up Instructions -->
-                            <div>
-                                <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Follow-up Instructions</label>
-                                <textarea 
-                                    id="follow-up-instructions" 
-                                    rows="4" 
-                                    class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-y text-xs sm:text-sm" 
-                                    placeholder="Provide follow-up care instructions and appointment recommendations..."
-                                ></textarea>
+                            <!-- Instructions on Discharge -->
+                            <div class="border-b border-gray-200 pb-4 sm:pb-6">
+                                <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Instructions on Discharge</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Instructions</label>
+                                        <textarea 
+                                            id="discharge-instructions" 
+                                            rows="4" 
+                                            class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-y text-xs sm:text-sm" 
+                                            placeholder="e.g., CONTINUE HOME MEDICATION AS PER CONSULTANT ADVICE..."
+                                        ></textarea>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                                        <div>
+                                            <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Emergency Contact</label>
+                                            <input type="text" id="emergency-contact" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" placeholder="e.g., 0322 9400555" />
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Follow Up Date</label>
+                                            <input type="date" id="follow-up-date" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Keep old follow-up instructions field as fallback -->
+                                <div class="mt-4">
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Follow-up Instructions (Alternative)</label>
+                                    <textarea 
+                                        id="follow-up-instructions" 
+                                        rows="4" 
+                                        class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-y text-xs sm:text-sm" 
+                                        placeholder="Provide follow-up care instructions and appointment recommendations..."
+                                    ></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Signature Section -->
+                            <div class="pb-4 sm:pb-6">
+                                <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Medical Officer Signature</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Name and Signature of Medical Officer</label>
+                                        <input type="text" id="medical-officer-name" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm mb-3" placeholder="e.g., M ISMAIL FARUQUI" />
+                                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center bg-gray-50">
+                                            <p class="text-xs text-gray-500 mb-2">Signature Area</p>
+                                            <canvas id="signature-canvas" width="300" height="100" class="border border-gray-300 bg-white rounded cursor-crosshair mx-auto"></canvas>
+                                            <div class="mt-2 flex justify-center gap-2">
+                                                <button type="button" onclick="clearSignature()" class="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded text-xs">
+                                                    Clear Signature
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Date & Time</label>
+                                        <input type="datetime-local" id="discharge-date-time" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-xs sm:text-sm" />
+                                    </div>
+                                </div>
                             </div>
                         </form>
                         
@@ -461,6 +765,233 @@
         loadTheme();
 
         let currentStep = 1;
+        let procedureCounter = 1;
+        let investigationCounter = 0;
+        let medicineCounter = 0;
+        let signatureCanvas = null;
+        let signatureCtx = null;
+        let isDrawing = false;
+
+        // Initialize Signature Canvas
+        function initSignatureCanvas() {
+            signatureCanvas = document.getElementById('signature-canvas');
+            if (signatureCanvas) {
+                signatureCtx = signatureCanvas.getContext('2d');
+                signatureCtx.strokeStyle = '#000';
+                signatureCtx.lineWidth = 2;
+                signatureCtx.lineCap = 'round';
+                signatureCtx.lineJoin = 'round';
+
+                // Mouse events
+                signatureCanvas.addEventListener('mousedown', startDrawing);
+                signatureCanvas.addEventListener('mousemove', draw);
+                signatureCanvas.addEventListener('mouseup', stopDrawing);
+                signatureCanvas.addEventListener('mouseout', stopDrawing);
+
+                // Touch events
+                signatureCanvas.addEventListener('touchstart', handleTouch);
+                signatureCanvas.addEventListener('touchmove', handleTouch);
+                signatureCanvas.addEventListener('touchend', stopDrawing);
+            }
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const rect = signatureCanvas.getBoundingClientRect();
+            signatureCtx.beginPath();
+            signatureCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const rect = signatureCanvas.getBoundingClientRect();
+            signatureCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            signatureCtx.stroke();
+        }
+
+        function stopDrawing() {
+            if (isDrawing) {
+                isDrawing = false;
+            }
+        }
+
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            signatureCanvas.dispatchEvent(mouseEvent);
+        }
+
+        function clearSignature() {
+            if (signatureCtx && signatureCanvas) {
+                signatureCtx.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+            }
+        }
+
+        // Add Procedure Row
+        function addProcedureRow() {
+            const tbody = document.getElementById('procedures-list');
+            procedureCounter++;
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="px-3 py-2 text-xs text-gray-900">${procedureCounter}</td>
+                <td class="px-3 py-2"><input type="text" name="procedure-name[]" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" placeholder="Procedure name" /></td>
+                <td class="px-3 py-2"><input type="text" name="procedure-notes[]" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" placeholder="Notes" /></td>
+                <td class="px-3 py-2"><input type="date" name="procedure-date[]" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" /></td>
+                <td class="px-3 py-2 text-center"><button type="button" onclick="removeProcedureRow(this)" class="text-red-500 hover:text-red-700 text-xs"><i class="fas fa-trash"></i></button></td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        // Remove Procedure Row
+        function removeProcedureRow(btn) {
+            const row = btn.closest('tr');
+            row.remove();
+            // Renumber remaining rows
+            const rows = document.querySelectorAll('#procedures-list tr');
+            rows.forEach((r, index) => {
+                r.querySelector('td:first-child').textContent = index + 1;
+            });
+            procedureCounter = rows.length;
+        }
+
+        // Add Investigation Row
+        function addInvestigationRow() {
+            const tbody = document.getElementById('investigations-list');
+            investigationCounter++;
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="px-3 py-2"><input type="text" name="test-name[]" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" placeholder="Test name" /></td>
+                <td class="px-3 py-2"><input type="date" name="test-date[]" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" /></td>
+                <td class="px-3 py-2"><input type="text" name="test-result[]" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" placeholder="Result" /></td>
+                <td class="px-3 py-2 text-center"><button type="button" onclick="removeInvestigationRow(this)" class="text-red-500 hover:text-red-700 text-xs"><i class="fas fa-trash"></i></button></td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        // Remove Investigation Row
+        function removeInvestigationRow(btn) {
+            btn.closest('tr').remove();
+        }
+
+        // Add Medicine Row
+        function addMedicineRow() {
+            const tbody = document.getElementById('medicines-list');
+            medicineCounter++;
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="px-3 py-2">
+                    <input type="text" name="medicine-name[]" list="medicine-options" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" placeholder="Search medicine..." />
+                </td>
+                <td class="px-3 py-2">
+                    <input type="text" name="medicine-dose[]" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" placeholder="e.g., 250mg" />
+                </td>
+                <td class="px-3 py-2">
+                    <textarea name="medicine-instructions[]" rows="2" class="w-full px-2 py-1 border border-gray-300 rounded text-xs resize-y" placeholder="e.g., 1+1 for 7 days"></textarea>
+                </td>
+                <td class="px-3 py-2 text-center">
+                    <button type="button" onclick="removeMedicineRow(this)" class="text-red-500 hover:text-red-700 text-xs">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        // Remove Medicine Row
+        function removeMedicineRow(btn) {
+            btn.closest('tr').remove();
+        }
+
+        // Auto-populate Patient Data
+        function loadPatientData() {
+            // Try to get patient ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const patientId = urlParams.get('id') || urlParams.get('patientId');
+            
+            if (!patientId) return;
+
+            // Try to get from beds data (for IPD patients)
+            const beds = JSON.parse(localStorage.getItem('hm_beds_data') || '[]');
+            const bed = beds.find(b => b.patientId === patientId || String(b.patientId) === String(patientId));
+            
+            if (bed && bed.patientName) {
+                document.getElementById('patient-name').value = bed.patientName || '';
+                document.getElementById('patient-department').value = bed.ward || '';
+                document.getElementById('patient-ward-room').value = bed.ward || '';
+                document.getElementById('patient-bed').value = bed.bedId || '';
+                if (bed.doctor) {
+                    document.getElementById('consultant-name').value = bed.doctor || '';
+                }
+                if (bed.admissionDate) {
+                    // Set admission date if available
+                }
+            }
+
+            // Try to get from appointments data
+            const appointments = JSON.parse(localStorage.getItem('hm_appointments_data') || '[]');
+            const appointment = appointments.find(a => {
+                const aId = String(a.patientId || a.id || '').toUpperCase();
+                const pId = String(patientId).toUpperCase();
+                return aId === pId || aId === 'PAT-' + pId || 'PAT-' + aId === pId;
+            });
+
+            if (appointment) {
+                if (appointment.patientName && !document.getElementById('patient-name').value) {
+                    document.getElementById('patient-name').value = appointment.patientName || '';
+                }
+                if (appointment.doctor && !document.getElementById('consultant-name').value) {
+                    document.getElementById('consultant-name').value = appointment.doctor || '';
+                }
+                if (appointment.department && !document.getElementById('patient-department').value) {
+                    document.getElementById('patient-department').value = appointment.department || '';
+                }
+            }
+
+            // Try to get from patients data
+            const patients = JSON.parse(localStorage.getItem('hm_patients_data') || '[]');
+            const patient = patients.find(p => {
+                const pId = String(p.id || p.patientId || '').toUpperCase();
+                const searchId = String(patientId).toUpperCase();
+                return pId === searchId || pId === 'PAT-' + searchId || 'PAT-' + pId === searchId;
+            });
+
+            if (patient) {
+                if (patient.name && !document.getElementById('patient-name').value) {
+                    document.getElementById('patient-name').value = patient.name || '';
+                }
+                if (patient.phone) {
+                    document.getElementById('patient-phone').value = patient.phone || '';
+                }
+                if (patient.address) {
+                    document.getElementById('patient-address').value = patient.address || '';
+                }
+                if (patient.age) {
+                    const ageParts = String(patient.age).split(' ');
+                    if (ageParts.length >= 1) {
+                        document.getElementById('patient-age-years').value = parseInt(ageParts[0]) || '';
+                    }
+                }
+                if (patient.bloodGroup) {
+                    document.getElementById('patient-blood-group').value = patient.bloodGroup || '';
+                }
+                if (patient.sex) {
+                    document.getElementById('patient-sex').value = patient.sex.toUpperCase() || '';
+                }
+            }
+
+            // Set current date/time for discharge
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('discharge-date-time').value = `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
 
         // Step Navigation
         function goToStep(step) {
@@ -556,20 +1087,400 @@
 
         // Populate Discharge Document
         function populateDischargeDocument() {
+            // Get all form values
             const diagnosis = document.getElementById("primary-diagnosis").value || "-";
             const treatment = document.getElementById("treatment-summary").value || "-";
             const medications = document.getElementById("discharge-medications").value || "-";
             const followup = document.getElementById("follow-up-instructions").value || "-";
+            
+            // New fields
+            const patientName = document.getElementById("patient-name").value || "-";
+            const patientRelative = document.getElementById("patient-relative-name").value || "-";
+            const patientAddress = document.getElementById("patient-address").value || "-";
+            const patientCNIC = document.getElementById("patient-cnic").value || "-";
+            const patientPhone = document.getElementById("patient-phone").value || "-";
+            const ageYears = document.getElementById("patient-age-years").value || "0";
+            const ageMonths = document.getElementById("patient-age-months").value || "0";
+            const bloodGroup = document.getElementById("patient-blood-group").value || "-";
+            const dob = document.getElementById("patient-dob").value || "-";
+            const maritalStatus = document.getElementById("patient-marital-status").value || "-";
+            const sex = document.getElementById("patient-sex").value || "-";
+            const department = document.getElementById("patient-department").value || "-";
+            const wardRoom = document.getElementById("patient-ward-room").value || "-";
+            const bed = document.getElementById("patient-bed").value || "-";
+            
+            const consultantName = document.getElementById("consultant-name").value || "-";
+            const consultantDesignation = document.getElementById("consultant-designation").value || "";
+            const additionalConsultants = document.getElementById("additional-consultants").value || "";
+            const hospitalizationHistory = document.getElementById("hospitalization-history").value || "-";
+            const treatmentGiven = document.getElementById("treatment-given").value || "-";
+            const dischargeCondition = document.getElementById("discharge-condition").value || "-";
+            
+            const dischargeInstructions = document.getElementById("discharge-instructions").value || "-";
+            const emergencyContact = document.getElementById("emergency-contact").value || "-";
+            const followUpDate = document.getElementById("follow-up-date").value || "-";
+            
+            const medicalOfficerName = document.getElementById("medical-officer-name").value || "-";
+            const dischargeDateTime = document.getElementById("discharge-date-time").value || new Date().toISOString();
 
+            // Get procedures
+            const procedureRows = document.querySelectorAll('#procedures-list tr');
+            let proceduresHtml = '';
+            procedureRows.forEach((row, index) => {
+                const name = row.querySelector('input[name="procedure-name[]"]')?.value || '';
+                const notes = row.querySelector('input[name="procedure-notes[]"]')?.value || '';
+                const date = row.querySelector('input[name="procedure-date[]"]')?.value || '';
+                if (name) {
+                    proceduresHtml += `<tr><td>${index + 1}</td><td>${name}</td><td>${notes}</td><td>${date || '-'}</td></tr>`;
+                }
+            });
+
+            // Get investigations
+            const investigationRows = document.querySelectorAll('#investigations-list tr');
+            let investigationsHtml = '';
+            investigationRows.forEach(row => {
+                const testName = row.querySelector('input[name="test-name[]"]')?.value || '';
+                const testDate = row.querySelector('input[name="test-date[]"]')?.value || '';
+                const testResult = row.querySelector('input[name="test-result[]"]')?.value || '';
+                if (testName) {
+                    investigationsHtml += `<tr><td>${testName}</td><td>${testDate || '-'}</td><td>${testResult || '-'}</td></tr>`;
+                }
+            });
+
+            // Get medicines from table
+            const medicineRows = document.querySelectorAll('#medicines-list tr');
+            let medicinesHtml = '';
+            medicineRows.forEach(row => {
+                const medName = row.querySelector('input[name="medicine-name[]"]')?.value || '';
+                const medDose = row.querySelector('input[name="medicine-dose[]"]')?.value || '';
+                const medInstructions = row.querySelector('textarea[name="medicine-instructions[]"]')?.value || '';
+                if (medName) {
+                    medicinesHtml += `<tr><td>${medName}</td><td>${medDose || '-'}</td><td>${medInstructions || '-'}</td></tr>`;
+                }
+            });
+
+            // Update Step 3 display (keep existing for backward compatibility)
             document.getElementById("discharge-diagnosis").textContent = diagnosis;
             document.getElementById("discharge-treatment").textContent = treatment;
-            document.getElementById("discharge-meds").textContent = medications;
-            document.getElementById("discharge-followup").textContent = followup;
+            document.getElementById("discharge-meds").textContent = medications || (medicinesHtml ? 'See table below' : '-');
+            document.getElementById("discharge-followup").textContent = followup || dischargeInstructions;
         }
 
         // Print Discharge Slip
         function printDischargeSlip() {
-            window.print();
+            // Collect all data
+            const patientName = document.getElementById("patient-name").value || "N/A";
+            const patientRelative = document.getElementById("patient-relative-name").value || "";
+            const patientAddress = document.getElementById("patient-address").value || "";
+            const patientCNIC = document.getElementById("patient-cnic").value || "";
+            const patientPhone = document.getElementById("patient-phone").value || "";
+            const ageYears = document.getElementById("patient-age-years").value || "0";
+            const ageMonths = document.getElementById("patient-age-months").value || "0";
+            const bloodGroup = document.getElementById("patient-blood-group").value || "";
+            const dob = document.getElementById("patient-dob").value || "";
+            const maritalStatus = document.getElementById("patient-marital-status").value || "";
+            const sex = document.getElementById("patient-sex").value || "";
+            const department = document.getElementById("patient-department").value || "";
+            const wardRoom = document.getElementById("patient-ward-room").value || "";
+            const bed = document.getElementById("patient-bed").value || "";
+            
+            const consultantName = document.getElementById("consultant-name").value || "";
+            const consultantDesignation = document.getElementById("consultant-designation").value || "";
+            const additionalConsultants = document.getElementById("additional-consultants").value || "";
+            const diagnosis = document.getElementById("primary-diagnosis").value || "";
+            const hospitalizationHistory = document.getElementById("hospitalization-history").value || "";
+            const treatmentGiven = document.getElementById("treatment-given").value || "";
+            const dischargeCondition = document.getElementById("discharge-condition").value || "";
+            
+            const dischargeInstructions = document.getElementById("discharge-instructions").value || "";
+            const emergencyContact = document.getElementById("emergency-contact").value || "";
+            const followUpDate = document.getElementById("follow-up-date").value || "";
+            
+            const medicalOfficerName = document.getElementById("medical-officer-name").value || "";
+            const dischargeDateTime = document.getElementById("discharge-date-time").value || new Date().toISOString();
+
+            // Format dates
+            const formatDate = (dateStr) => {
+                if (!dateStr) return "";
+                try {
+                    const date = new Date(dateStr);
+                    return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                } catch (e) {
+                    return dateStr;
+                }
+            };
+
+            const formatDateTime = (dateStr) => {
+                if (!dateStr) return "";
+                try {
+                    const date = new Date(dateStr);
+                    return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + ' ' + 
+                           date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+                } catch (e) {
+                    return dateStr;
+                }
+            };
+
+            // Get procedures
+            const procedureRows = document.querySelectorAll('#procedures-list tr');
+            let proceduresHtml = '';
+            procedureRows.forEach((row, index) => {
+                const name = row.querySelector('input[name="procedure-name[]"]')?.value || '';
+                const notes = row.querySelector('input[name="procedure-notes[]"]')?.value || '';
+                const date = row.querySelector('input[name="procedure-date[]"]')?.value || '';
+                if (name) {
+                    proceduresHtml += `<tr><td>${index + 1}</td><td>${name}</td><td>${notes || ''}</td><td>${date ? formatDate(date) : ''}</td></tr>`;
+                }
+            });
+            if (!proceduresHtml) {
+                proceduresHtml = '<tr><td colspan="4" style="text-align:center;padding:10px;">-</td></tr>';
+            }
+
+            // Get investigations
+            const investigationRows = document.querySelectorAll('#investigations-list tr');
+            let investigationsHtml = '';
+            investigationRows.forEach(row => {
+                const testName = row.querySelector('input[name="test-name[]"]')?.value || '';
+                const testDate = row.querySelector('input[name="test-date[]"]')?.value || '';
+                const testResult = row.querySelector('input[name="test-result[]"]')?.value || '';
+                if (testName) {
+                    investigationsHtml += `<tr><td>${testName}</td><td>${testDate ? formatDate(testDate) : ''}</td><td>${testResult || ''}</td></tr>`;
+                }
+            });
+            if (!investigationsHtml) {
+                investigationsHtml = '<tr><td colspan="3" style="text-align:center;padding:10px;">-</td></tr>';
+            }
+
+            // Get medicines
+            const medicineRows = document.querySelectorAll('#medicines-list tr');
+            let medicinesHtml = '';
+            medicineRows.forEach(row => {
+                const medName = row.querySelector('input[name="medicine-name[]"]')?.value || '';
+                const medDose = row.querySelector('input[name="medicine-dose[]"]')?.value || '';
+                const medInstructions = row.querySelector('textarea[name="medicine-instructions[]"]')?.value || '';
+                if (medName) {
+                    medicinesHtml += `<tr><td>${medName}</td><td>${medDose || ''}</td><td>${medInstructions || ''}</td></tr>`;
+                }
+            });
+            if (!medicinesHtml) {
+                medicinesHtml = '<tr><td colspan="3" style="text-align:center;padding:10px;">-</td></tr>';
+            }
+
+            // Get signature
+            let signatureData = '';
+            if (signatureCanvas) {
+                signatureData = signatureCanvas.toDataURL();
+            }
+
+            // Generate IMC Number (simple format)
+            const imcNumber = 'IMC-' + Date.now().toString().slice(-6);
+
+            // Generate print document
+            const printContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Discharge Summary</title>
+                    <style>
+                        @media print {
+                            @page { margin: 1cm; }
+                        }
+                        body {
+                            font-family: Arial, sans-serif;
+                            font-size: 11px;
+                            line-height: 1.4;
+                            color: #000;
+                            max-width: 210mm;
+                            margin: 0 auto;
+                            padding: 20px;
+                        }
+                        .watermark {
+                            position: fixed;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%) rotate(-45deg);
+                            font-size: 48px;
+                            color: rgba(0,0,0,0.1);
+                            z-index: -1;
+                            font-weight: bold;
+                        }
+                        .header {
+                            display: flex;
+                            justify-content: space-between;
+                            margin-bottom: 20px;
+                            border-bottom: 2px solid #000;
+                            padding-bottom: 10px;
+                        }
+                        .header-left {
+                            font-weight: bold;
+                            font-size: 14px;
+                        }
+                        .header-right {
+                            text-align: right;
+                            font-size: 10px;
+                        }
+                        h1 {
+                            font-size: 16px;
+                            text-align: center;
+                            margin: 20px 0;
+                            text-transform: uppercase;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin: 10px 0;
+                            font-size: 10px;
+                        }
+                        table th, table td {
+                            border: 1px solid #000;
+                            padding: 6px;
+                            text-align: left;
+                        }
+                        table th {
+                            background-color: #f0f0f0;
+                            font-weight: bold;
+                        }
+                        .section {
+                            margin: 15px 0;
+                        }
+                        .section-title {
+                            font-weight: bold;
+                            margin-bottom: 8px;
+                            text-transform: uppercase;
+                        }
+                        .info-row {
+                            margin: 5px 0;
+                        }
+                        .signature-section {
+                            margin-top: 30px;
+                            display: flex;
+                            justify-content: space-between;
+                        }
+                        .signature-box {
+                            width: 200px;
+                            border-top: 1px solid #000;
+                            padding-top: 5px;
+                            margin-top: 50px;
+                        }
+                        .footer {
+                            margin-top: 30px;
+                            text-align: right;
+                            font-size: 9px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="watermark">NOT USED FOR MEDICOLEGAL PURPOSES</div>
+                    
+                    <div class="header">
+                        <div class="header-left">Integrated Medical Care Hospital</div>
+                        <div class="header-right">
+                            <div>IMC Number: ${imcNumber}</div>
+                            <div>Admission Date: ${formatDateTime(dischargeDateTime)}</div>
+                            <div>Discharge Date: ${formatDateTime(dischargeDateTime)}</div>
+                        </div>
+                    </div>
+
+                    <h1>Discharge Summary for Patient</h1>
+
+                    <div class="section">
+                        <div class="section-title">Patient Information</div>
+                        <div class="info-row"><strong>Patient Name:</strong> ${patientName}</div>
+                        ${patientRelative ? `<div class="info-row"><strong>Husband/Father Name:</strong> ${patientRelative}</div>` : ''}
+                        ${patientAddress ? `<div class="info-row"><strong>Present Address:</strong> ${patientAddress}</div>` : ''}
+                        ${patientCNIC ? `<div class="info-row"><strong>CNIC Number:</strong> ${patientCNIC}</div>` : ''}
+                        ${patientPhone ? `<div class="info-row"><strong>Phone Number:</strong> ${patientPhone}</div>` : ''}
+                        <div class="info-row"><strong>Age:</strong> ${ageYears} Y & ${ageMonths} M</div>
+                        ${bloodGroup ? `<div class="info-row"><strong>Blood Group:</strong> ${bloodGroup}</div>` : ''}
+                        ${dob ? `<div class="info-row"><strong>${formatDate(dob)}</strong> Marital Status: ${maritalStatus}</div>` : ''}
+                        ${sex ? `<div class="info-row"><strong>Sex:</strong> ${sex}</div>` : ''}
+                        ${department ? `<div class="info-row"><strong>Department:</strong> ${department}</div>` : ''}
+                        ${wardRoom ? `<div class="info-row"><strong>Ward/Room:</strong> ${wardRoom}</div>` : ''}
+                        ${bed ? `<div class="info-row"><strong>Bed:</strong> ${bed}</div>` : ''}
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">Medical Details</div>
+                        ${consultantName ? `<div class="info-row"><strong>Consultant:</strong> ${consultantName}${consultantDesignation ? ' - ' + consultantDesignation : ''}${additionalConsultants ? ', ' + additionalConsultants : ''}</div>` : ''}
+                        ${diagnosis ? `<div class="info-row"><strong>Diagnosis:</strong> ${diagnosis}</div>` : ''}
+                        ${hospitalizationHistory ? `<div class="info-row"><strong>History of Current Hospitalization:</strong> ${hospitalizationHistory}</div>` : ''}
+                        
+                        <div class="section-title" style="margin-top: 15px;">Procedure/Operation</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Sr. #</th>
+                                    <th>Procedure Name</th>
+                                    <th>Procedure Notes</th>
+                                    <th>Procedure Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>${proceduresHtml}</tbody>
+                        </table>
+
+                        ${treatmentGiven ? `<div class="info-row" style="margin-top: 10px;"><strong>Treatment given in the Hospital:</strong> ${treatmentGiven}</div>` : ''}
+                        
+                        <div class="section-title" style="margin-top: 15px;">Investigation Reports Attached</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Test Name</th>
+                                    <th>Test Date</th>
+                                    <th>Result</th>
+                                </tr>
+                            </thead>
+                            <tbody>${investigationsHtml}</tbody>
+                        </table>
+
+                        ${dischargeCondition ? `<div class="info-row" style="margin-top: 10px;"><strong>Condition at the time of Discharge:</strong> ${dischargeCondition}</div>` : ''}
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">MEDICINES TO BE TAKEN TILL FOLLOW-UP VISIT</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Medicine Name</th>
+                                    <th>Dose</th>
+                                    <th>How To Take</th>
+                                </tr>
+                            </thead>
+                            <tbody>${medicinesHtml}</tbody>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">Instructions on Discharge</div>
+                        ${dischargeInstructions ? `<div class="info-row">${dischargeInstructions}</div>` : ''}
+                        ${emergencyContact ? `<div class="info-row">IN CASE OF EMERGENCY, CONTACT: ${emergencyContact}</div>` : ''}
+                        ${followUpDate ? `<div class="info-row"><strong>Follow Up Date:</strong> ${formatDate(followUpDate)}</div>` : ''}
+                    </div>
+
+                    <div class="signature-section">
+                        <div class="signature-box">
+                            <div><strong>Name and Signature of Medical Officer</strong></div>
+                            <div style="margin-top: 40px;">${medicalOfficerName}</div>
+                            ${signatureData ? `<img src="${signatureData}" style="max-width: 150px; margin-top: 10px;" />` : ''}
+                        </div>
+                        <div class="footer">
+                            <div><strong>Date:</strong> ${formatDateTime(dischargeDateTime)}</div>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            // Open print window
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+            
+            // Wait for content to load, then print
+            printWindow.onload = function() {
+                setTimeout(() => {
+                    printWindow.print();
+                }, 250);
+            };
         }
 
         // Main sidebar toggle function
@@ -601,6 +1512,12 @@
                     toggleMainSidebar();
                 });
             }
+
+            // Initialize signature canvas
+            initSignatureCanvas();
+
+            // Load patient data if available
+            loadPatientData();
 
             // Initialize currency helper if available
             if (typeof CurrencyHelper !== 'undefined') {
